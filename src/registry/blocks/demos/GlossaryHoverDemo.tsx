@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState, useRef } from "react"
+import { generateText } from "@webllm/client"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, BookOpen } from "lucide-react"
 
@@ -15,12 +15,7 @@ export function GlossaryHoverDemo() {
   const [isLoading, setIsLoading] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [cache, setCache] = useState<Record<string, string>>({})
-  const clientRef = useRef<WebLLMClient | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const getDefinition = async (term: string) => {
     if (cache[term]) {
@@ -32,14 +27,14 @@ export function GlossaryHoverDemo() {
     setDefinition("")
 
     try {
-      const result = await clientRef.current?.generateText({
+      const result = await generateText({
         prompt: `Define "${term}" in simple terms for someone learning about machine learning. Keep it to 1-2 sentences, beginner-friendly.
 
 Definition:`,
         temperature: 0.5,
         maxTokens: 100,
       })
-      const def = result?.text.trim() || "Definition not available"
+      const def = result.text.trim() || "Definition not available"
       setDefinition(def)
       setCache(prev => ({ ...prev, [term]: def }))
     } catch {

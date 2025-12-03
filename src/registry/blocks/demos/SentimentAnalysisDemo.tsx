@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
@@ -18,19 +18,14 @@ export function SentimentAnalysisDemo() {
   const [text, setText] = useState("I absolutely love this product! It's amazing and works perfectly.")
   const [result, setResult] = useState<SentimentResult | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleAnalyze = async () => {
-    if (!text.trim() || !clientRef.current) return
+    if (!text.trim()) return
     setIsLoading(true)
     setResult(null)
 
     try {
-      const response = await clientRef.current.generateText({
+      const response = await generateText({
         prompt: `Analyze the sentiment of this text and respond with JSON only: "${text}"
 
 Format: {"sentiment": "positive|negative|neutral", "confidence": 0.0-1.0, "keywords": ["word1", "word2"]}`,

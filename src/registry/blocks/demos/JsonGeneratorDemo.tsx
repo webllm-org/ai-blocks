@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
@@ -13,19 +13,14 @@ export function JsonGeneratorDemo() {
   const [isLoading, setIsLoading] = useState(false)
   const [copied, setCopied] = useState(false)
   const [isValid, setIsValid] = useState(true)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleGenerate = async () => {
-    if (!description.trim() || !clientRef.current) return
+    if (!description.trim()) return
     setIsLoading(true)
     setGeneratedJson("")
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Generate a JSON object based on this description. Include realistic sample data.
 
 Description: ${description}

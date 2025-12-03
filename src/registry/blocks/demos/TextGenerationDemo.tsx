@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -11,18 +11,13 @@ export function TextGenerationDemo() {
   const [prompt, setPrompt] = useState("Tell me a short joke about programming")
   const [response, setResponse] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleGenerate = async () => {
-    if (!prompt.trim() || !clientRef.current) return
+    if (!prompt.trim()) return
     setIsLoading(true)
     setResponse("")
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: prompt.trim(),
         temperature: 0.7,
         maxTokens: 150,

@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
@@ -29,19 +29,14 @@ export function ReviewSummarizerDemo() {
   const [reviews, setReviews] = useState(SAMPLE_REVIEWS)
   const [summary, setSummary] = useState<ReviewSummary | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleSummarize = async () => {
-    if (!reviews.trim() || !clientRef.current) return
+    if (!reviews.trim()) return
     setIsLoading(true)
     setSummary(null)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Analyze these product reviews and provide a structured summary:
 
 Reviews:

@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -30,14 +30,9 @@ export function BioWriterDemo() {
   const [bio, setBio] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [copied, setCopied] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleGenerate = async () => {
-    if (!details.trim() || !clientRef.current) return
+    if (!details.trim()) return
     setIsLoading(true)
     setBio("")
 
@@ -48,7 +43,7 @@ export function BioWriterDemo() {
     }
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Write a ${tone} bio for ${name || "this person"} based on these details:
 ${details}
 

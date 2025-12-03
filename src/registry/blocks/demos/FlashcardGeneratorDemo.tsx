@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
@@ -20,21 +20,16 @@ export function FlashcardGeneratorDemo() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isFlipped, setIsFlipped] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleGenerate = async () => {
-    if (!content.trim() || !clientRef.current) return
+    if (!content.trim()) return
     setIsLoading(true)
     setFlashcards([])
     setCurrentIndex(0)
     setIsFlipped(false)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Create 5 flashcards from this educational content. Each flashcard should test understanding of a key concept.
 
 Content:

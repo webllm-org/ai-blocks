@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -31,20 +31,15 @@ export function ImageEditorDemo() {
   const [currentDescription, setCurrentDescription] = useState(sampleImage.description)
   const [history, setHistory] = useState<EditHistory[]>([])
   const [isProcessing, setIsProcessing] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const applyEdit = async (editInstruction?: string) => {
     const edit = editInstruction || instruction
-    if (!clientRef.current || !edit.trim()) return
+    if (!edit.trim()) return
 
     setIsProcessing(true)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `You are an AI image editor. Given an image description and an edit instruction, describe what the image would look like after the edit.
 
 Current image: "${currentDescription}"

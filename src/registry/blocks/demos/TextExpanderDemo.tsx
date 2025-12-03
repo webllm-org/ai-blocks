@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
@@ -14,14 +14,9 @@ export function TextExpanderDemo() {
   const [expansionLevel, setExpansionLevel] = useState([2]) // 1=brief, 2=moderate, 3=detailed
   const [isLoading, setIsLoading] = useState(false)
   const [copied, setCopied] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleExpand = async () => {
-    if (!briefText.trim() || !clientRef.current) return
+    if (!briefText.trim()) return
     setIsLoading(true)
     setExpandedText("")
 
@@ -32,7 +27,7 @@ export function TextExpanderDemo() {
     }
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Expand these brief notes into well-written prose. ${levelDescriptions[expansionLevel[0] as keyof typeof levelDescriptions]}
 
 Brief notes:

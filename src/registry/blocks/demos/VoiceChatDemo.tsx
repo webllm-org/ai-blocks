@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, Mic, MicOff, Volume2, VolumeX } from "lucide-react"
@@ -16,11 +16,9 @@ export function VoiceChatDemo() {
   const [transcript, setTranscript] = useState("")
   const [ttsEnabled, setTtsEnabled] = useState(true)
   const [supported, setSupported] = useState(true)
-  const clientRef = useRef<WebLLMClient | null>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
 
   useEffect(() => {
-    clientRef.current = new WebLLMClient()
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition
     if (!SR) { setSupported(false); return }
     recognitionRef.current = new SR()
@@ -38,12 +36,12 @@ export function VoiceChatDemo() {
   }
 
   const processMessage = async (text: string) => {
-    if (!text.trim() || !clientRef.current) return
+    if (!text.trim()) return
     setMessages(p => [...p, { role: "user", content: text.trim() }])
     setTranscript("")
     setIsLoading(true)
     try {
-      const r = await clientRef.current.generateText({
+      const r = await generateText({
         prompt: "You are a voice assistant. Brief responses.\n\nUser: " + text + "\n\nAssistant:",
         temperature: 0.7, maxTokens: 100,
       })

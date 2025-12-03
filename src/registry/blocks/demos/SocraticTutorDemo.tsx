@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -15,20 +15,15 @@ export function SocraticTutorDemo() {
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [started, setStarted] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const startSession = async () => {
-    if (!topic.trim() || !clientRef.current) return
+    if (!topic.trim()) return
     setIsLoading(true)
     setStarted(true)
     setMessages([])
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `You are a Socratic tutor. The student wants to understand: "${topic}"
 
 Instead of explaining directly, ask ONE thought-provoking question that guides them to discover the answer themselves. Be encouraging but don't give away the answer.
@@ -46,7 +41,7 @@ Your first guiding question:`,
   }
 
   const handleResponse = async () => {
-    if (!input.trim() || !clientRef.current) return
+    if (!input.trim()) return
     const userMsg = input.trim()
     setMessages(prev => [...prev, { role: "user", content: userMsg }])
     setInput("")
@@ -55,7 +50,7 @@ Your first guiding question:`,
     const history = messages.map(m => `${m.role === "tutor" ? "Tutor" : "Student"}: ${m.content}`).join("\n")
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `You are a Socratic tutor helping a student understand: "${topic}"
 
 Conversation so far:

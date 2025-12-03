@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
@@ -23,19 +23,14 @@ export function ContentClassifierDemo() {
   const [text, setText] = useState(SAMPLE_TEXT)
   const [result, setResult] = useState<Classification | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleClassify = async () => {
-    if (!text.trim() || !clientRef.current) return
+    if (!text.trim()) return
     setIsLoading(true)
     setResult(null)
 
     try {
-      const response = await clientRef.current.generateText({
+      const response = await generateText({
         prompt: `Classify this content and extract metadata:
 
 "${text}"

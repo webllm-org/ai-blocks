@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -39,20 +39,15 @@ export function ConceptCheckerDemo() {
   const [explanation, setExplanation] = useState("")
   const [feedback, setFeedback] = useState<FeedbackType | null>(null)
   const [isChecking, setIsChecking] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const checkUnderstanding = async () => {
-    if (!clientRef.current || !explanation.trim()) return
+    if (!explanation.trim()) return
 
     setIsChecking(true)
     setFeedback(null)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Evaluate this student explanation of "${selectedConcept.topic}":
 
 Correct definition: ${selectedConcept.description}

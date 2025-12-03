@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -30,19 +30,14 @@ export function SizeAdvisorDemo() {
   const [productInfo, setProductInfo] = useState("Cotton t-shirt, unisex sizing, US sizes S/M/L/XL/XXL")
   const [recommendation, setRecommendation] = useState<SizeRecommendation | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleGetSize = async () => {
-    if (!height.trim() || !weight.trim() || !clientRef.current) return
+    if (!height.trim() || !weight.trim()) return
     setIsLoading(true)
     setRecommendation(null)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Recommend a clothing size based on these details:
 
 Height: ${height}

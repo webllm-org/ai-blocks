@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
@@ -27,21 +27,16 @@ export function TranslateOnDemandDemo() {
   const [targetLang, setTargetLang] = useState<string>("es")
   const [translated, setTranslated] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleTranslate = async () => {
-    if (!text.trim() || !clientRef.current) return
+    if (!text.trim()) return
     setIsLoading(true)
     setTranslated("")
 
     const lang = LANGUAGES.find(l => l.code === targetLang)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Translate the following text to ${lang?.name}. Provide only the translation, no explanations.
 
 Text to translate:

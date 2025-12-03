@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState, useEffect } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -27,14 +27,8 @@ export function SimilarItemsDemo() {
   const [selectedProduct, setSelectedProduct] = useState(products[0])
   const [similarItems, setSimilarItems] = useState<SimilarProduct[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const findSimilar = async (product: typeof products[0]) => {
-    if (!clientRef.current) return
 
     setSelectedProduct(product)
     setIsLoading(true)
@@ -46,7 +40,7 @@ export function SimilarItemsDemo() {
         `${p.id}: ${p.name} ($${p.price}, ${p.style}, ${p.material})`
       ).join('\n')
 
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Find the 3 most similar products to "${product.name}" (${product.style}, ${product.material}, $${product.price}).
 
 Products:

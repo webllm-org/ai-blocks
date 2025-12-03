@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -30,20 +30,15 @@ export function FormParserDemo() {
   const [input, setInput] = useState("")
   const [parsed, setParsed] = useState<ParsedData | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const parseText = async () => {
-    if (!clientRef.current || !input.trim()) return
+    if (!input.trim()) return
 
     setIsProcessing(true)
     setParsed(null)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Extract structured data from this text. Return JSON only.
 
 Text: "${input}"

@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -14,21 +14,15 @@ export function AltTextGeneratorDemo() {
   const [isLoading, setIsLoading] = useState(false)
   const [copied, setCopied] = useState(false)
   const [imageError, setImageError] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleGenerate = async () => {
-    if (!clientRef.current) return
     setIsLoading(true)
     setAltText("")
 
     try {
       // In a real implementation, you'd use vision capabilities
       // For this demo, we generate based on context
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Generate a concise, descriptive alt text for an image on a website about: "${context}"
 
 The alt text should:

@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateImage } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -11,19 +11,14 @@ export function ImageGenerationDemo() {
   const [prompt, setPrompt] = useState("A serene mountain landscape at sunset with purple clouds")
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleGenerate = async () => {
-    if (!prompt.trim() || !clientRef.current) return
+    if (!prompt.trim()) return
     setIsLoading(true)
     setImageUrl(null)
 
     try {
-      const result = await (clientRef.current as any).generateImage({
+      const result = await generateImage({
         prompt: prompt.trim(),
         size: "1024x1024",
         n: 1,

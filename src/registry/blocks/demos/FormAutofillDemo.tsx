@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -24,18 +24,13 @@ export function FormAutofillDemo() {
   const [naturalInput, setNaturalInput] = useState("I'm John Smith, software engineer at Acme Corp. My email is john.smith@acme.com and phone is 555-123-4567")
   const [formData, setFormData] = useState<FormData>(EMPTY_FORM)
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleAutofill = async () => {
-    if (!naturalInput.trim() || !clientRef.current) return
+    if (!naturalInput.trim()) return
     setIsLoading(true)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Extract contact information from this text and return as JSON.
 
 Text: "${naturalInput}"

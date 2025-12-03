@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState, useRef } from "react"
+import { generateText } from "@webllm/client"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -19,22 +19,17 @@ export function AutocompleteDemo() {
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(-1)
-  const clientRef = useRef<WebLLMClient | null>(null)
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
-
   const getSuggestions = async (text: string) => {
-    if (!clientRef.current || text.length < 2) {
+    if (text.length < 2) {
       setSuggestions([])
       return
     }
 
     setIsLoading(true)
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Given this product catalog:
 ${sampleContext}
 
