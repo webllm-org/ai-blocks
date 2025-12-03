@@ -1,0 +1,36 @@
+{
+  "name": "@webllm/ai-blocks",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-focused UI components for building LLM-powered interfaces",
+  "type": "module",
+  "exports": {
+    "./registry/*": "./src/registry/*",
+    "./lib/*": "./src/lib/*"
+  },
+  "scripts": {
+    "build:registry": "node scripts/build-registry.js",
+    "dev": "node scripts/build-registry.js --watch",
+    "clean": "rm -rf ../../public/r"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.4.0"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "@webllm/client": "*"
+  },
+  "peerDependenciesMeta": {
+    "@webllm/client": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.25",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.5.0"
+  }
+}
