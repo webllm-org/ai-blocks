@@ -50,13 +50,7 @@ import { SimpleChatDemo } from 'ai-blocks/demos/SimpleChatDemo';
 
 ## Browse Components
 
-View all available components:
-
-```bash
-curl https://webllm.org/r/index.json
-```
-
-Or browse visually at [webllm.org/blocks](https://webllm.org/blocks).
+Browse all components at [webllm.org/blocks](https://webllm.org/blocks). Each component includes a live preview, full source code, and one-click install.
 
 ## Requirements
 
@@ -74,5 +68,3 @@ Or browse visually at [webllm.org/blocks](https://webllm.org/blocks).
 - [Component Browser](https://webllm.org/blocks)
 - [Documentation](https://webllm.org/docs)
 - [GitHub](https://github.com/webllm-org/webllm)
-
-.
