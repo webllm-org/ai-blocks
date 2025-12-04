@@ -1,0 +1,6 @@
+node_modules/
+dist/
+DEV.md
+shadcn-registry-entry.json
+*.log
+.DS_Store

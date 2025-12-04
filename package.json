@@ -32,17 +32,18 @@
     "generate:registry": "node scripts/generate-registry-from-blocks.js",
     "build:registry": "node scripts/generate-registry-from-blocks.js && node scripts/build-registry.js",
     "dev": "node scripts/build-registry.js --watch",
-    "clean": "rm -rf dist ../playground/public/r"
+    "clean": "rm -rf dist ../playground/public/r",
+    "extract:props": "node scripts/extract-props.cjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.4.0"
   },
   "peerDependencies": {
+    "lucide-react": ">=0.300.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
-    "webllm": "*",
-    "lucide-react": ">=0.300.0"
+    "webllm": "*"
   },
   "peerDependenciesMeta": {
     "webllm": {
@@ -56,6 +57,7 @@
     "@types/node": "^20.19.25",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "react-docgen-typescript": "^2.4.0",
     "tsup": "^8.0.0",
     "typescript": "^5.5.0"
   }

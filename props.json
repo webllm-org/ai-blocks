@@ -1,0 +1,410 @@
+{
+  "ui/ai-avatar": {
+    "componentName": "AIAvatar",
+    "description": "",
+    "props": [
+      {
+        "name": "src",
+        "type": "string",
+        "required": false,
+        "description": "Avatar image source"
+      },
+      {
+        "name": "alt",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Avatar",
+        "description": "Alt text for the avatar image"
+      },
+      {
+        "name": "fallback",
+        "type": "string",
+        "required": false,
+        "description": "Fallback text when no image (typically initials)"
+      },
+      {
+        "name": "size",
+        "type": "enum",
+        "required": false,
+        "defaultValue": "md",
+        "description": "Size variant"
+      },
+      {
+        "name": "isAI",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "false",
+        "description": "Whether this is an AI/assistant avatar"
+      },
+      {
+        "name": "isThinking",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "false",
+        "description": "Show typing/thinking indicator"
+      }
+    ]
+  },
+  "ui/ai-input": {
+    "componentName": "AIInput",
+    "description": "",
+    "props": [
+      {
+        "name": "onSubmit",
+        "type": "(value: string) => void",
+        "required": false,
+        "description": "Callback when the user submits the input"
+      },
+      {
+        "name": "isLoading",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "false",
+        "description": "Whether the AI is currently generating a response"
+      },
+      {
+        "name": "onStop",
+        "type": "() => void",
+        "required": false,
+        "description": "Callback to stop generation"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Type a message...",
+        "description": "Placeholder text"
+      },
+      {
+        "name": "maxRows",
+        "type": "number",
+        "required": false,
+        "defaultValue": "4",
+        "description": "Maximum rows for auto-resize"
+      },
+      {
+        "name": "showAttachments",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "false",
+        "description": "Show file attachment button"
+      },
+      {
+        "name": "onAttach",
+        "type": "(files: FileList) => void",
+        "required": false,
+        "description": "Callback when files are attached"
+      }
+    ]
+  },
+  "ui/chat-bubble": {
+    "componentName": "ChatBubble",
+    "description": "",
+    "props": [
+      {
+        "name": "message",
+        "type": "string",
+        "required": true,
+        "description": "The message content"
+      },
+      {
+        "name": "role",
+        "type": "enum",
+        "required": true,
+        "description": "Role of the message sender"
+      },
+      {
+        "name": "avatar",
+        "type": "string",
+        "required": false,
+        "description": "Avatar image source"
+      },
+      {
+        "name": "timestamp",
+        "type": "Date",
+        "required": false,
+        "description": "Timestamp of the message"
+      },
+      {
+        "name": "isStreaming",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "false",
+        "description": "Whether the message is currently streaming"
+      },
+      {
+        "name": "showAvatar",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "true",
+        "description": "Show avatar"
+      },
+      {
+        "name": "variant",
+        "type": "enum",
+        "required": false,
+        "defaultValue": "default",
+        "description": "Variant for styling"
+      }
+    ]
+  },
+  "ui/message-list": {
+    "componentName": "MessageList",
+    "description": "",
+    "props": [
+      {
+        "name": "messages",
+        "type": "Message[]",
+        "required": true,
+        "description": "Array of messages to display"
+      },
+      {
+        "name": "isStreaming",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "false",
+        "description": "Whether the AI is currently streaming a response"
+      },
+      {
+        "name": "streamingMessageId",
+        "type": "string",
+        "required": false,
+        "description": "ID of the message currently being streamed"
+      },
+      {
+        "name": "showAvatars",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "true",
+        "description": "Show avatars on messages"
+      },
+      {
+        "name": "variant",
+        "type": "ChatBubbleProps",
+        "required": false,
+        "defaultValue": "default",
+        "description": "Chat bubble variant"
+      },
+      {
+        "name": "emptyState",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Empty state content"
+      },
+      {
+        "name": "autoScroll",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "true",
+        "description": "Auto-scroll to bottom on new messages"
+      }
+    ]
+  },
+  "blocks/chat-interface": {
+    "componentName": "ChatInterface",
+    "description": "",
+    "props": [
+      {
+        "name": "initialMessages",
+        "type": "Message[]",
+        "required": false,
+        "defaultValue": "[]",
+        "description": "Initial messages to display"
+      },
+      {
+        "name": "onSendMessage",
+        "type": "(message: string) => void | Promise<void>",
+        "required": false,
+        "description": "Callback when user sends a message"
+      },
+      {
+        "name": "isLoading",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "false",
+        "description": "Whether the AI is currently generating a response"
+      },
+      {
+        "name": "onStop",
+        "type": "() => void",
+        "required": false,
+        "description": "Callback to stop generation"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Type a message...",
+        "description": "Placeholder for the input"
+      },
+      {
+        "name": "showAttachments",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "false",
+        "description": "Show file attachments button"
+      },
+      {
+        "name": "onAttach",
+        "type": "(files: FileList) => void",
+        "required": false,
+        "description": "Callback when files are attached"
+      },
+      {
+        "name": "showAvatars",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "true",
+        "description": "Show avatars on messages"
+      },
+      {
+        "name": "emptyState",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Empty state content"
+      },
+      {
+        "name": "systemPrompt",
+        "type": "string",
+        "required": false,
+        "description": "System prompt to display"
+      }
+    ]
+  },
+  "blocks/prompt-form": {
+    "componentName": "PromptForm",
+    "description": "",
+    "props": [
+      {
+        "name": "onSubmit",
+        "type": "(prompt: string, options: PromptOptions) => void | Promise<void>",
+        "required": false,
+        "description": "Callback when form is submitted"
+      },
+      {
+        "name": "isLoading",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "false",
+        "description": "Whether the form is in loading state"
+      },
+      {
+        "name": "onStop",
+        "type": "() => void",
+        "required": false,
+        "description": "Callback to stop generation"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Enter your prompt...",
+        "description": "Placeholder text"
+      },
+      {
+        "name": "showModelSelector",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "false",
+        "description": "Show model selector"
+      },
+      {
+        "name": "models",
+        "type": "{ id: string; name: string; }[]",
+        "required": false,
+        "defaultValue": "[]",
+        "description": "Available models"
+      },
+      {
+        "name": "selectedModel",
+        "type": "string",
+        "required": false,
+        "description": "Selected model ID"
+      },
+      {
+        "name": "onModelChange",
+        "type": "(modelId: string) => void",
+        "required": false,
+        "description": "Callback when model changes"
+      },
+      {
+        "name": "showTemperature",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "false",
+        "description": "Show temperature slider"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Current temperature value"
+      },
+      {
+        "name": "onTemperatureChange",
+        "type": "(value: number) => void",
+        "required": false,
+        "description": "Callback when temperature changes"
+      },
+      {
+        "name": "showMaxTokens",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "false",
+        "description": "Show token limit input"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "2048",
+        "description": "Current max tokens value"
+      },
+      {
+        "name": "onMaxTokensChange",
+        "type": "(value: number) => void",
+        "required": false,
+        "description": "Callback when max tokens changes"
+      }
+    ]
+  },
+  "blocks/streaming-text": {
+    "componentName": "StreamingText",
+    "description": "",
+    "props": [
+      {
+        "name": "text",
+        "type": "string",
+        "required": true,
+        "description": "The text content to display"
+      },
+      {
+        "name": "isStreaming",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "false",
+        "description": "Whether the text is currently streaming"
+      },
+      {
+        "name": "showCursor",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "true",
+        "description": "Show cursor while streaming"
+      },
+      {
+        "name": "typingSpeed",
+        "type": "number",
+        "required": false,
+        "description": "Typing speed in ms (for simulated streaming)"
+      },
+      {
+        "name": "onComplete",
+        "type": "() => void",
+        "required": false,
+        "description": "Callback when streaming animation completes"
+      }
+    ]
+  }
+}
