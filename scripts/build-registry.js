@@ -15,7 +15,7 @@ import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
-const OUTPUT_DIR = join(ROOT, '../../public/r')
+const OUTPUT_DIR = join(ROOT, '../playground/public/r')
 
 // Read the registry manifest
 const registryPath = join(ROOT, 'registry.json')
@@ -70,17 +70,16 @@ for (const item of registry.items) {
       .replace(/@\/registry\/blocks\/([^/]+)/g, '@/components/blocks/$1')
       .replace(/@\/registry\/hooks\/([^/]+)/g, '@/hooks/$1')
 
-    // Derive the target path for installation
+    // Derive the target path for installation based on actual file name
+    const fileName = file.path.split('/').pop()
     let targetPath
     if (item.type === 'registry:ui') {
-      targetPath = `components/ui/${item.name}.tsx`
+      targetPath = `components/ui/${fileName}`
     } else if (item.type === 'registry:block') {
-      targetPath = `components/blocks/${item.name}.tsx`
+      targetPath = `components/blocks/${fileName}`
     } else if (item.type === 'registry:hook') {
-      targetPath = `hooks/${item.name}.ts`
+      targetPath = `hooks/${fileName}`
     } else {
-      // Default: use the file name
-      const fileName = file.path.split('/').pop()
       targetPath = `components/${fileName}`
     }
 

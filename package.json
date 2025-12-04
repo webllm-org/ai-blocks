@@ -9,9 +9,10 @@
     "./lib/*": "./src/lib/*"
   },
   "scripts": {
-    "build:registry": "node scripts/build-registry.js",
+    "generate:registry": "node scripts/generate-registry-from-blocks.js",
+    "build:registry": "node scripts/generate-registry-from-blocks.js && node scripts/build-registry.js",
     "dev": "node scripts/build-registry.js --watch",
-    "clean": "rm -rf ../../public/r"
+    "clean": "rm -rf ../playground/public/r"
   },
   "dependencies": {
     "clsx": "^2.1.1",

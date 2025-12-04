@@ -40,7 +40,9 @@
       "type": "registry:ui",
       "title": "Chat Bubble",
       "description": "A chat message bubble with streaming text support, avatar, and timestamp.",
-      "registryDependencies": ["local:ai-avatar"],
+      "registryDependencies": [
+        "local:ai-avatar"
+      ],
       "files": [
         {
           "path": "src/registry/ui/chat-bubble/chat-bubble.tsx",
@@ -57,7 +59,9 @@
       "type": "registry:ui",
       "title": "Message List",
       "description": "A scrollable list of chat messages with auto-scroll and empty state.",
-      "registryDependencies": ["local:chat-bubble"],
+      "registryDependencies": [
+        "local:chat-bubble"
+      ],
       "files": [
         {
           "path": "src/registry/ui/message-list/message-list.tsx",
@@ -74,7 +78,10 @@
       "type": "registry:block",
       "title": "Chat Interface",
       "description": "A complete chat interface with message list, input, and streaming support.",
-      "registryDependencies": ["local:ai-input", "local:message-list"],
+      "registryDependencies": [
+        "local:ai-input",
+        "local:message-list"
+      ],
       "files": [
         {
           "path": "src/registry/blocks/chat-interface/chat-interface.tsx",
@@ -107,7 +114,9 @@
       "type": "registry:block",
       "title": "Prompt Form",
       "description": "A prompt input form with optional model selector, temperature, and token controls.",
-      "registryDependencies": ["local:ai-input"],
+      "registryDependencies": [
+        "local:ai-input"
+      ],
       "files": [
         {
           "path": "src/registry/blocks/prompt-form/prompt-form.tsx",
@@ -164,6 +173,606 @@
         {
           "path": "src/registry/hooks/use-webllm/index.ts",
           "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "alt-text-generator",
+      "type": "registry:block",
+      "title": "Alt Text Generator",
+      "description": "Auto-generate image descriptions for accessibility",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/AltTextGeneratorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "simplify-text",
+      "type": "registry:block",
+      "title": "Simplify Text",
+      "description": "Convert complex text to plain, accessible language",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SimplifyTextDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "screen-reader-prep",
+      "type": "registry:block",
+      "title": "Screen Reader Prep",
+      "description": "Optimize content for screen readers - replace emojis, fix links",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ScreenReaderPrepDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "dyslexia-mode",
+      "type": "registry:block",
+      "title": "Dyslexia-Friendly",
+      "description": "Adjustable text formatting for easier reading",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/DyslexiaModeDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "simple-chat",
+      "type": "registry:block",
+      "title": "Simple Chat",
+      "description": "Basic chat interface with user and assistant messages",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SimpleChatDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "chat-personas",
+      "type": "registry:block",
+      "title": "Chat Personas",
+      "description": "Switch between AI personalities: pirate, Shakespeare, chef, detective",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ChatPersonasDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "voice-chat",
+      "type": "registry:block",
+      "title": "Voice Chat",
+      "description": "Speech-to-text input with text-to-speech responses",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/VoiceChatDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "chat-with-context",
+      "type": "registry:block",
+      "title": "Contextual Chat",
+      "description": "Chat that references page content - ask questions about any article",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ChatWithContextDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "chat-with-tools",
+      "type": "registry:block",
+      "title": "Chat with Tools",
+      "description": "AI assistant that can call functions - calculator, time, weather",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ChatWithToolsDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "headline-generator",
+      "type": "registry:block",
+      "title": "Headline Generator",
+      "description": "Generate multiple headline options in different styles",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/HeadlineGeneratorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "bio-writer",
+      "type": "registry:block",
+      "title": "Bio Writer",
+      "description": "Generate professional bios in multiple tones and lengths",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/BioWriterDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "email-composer",
+      "type": "registry:block",
+      "title": "Email Composer",
+      "description": "Draft professional emails from bullet points",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/EmailComposerDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "story-helper",
+      "type": "registry:block",
+      "title": "Story Helper",
+      "description": "Writing assistant with plot twists, dialogue, and continuations",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/StoryHelperDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "review-summarizer",
+      "type": "registry:block",
+      "title": "Review Summarizer",
+      "description": "Synthesize product reviews into pros, cons, and rating summary",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ReviewSummarizerDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "product-compare",
+      "type": "registry:block",
+      "title": "Product Comparison",
+      "description": "Side-by-side comparison with criteria analysis and winner",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ProductCompareDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "size-advisor",
+      "type": "registry:block",
+      "title": "Size Advisor",
+      "description": "Personalized size recommendations based on measurements",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SizeAdvisorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "product-search-nl",
+      "type": "registry:block",
+      "title": "Natural Language Search",
+      "description": "Search products by describing what you want in plain English",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ProductSearchNLDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "flashcard-generator",
+      "type": "registry:block",
+      "title": "Flashcard Generator",
+      "description": "Generate study flashcards from any educational content",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/FlashcardGeneratorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "practice-problems",
+      "type": "registry:block",
+      "title": "Practice Problems",
+      "description": "Infinite multiple choice questions from any content",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/PracticeProblemsDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "socratic-tutor",
+      "type": "registry:block",
+      "title": "Socratic Tutor",
+      "description": "Learn through guided questions - no direct answers given",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SocraticTutorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "glossary-hover",
+      "type": "registry:block",
+      "title": "Glossary on Hover",
+      "description": "Hover over technical terms for instant definitions",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/GlossaryHoverDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "concept-checker",
+      "type": "registry:block",
+      "title": "Concept Checker",
+      "description": "Explain it back - AI evaluates your understanding",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ConceptCheckerDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "smart-textarea",
+      "type": "registry:block",
+      "title": "Smart Textarea",
+      "description": "AI-powered text input with inline suggestions (Tab to accept)",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SmartTextareaDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "form-autofill",
+      "type": "registry:block",
+      "title": "Form Autofill",
+      "description": "Natural language to form fields - describe yourself, form fills itself",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/FormAutofillDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "input-validation",
+      "type": "registry:block",
+      "title": "Smart Validation",
+      "description": "AI-powered input validation with helpful suggestions",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/InputValidationDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "contact-form",
+      "type": "registry:block",
+      "title": "Smart Contact Form",
+      "description": "AI auto-categorizes and prioritizes support inquiries",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ContactFormDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "text-to-image",
+      "type": "registry:block",
+      "title": "Text to Image",
+      "description": "Generate images from text prompts using AI",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ImageGenerationDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "image-variations",
+      "type": "registry:block",
+      "title": "Image Variations",
+      "description": "Generate style variations of any image - oil painting, minimalist, vintage",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ImageVariationsDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "image-editor",
+      "type": "registry:block",
+      "title": "AI Image Editor",
+      "description": "Edit images with natural language instructions",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ImageEditorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "tldr-generator",
+      "type": "registry:block",
+      "title": "TLDR Generator",
+      "description": "Summarize articles in 3 sentences - free for any blog",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/TLDRGeneratorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "reading-level",
+      "type": "registry:block",
+      "title": "Reading Level Adjuster",
+      "description": "Toggle reading complexity: kid, teen, adult, expert",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ReadingLevelDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "translate-on-demand",
+      "type": "registry:block",
+      "title": "Translate on Demand",
+      "description": "Instant translation to 10+ languages - no translation budget needed",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/TranslateOnDemandDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "explain-this",
+      "type": "registry:block",
+      "title": "Explain This",
+      "description": "Select any text to get an inline explanation",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ExplainThisDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "audio-version",
+      "type": "registry:block",
+      "title": "Audio Version",
+      "description": "Listen to any article with browser text-to-speech - no API costs",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/AudioVersionDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "related-questions",
+      "type": "registry:block",
+      "title": "Related Questions",
+      "description": "AI generates questions readers might wonder about",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/RelatedQuestionsDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "semantic-search",
+      "type": "registry:block",
+      "title": "Semantic Search",
+      "description": "Natural language product search - Algolia-level intelligence, zero API costs",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SemanticSearchDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "search-filters",
+      "type": "registry:block",
+      "title": "Smart Filters",
+      "description": "Natural language to search filters - ",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SearchFiltersDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "similar-items",
+      "type": "registry:block",
+      "title": "Find Similar",
+      "description": "AI-powered ",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SimilarItemsDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "search-summary",
+      "type": "registry:block",
+      "title": "Search Summary",
+      "description": "AI summary of search results - quick overview before clicking",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SearchSummaryDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "sentiment-analysis",
+      "type": "registry:block",
+      "title": "Sentiment Analysis",
+      "description": "Analyze text sentiment with structured JSON output",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SentimentAnalysisDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "entity-extraction",
+      "type": "registry:block",
+      "title": "Entity Extraction",
+      "description": "Extract names, dates, locations, organizations from text",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/EntityExtractionDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "content-classifier",
+      "type": "registry:block",
+      "title": "Content Classifier",
+      "description": "Categorize content by type, tone, and extract metadata",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ContentClassifierDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "json-generator",
+      "type": "registry:block",
+      "title": "JSON Generator",
+      "description": "Generate structured JSON from natural language descriptions",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/JsonGeneratorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "form-parser",
+      "type": "registry:block",
+      "title": "Form Parser",
+      "description": "Parse unstructured text into structured form fields",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/FormParserDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "simple-text-generation",
+      "type": "registry:block",
+      "title": "Simple Text Generation",
+      "description": "Basic prompt-response pattern with a single API call",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/TextGenerationDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "streaming-text",
+      "type": "registry:block",
+      "title": "Streaming Text",
+      "description": "Real-time streaming response with chunk-by-chunk rendering",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/StreamingTextDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "quick-actions",
+      "type": "registry:block",
+      "title": "Quick Actions",
+      "description": "Pre-defined prompt buttons for common AI tasks",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/QuickActionsDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "text-rewriter",
+      "type": "registry:block",
+      "title": "Text Rewriter",
+      "description": "Rewrite text in different tones: professional, casual, formal, friendly",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/TextRewriterDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "text-expander",
+      "type": "registry:block",
+      "title": "Text Expander",
+      "description": "Expand brief notes into full paragraphs with adjustable detail",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/TextExpanderDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "autocomplete",
+      "type": "registry:block",
+      "title": "Smart Autocomplete",
+      "description": "AI-powered search autocomplete with context-aware suggestions",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/AutocompleteDemo.tsx",
+          "type": "registry:component"
         }
       ]
     }
