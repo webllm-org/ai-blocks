@@ -271,6 +271,2013 @@
       }
     ]
   },
+  "demos/AltTextGeneratorDemo": {
+    "componentName": "AltTextGeneratorDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultImageUrl",
+        "type": "string",
+        "required": false,
+        "defaultValue": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400",
+        "description": "Initial image URL for preview"
+      },
+      {
+        "name": "defaultContext",
+        "type": "string",
+        "required": false,
+        "defaultValue": "travel blog about mountain hiking",
+        "description": "Initial context describing the image"
+      },
+      {
+        "name": "imageUrlPlaceholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Image URL (optional preview)",
+        "description": "Placeholder for image URL input"
+      },
+      {
+        "name": "contextPlaceholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Describe the image or page context...",
+        "description": "Placeholder for context input"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "100",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/AudioVersionDemo": {
+    "componentName": "AudioVersionDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "article",
+        "type": "AudioArticle",
+        "required": false,
+        "defaultValue": "{\n  title: \"The Rise of Remote Work\",\n  content: `Remote work has transformed from a rare perk to a global norm. Studies show that 70% of workers worldwide work remotely at least once a week. Companies like GitLab and Zapier have been fully remote since their founding, proving that distributed teams can build successful products.\n\nThe benefits extend beyond flexibility. Remote workers report higher job satisfaction, better work-life balance, and often increased productivity. Cities are seeing migration patterns shift as workers relocate from expensive urban centers to more affordable areas.\n\nHowever, challenges remain. Collaboration, company culture, and mentorship are harder to maintain virtually. Many organizations are now adopting hybrid models, combining the best of both in-office and remote work.\n\nThe future of work is clearly more flexible than ever before.`\n}",
+        "description": "Article to read aloud"
+      },
+      {
+        "name": "defaultRate",
+        "type": "number",
+        "required": false,
+        "defaultValue": "1",
+        "description": "Default speech rate"
+      },
+      {
+        "name": "minRate",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.5",
+        "description": "Minimum speech rate"
+      },
+      {
+        "name": "maxRate",
+        "type": "number",
+        "required": false,
+        "defaultValue": "2",
+        "description": "Maximum speech rate"
+      }
+    ]
+  },
+  "demos/AutocompleteDemo": {
+    "componentName": "AutocompleteDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "context",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`\nOur store offers: Running shoes, Trail hiking boots, Casual sneakers,\nFormal dress shoes, Sandals, Flip-flops, Basketball shoes, Tennis shoes,\nWinter boots, Rain boots, Slippers, Athletic socks, Shoe care products,\nInsoles, Laces, Waterproofing spray\n`",
+        "description": "Context for autocomplete suggestions"
+      },
+      {
+        "name": "suggestedTerms",
+        "type": "string[]",
+        "required": false,
+        "defaultValue": "[\"run\", \"winter\", \"comfy\"]",
+        "description": "Suggested search terms to display"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Search products...",
+        "description": "Placeholder for input"
+      },
+      {
+        "name": "debounceMs",
+        "type": "number",
+        "required": false,
+        "defaultValue": "400",
+        "description": "Debounce time in ms"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.3",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "80",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/BioWriterDemo": {
+    "componentName": "BioWriterDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "tones",
+        "type": "BioTone[]",
+        "required": false,
+        "defaultValue": "[\n  { id: \"professional\", label: \"Professional\", icon: \"💼\" },\n  { id: \"casual\", label: \"Casual\", icon: \"😊\" },\n  { id: \"creative\", label: \"Creative\", icon: \"🎨\" },\n  { id: \"minimal\", label: \"Minimal\", icon: \"✨\" },\n]",
+        "description": "List of tones to choose from"
+      },
+      {
+        "name": "lengths",
+        "type": "BioLength[]",
+        "required": false,
+        "defaultValue": "[\n  { id: \"short\", label: \"Short\", chars: \"~50 chars\" },\n  { id: \"medium\", label: \"Medium\", chars: \"~150 chars\" },\n  { id: \"long\", label: \"Long\", chars: \"~300 chars\" },\n]",
+        "description": "List of length options"
+      },
+      {
+        "name": "defaultName",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Alex Chen",
+        "description": "Initial name"
+      },
+      {
+        "name": "defaultDetails",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Software engineer, 5 years experience, loves hiking and photography, works at a startup, based in San Francisco",
+        "description": "Initial details"
+      },
+      {
+        "name": "defaultToneId",
+        "type": "string",
+        "required": false,
+        "defaultValue": "professional",
+        "description": "Initial tone ID"
+      },
+      {
+        "name": "defaultLengthId",
+        "type": "string",
+        "required": false,
+        "defaultValue": "medium",
+        "description": "Initial length ID"
+      },
+      {
+        "name": "namePlaceholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Name (optional)",
+        "description": "Placeholder for name input"
+      },
+      {
+        "name": "detailsPlaceholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Key details: job, experience, interests, location...",
+        "description": "Placeholder for details textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.8",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "200",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/ChatPersonasDemo": {
+    "componentName": "ChatPersonasDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "personas",
+        "type": "Persona[]",
+        "required": false,
+        "defaultValue": "[\n  { id: \"helpful\", name: \"Helpful Assistant\", icon: \"🤖\", system: \"You are a helpful, friendly assistant. Be concise and clear.\" },\n  { id: \"pirate\", name: \"Pirate Captain\", icon: \"🏴‍☠️\", system: \"You are a pirate captain. Respond in pirate speak with 'arr', 'matey', nautical terms, and pirate slang. Be enthusiastic!\" },\n  { id: \"shakespeare\", name: \"Shakespeare\", icon: \"🎭\", system: \"You are William Shakespeare. Respond in Elizabethan English with thee, thou, hath, doth. Be poetic and dramatic.\" },\n  { id: \"chef\", name: \"French Chef\", icon: \"👨‍🍳\", system: \"You are a passionate French chef. Sprinkle in French words, be dramatic about food, and express strong culinary opinions.\" },\n  { id: \"detective\", name: \"Noir Detective\", icon: \"🕵️\", system: \"You are a 1940s noir detective. Be cynical, use metaphors, speak in short punchy sentences. The world is a dark place.\" },\n]",
+        "description": "List of personas to choose from"
+      },
+      {
+        "name": "defaultPersonaId",
+        "type": "string",
+        "required": false,
+        "description": "Initial persona ID to select"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.8",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "200",
+        "description": "Max tokens for generation"
+      },
+      {
+        "name": "initialMessages",
+        "type": "Message[]",
+        "required": false,
+        "defaultValue": "[]",
+        "description": "Initial messages to display"
+      }
+    ]
+  },
+  "demos/ChatWithContextDemo": {
+    "componentName": "ChatWithContextDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "article",
+        "type": "ContextArticle",
+        "required": false,
+        "defaultValue": "{\n  title: \"The Future of Renewable Energy\",\n  content: `Solar power capacity has grown 20x in the last decade, making it the fastest-growing energy source globally. In 2023, solar installations exceeded 1.2 terawatts worldwide.\n\nWind energy has also seen remarkable growth, with offshore wind farms now capable of powering millions of homes. The largest offshore wind farm, Dogger Bank in the UK, will generate 3.6 GW when complete.\n\nBattery storage technology is the key enabler for renewable adoption. Lithium-ion battery costs have dropped 90% since 2010, making grid-scale storage economically viable.\n\nThe International Energy Agency predicts renewables will account for 90% of new power capacity through 2025.`\n}",
+        "description": "Article content to use as context"
+      },
+      {
+        "name": "suggestedQuestions",
+        "type": "string[]",
+        "required": false,
+        "defaultValue": "[\"How much has solar grown?\", \"What is Dogger Bank?\", \"Battery cost trends?\"]",
+        "description": "Suggested questions to display"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Ask about the article...",
+        "description": "Placeholder for input"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "200",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/ChatWithToolsDemo": {
+    "componentName": "ChatWithToolsDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "suggestedQueries",
+        "type": "string[]",
+        "required": false,
+        "defaultValue": "[\"What's 145 × 23?\", \"What time is it?\", \"Weather in Tokyo?\"]",
+        "description": "Suggested queries to display"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Ask something...",
+        "description": "Placeholder for input"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "150",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/ConceptCheckerDemo": {
+    "componentName": "ConceptCheckerDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "concepts",
+        "type": "Concept[]",
+        "required": false,
+        "defaultValue": "[\n  {\n    topic: \"Photosynthesis\",\n    description: \"Plants use sunlight, water, and carbon dioxide to produce glucose and oxygen.\",\n    keyPoints: [\"chlorophyll\", \"light energy\", \"glucose\", \"oxygen release\"]\n  },\n  {\n    topic: \"Supply and Demand\",\n    description: \"Economic model where price is determined by the relationship between availability and desire for goods.\",\n    keyPoints: [\"equilibrium\", \"scarcity\", \"price mechanism\", \"market forces\"]\n  },\n  {\n    topic: \"Newton's First Law\",\n    description: \"An object at rest stays at rest, and an object in motion stays in motion unless acted upon by an external force.\",\n    keyPoints: [\"inertia\", \"external force\", \"velocity\", \"equilibrium state\"]\n  }\n]",
+        "description": "Available concepts to test"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Type your explanation here... Try to cover the key concepts.",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.5",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "250",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/ContactFormDemo": {
+    "componentName": "ContactFormDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "suggestedMessages",
+        "type": "string[]",
+        "required": false,
+        "defaultValue": "[\n  \"I can't login to my account since yesterday\",\n  \"I'd like to upgrade to the pro plan\",\n  \"Your app is great but needs dark mode\"\n]",
+        "description": "Suggested messages to display"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Tell us about your inquiry, question, or feedback...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.3",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "150",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/ContentClassifierDemo": {
+    "componentName": "ContentClassifierDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultText",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`Just bought the new iPhone 15 Pro and I'm blown away! The camera quality is insane - took some amazing shots at sunset yesterday. Battery life is decent, though not as good as my old Android. The titanium frame feels premium but it's definitely pricey. Would recommend if you're already in the Apple ecosystem, otherwise maybe wait for a sale.`",
+        "description": "Initial text to classify"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Enter content to classify...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "toneColors",
+        "type": "Record<string, string>",
+        "required": false,
+        "defaultValue": "{\n  positive: \"bg-green-100 text-green-800\",\n  negative: \"bg-red-100 text-red-800\",\n  neutral: \"bg-gray-100 text-gray-800\",\n  mixed: \"bg-yellow-100 text-yellow-800\",\n}",
+        "description": "Tone color mappings"
+      },
+      {
+        "name": "typeIcons",
+        "type": "Record<string, string>",
+        "required": false,
+        "defaultValue": "{\n  review: \"📝\",\n  news: \"📰\",\n  opinion: \"💭\",\n  tutorial: \"📚\",\n  question: \"❓\",\n  promotion: \"📢\",\n  other: \"📄\",\n}",
+        "description": "Content type icon mappings"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.3",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "300",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/DyslexiaModeDemo": {
+    "componentName": "DyslexiaModeDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultText",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`The quick brown fox jumps over the lazy dog. This sentence contains every letter of the alphabet and is often used for typography demonstrations.\n\nReading can be challenging when text is presented in formats that don't accommodate different learning needs. Research shows that certain fonts, spacing, and formatting choices can significantly impact reading comprehension and speed.\n\nStudies indicate that approximately 15-20% of the population has some form of reading difficulty. Simple adjustments to text presentation can make a substantial difference in accessibility and comfort.`",
+        "description": "Text to display"
+      },
+      {
+        "name": "defaultFontSize",
+        "type": "number",
+        "required": false,
+        "defaultValue": "16",
+        "description": "Default font size"
+      },
+      {
+        "name": "defaultLineHeight",
+        "type": "number",
+        "required": false,
+        "defaultValue": "1.5",
+        "description": "Default line height"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.5",
+        "description": "Temperature for simplification (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "300",
+        "description": "Max tokens for simplification"
+      }
+    ]
+  },
+  "demos/EmailComposerDemo": {
+    "componentName": "EmailComposerDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "emailTypes",
+        "type": "EmailType[]",
+        "required": false,
+        "defaultValue": "[\n  { id: \"follow-up\", label: \"Follow-up\", icon: \"📬\" },\n  { id: \"request\", label: \"Request\", icon: \"🙏\" },\n  { id: \"thank-you\", label: \"Thank You\", icon: \"🙏\" },\n  { id: \"introduction\", label: \"Introduction\", icon: \"👋\" },\n  { id: \"apology\", label: \"Apology\", icon: \"😔\" },\n  { id: \"announcement\", label: \"Announcement\", icon: \"📢\" },\n]",
+        "description": "List of email types to choose from"
+      },
+      {
+        "name": "defaultRecipient",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Sarah",
+        "description": "Initial recipient name"
+      },
+      {
+        "name": "defaultContext",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Met at tech conference last week, discussed potential partnership, wants to schedule follow-up call",
+        "description": "Initial context"
+      },
+      {
+        "name": "defaultEmailTypeId",
+        "type": "string",
+        "required": false,
+        "defaultValue": "follow-up",
+        "description": "Initial email type ID"
+      },
+      {
+        "name": "recipientPlaceholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Recipient name (optional)",
+        "description": "Placeholder for recipient input"
+      },
+      {
+        "name": "contextPlaceholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Key points: who, what, why, any specific details to include...",
+        "description": "Placeholder for context textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "400",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/EntityExtractionDemo": {
+    "componentName": "EntityExtractionDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultText",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`On March 15, 2024, Apple CEO Tim Cook announced a $500 million investment in a new research facility in Austin, Texas. The project, developed in partnership with Microsoft and Google, is expected to create 3,000 jobs by December 2025. Dr. Sarah Chen from Stanford University will lead the AI research division.`",
+        "description": "Initial text to extract entities from"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Enter text to extract entities from...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "entityTypes",
+        "type": "EntityTypeConfig[]",
+        "required": false,
+        "defaultValue": "[\n  { key: \"people\", label: \"People\", icon: User, color: \"bg-blue-100 text-blue-800\" },\n  { key: \"locations\", label: \"Locations\", icon: MapPin, color: \"bg-green-100 text-green-800\" },\n  { key: \"dates\", label: \"Dates\", icon: Calendar, color: \"bg-purple-100 text-purple-800\" },\n  { key: \"organizations\", label: \"Organizations\", icon: Building, color: \"bg-orange-100 text-orange-800\" },\n  { key: \"money\", label: \"Money\", icon: DollarSign, color: \"bg-emerald-100 text-emerald-800\" },\n]",
+        "description": "Entity types configuration"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.3",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "400",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/ExplainThisDemo": {
+    "componentName": "ExplainThisDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "sampleText",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`The implementation of quantum cryptographic protocols necessitates the utilization of entangled photon pairs to facilitate secure key distribution mechanisms. The fundamental principle underlying this methodology relies on the Heisenberg uncertainty principle, which precludes the possibility of eavesdropping without introducing detectable perturbations to the quantum state. Furthermore, the no-cloning theorem ensures that quantum information cannot be perfectly copied, providing an additional layer of security against potential adversaries.`",
+        "description": "Sample text to display for explanation"
+      },
+      {
+        "name": "tipText",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Tip: Highlight complex terms like \"quantum cryptographic protocols\" or \"Heisenberg uncertainty principle\"",
+        "description": "Tip text shown below the component"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "200",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/FlashcardGeneratorDemo": {
+    "componentName": "FlashcardGeneratorDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultContent",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`The water cycle, also known as the hydrological cycle, describes the continuous movement of water on, above, and below Earth's surface. Water evaporates from oceans and lakes, rises as water vapor, condenses into clouds, and falls back as precipitation. Transpiration from plants also contributes water vapor to the atmosphere. Groundwater flows through aquifers and eventually returns to the ocean, completing the cycle.`",
+        "description": "Initial educational content"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Paste educational content to generate flashcards...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "600",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/FormAutofillDemo": {
+    "componentName": "FormAutofillDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultInput",
+        "type": "string",
+        "required": false,
+        "defaultValue": "I'm John Smith, software engineer at Acme Corp. My email is john.smith@acme.com and phone is 555-123-4567",
+        "description": "Initial natural language input"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "e.g., I'm Jane Doe, marketing manager at TechCo...",
+        "description": "Placeholder for the natural input textarea"
+      },
+      {
+        "name": "inputLabel",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Describe yourself naturally:",
+        "description": "Label text for the natural input"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.3",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "200",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/FormParserDemo": {
+    "componentName": "FormParserDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "sampleInputs",
+        "type": "string[]",
+        "required": false,
+        "defaultValue": "[\n  \"Hey, this is Sarah Chen from Acme Corp. You can reach me at sarah.chen@acme.com or 415-555-0123. I'm the VP of Engineering.\",\n  \"Invoice #1234 for $2,500.00 due March 15, 2024. Bill to: John Smith, 123 Main St, San Francisco CA 94102\",\n  \"Meeting with Dr. James Wilson tomorrow at 3pm. His assistant's number is 212-555-9876. Topic: Partnership discussion\"\n]",
+        "description": "Sample inputs to show as examples"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Paste unstructured text like emails, messages, or notes...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.3",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "200",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/GlossaryHoverDemo": {
+    "componentName": "GlossaryHoverDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "text",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`Machine learning models use gradient descent to optimize their loss function during training. The backpropagation algorithm computes gradients efficiently by applying the chain rule. Modern architectures like transformers use attention mechanisms to process sequential data, enabling better performance on NLP tasks.`",
+        "description": "Text content with technical terms"
+      },
+      {
+        "name": "technicalTerms",
+        "type": "string[]",
+        "required": false,
+        "defaultValue": "[\"gradient descent\", \"loss function\", \"backpropagation\", \"chain rule\", \"transformers\", \"attention mechanisms\", \"NLP\"]",
+        "description": "Technical terms to highlight"
+      },
+      {
+        "name": "definitionContext",
+        "type": "string",
+        "required": false,
+        "defaultValue": "machine learning",
+        "description": "Context for definitions"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.5",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "100",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/HeadlineGeneratorDemo": {
+    "componentName": "HeadlineGeneratorDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultContent",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`A new study from Stanford University reveals that taking short walks after meals can significantly reduce blood sugar spikes. Researchers found that just 10 minutes of light walking after eating reduced post-meal glucose levels by up to 22%. The study, which followed 500 participants over 6 months, suggests this simple habit could help prevent type 2 diabetes.`",
+        "description": "Initial content to generate headlines from"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Paste your article or blog post content...",
+        "description": "Placeholder text for the textarea"
+      },
+      {
+        "name": "styleColors",
+        "type": "Record<string, string>",
+        "required": false,
+        "defaultValue": "{\n  Informative: \"bg-blue-100 text-blue-800\",\n  Clickbait: \"bg-orange-100 text-orange-800\",\n  Question: \"bg-purple-100 text-purple-800\",\n  \"How-to\": \"bg-green-100 text-green-800\",\n  Listicle: \"bg-pink-100 text-pink-800\",\n}",
+        "description": "Custom style colors for headline badges"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.8",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "400",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/ImageEditorDemo": {
+    "componentName": "ImageEditorDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "sampleImage",
+        "type": "SampleImageConfig",
+        "required": false,
+        "defaultValue": "{\n  name: \"Product Photo\",\n  description: \"A white coffee mug on a wooden table with natural lighting\",\n  placeholder: \"☕\"\n}",
+        "description": "Sample image configuration"
+      },
+      {
+        "name": "quickEdits",
+        "type": "string[]",
+        "required": false,
+        "defaultValue": "[\n  \"Change the background to a beach sunset\",\n  \"Make the mug blue instead of white\",\n  \"Add steam rising from the coffee\",\n  \"Remove the table, make it float\"\n]",
+        "description": "Quick edit suggestions"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Describe your edit... (e.g., 'make the sky purple')",
+        "description": "Placeholder for input"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "80",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/ImageGenerationDemo": {
+    "componentName": "ImageGenerationDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultPrompt",
+        "type": "string",
+        "required": false,
+        "defaultValue": "A serene mountain landscape at sunset with purple clouds",
+        "description": "Initial prompt value"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Describe the image...",
+        "description": "Placeholder for input"
+      },
+      {
+        "name": "size",
+        "type": "enum",
+        "required": false,
+        "defaultValue": "1024x1024",
+        "description": "Image size"
+      },
+      {
+        "name": "n",
+        "type": "number",
+        "required": false,
+        "defaultValue": "1",
+        "description": "Number of images to generate"
+      }
+    ]
+  },
+  "demos/ImageVariationsDemo": {
+    "componentName": "ImageVariationsDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "sampleImages",
+        "type": "SampleImage[]",
+        "required": false,
+        "defaultValue": "[\n  {\n    id: 1,\n    name: \"Mountain Landscape\",\n    description: \"A serene mountain landscape with snow-capped peaks and a clear lake\",\n    placeholder: \"🏔️\"\n  },\n  {\n    id: 2,\n    name: \"City Skyline\",\n    description: \"Modern city skyline at sunset with reflections on water\",\n    placeholder: \"🌆\"\n  },\n  {\n    id: 3,\n    name: \"Abstract Art\",\n    description: \"Colorful abstract geometric shapes with flowing patterns\",\n    placeholder: \"🎨\"\n  }\n]",
+        "description": "Available sample images"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.8",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "300",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/InputValidationDemo": {
+    "componentName": "InputValidationDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "debounceMs",
+        "type": "number",
+        "required": false,
+        "defaultValue": "800",
+        "description": "Debounce time in ms"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.3",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "80",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/JsonGeneratorDemo": {
+    "componentName": "JsonGeneratorDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultDescription",
+        "type": "string",
+        "required": false,
+        "defaultValue": "A user profile with name, email, age, and list of hobbies",
+        "description": "Initial description value"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Describe the JSON structure you need...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "500",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/PracticeProblemsDemo": {
+    "componentName": "PracticeProblemsDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultContent",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`Photosynthesis is the process by which plants convert light energy into chemical energy. During photosynthesis, plants absorb carbon dioxide from the air through tiny pores called stomata and water from the soil through their roots. Using sunlight captured by chlorophyll in their leaves, plants combine CO2 and H2O to produce glucose and oxygen. The glucose provides energy for the plant's growth and metabolism, while oxygen is released as a byproduct.`",
+        "description": "Initial educational content"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Paste educational content to generate practice problems...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.8",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "400",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/ProductCompareDemo": {
+    "componentName": "ProductCompareDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultProduct1",
+        "type": "string",
+        "required": false,
+        "defaultValue": "iPhone 15 Pro - $999, A17 chip, 48MP camera, titanium frame, USB-C, 6.1 inch display",
+        "description": "Default first product description"
+      },
+      {
+        "name": "defaultProduct2",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Samsung Galaxy S24 Ultra - $1199, Snapdragon 8 Gen 3, 200MP camera, S Pen, 6.8 inch display",
+        "description": "Default second product description"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Enter product details...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.6",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "600",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/ProductSearchNLDemo": {
+    "componentName": "ProductSearchNLDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "products",
+        "type": "NLProduct[]",
+        "required": false,
+        "defaultValue": "[\n  { id: 1, name: \"Cozy Wool Cardigan\", price: 89, category: \"sweaters\", color: \"cream\", warmth: \"high\", style: \"casual\", rating: 4.8 },\n  { id: 2, name: \"Lightweight Cotton Pullover\", price: 45, category: \"sweaters\", color: \"navy\", warmth: \"low\", style: \"casual\", rating: 4.5 },\n  { id: 3, name: \"Cashmere V-Neck Sweater\", price: 195, category: \"sweaters\", color: \"gray\", warmth: \"medium\", style: \"elegant\", rating: 4.9 },\n  { id: 4, name: \"Chunky Knit Turtleneck\", price: 75, category: \"sweaters\", color: \"burgundy\", warmth: \"high\", style: \"cozy\", rating: 4.7 },\n  { id: 5, name: \"Merino Wool Zip-Up\", price: 120, category: \"sweaters\", color: \"black\", warmth: \"high\", style: \"sporty\", rating: 4.6 },\n  { id: 6, name: \"Fleece-Lined Hoodie\", price: 55, category: \"sweaters\", color: \"forest green\", warmth: \"high\", style: \"casual\", rating: 4.4 },\n  { id: 7, name: \"Silk Blend Cardigan\", price: 150, category: \"sweaters\", color: \"blush\", warmth: \"low\", style: \"elegant\", rating: 4.8 },\n  { id: 8, name: \"Cable Knit Fisherman\", price: 95, category: \"sweaters\", color: \"ivory\", warmth: \"high\", style: \"classic\", rating: 4.7 },\n]",
+        "description": "Product catalog"
+      },
+      {
+        "name": "suggestedQueries",
+        "type": "string[]",
+        "required": false,
+        "defaultValue": "[\n  \"warm sweater for winter under $100\",\n  \"something elegant for a dinner party\",\n  \"cozy gift for my mom\",\n  \"sporty but warm for hiking\"\n]",
+        "description": "Suggested search queries"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Describe what you're looking for...",
+        "description": "Placeholder for input"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.5",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "250",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/QuickActionsDemo": {
+    "componentName": "QuickActionsDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "actions",
+        "type": "QuickAction[]",
+        "required": false,
+        "defaultValue": "[\n  { id: \"joke\", label: \"Tell a Joke\", prompt: \"Tell me a short, clean joke.\", icon: \"😄\" },\n  { id: \"fact\", label: \"Fun Fact\", prompt: \"Tell me an interesting and surprising fact.\", icon: \"💡\" },\n  { id: \"quote\", label: \"Inspirational Quote\", prompt: \"Give me an inspirational quote with the author.\", icon: \"✨\" },\n  { id: \"riddle\", label: \"Riddle\", prompt: \"Give me a short riddle with its answer.\", icon: \"🧩\" },\n]",
+        "description": "List of quick actions"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.9",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "150",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/ReadingLevelDemo": {
+    "componentName": "ReadingLevelDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "levels",
+        "type": "ReadingLevel[]",
+        "required": false,
+        "defaultValue": "[\n  { id: \"kid\", label: \"Kid\", description: \"Age 8-12\", icon: \"🧒\" },\n  { id: \"teen\", label: \"Teen\", description: \"Age 13-17\", icon: \"🎓\" },\n  { id: \"adult\", label: \"Adult\", description: \"General\", icon: \"👤\" },\n  { id: \"expert\", label: \"Expert\", description: \"Technical\", icon: \"🔬\" },\n]",
+        "description": "Available reading levels"
+      },
+      {
+        "name": "defaultText",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`Quantum computing represents a fundamental shift in computational paradigms. Unlike classical computers that use bits representing either 0 or 1, quantum computers utilize qubits that can exist in superposition states. This property, combined with quantum entanglement, enables quantum computers to solve certain problems exponentially faster than their classical counterparts, particularly in cryptography, optimization, and molecular simulation.`",
+        "description": "Initial text to adapt"
+      },
+      {
+        "name": "defaultLevelId",
+        "type": "string",
+        "required": false,
+        "defaultValue": "teen",
+        "description": "Default selected level ID"
+      },
+      {
+        "name": "levelInstructions",
+        "type": "Record<string, string>",
+        "required": false,
+        "defaultValue": "{\n  kid: \"for a child aged 8-12. Use simple words, short sentences, and fun analogies. Avoid jargon.\",\n  teen: \"for a teenager. Use clear language, relatable examples, and explain technical terms.\",\n  adult: \"for a general adult audience. Use clear, professional language with some technical terms explained.\",\n  expert: \"for experts in the field. Use technical terminology, assume background knowledge, be precise and detailed.\",\n}",
+        "description": "Level instructions mapping"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Paste text to adapt to different reading levels...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "400",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/RelatedQuestionsDemo": {
+    "componentName": "RelatedQuestionsDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "article",
+        "type": "Article",
+        "required": false,
+        "defaultValue": "{\n  title: \"Understanding Machine Learning\",\n  content: `Machine learning is a subset of artificial intelligence that enables computers to learn from data without explicit programming. The three main types are supervised learning (learning from labeled examples), unsupervised learning (finding patterns in unlabeled data), and reinforcement learning (learning through trial and error).\n\nDeep learning, a subset of machine learning, uses neural networks with multiple layers to process complex patterns. It powers technologies like image recognition, natural language processing, and autonomous vehicles.\n\nTraining ML models requires large datasets and significant computational resources. Transfer learning helps by using pre-trained models as starting points, reducing the data and compute needed for new tasks.`\n}",
+        "description": "Article to generate questions from"
+      },
+      {
+        "name": "questionTemperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.8",
+        "description": "Temperature for question generation (0-1)"
+      },
+      {
+        "name": "answerTemperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for answer generation (0-1)"
+      },
+      {
+        "name": "questionMaxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "200",
+        "description": "Max tokens for question generation"
+      },
+      {
+        "name": "answerMaxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "100",
+        "description": "Max tokens for answer generation"
+      }
+    ]
+  },
+  "demos/ReviewSummarizerDemo": {
+    "componentName": "ReviewSummarizerDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultReviews",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`\"Absolutely love this product! Works exactly as described and shipping was fast.\"\n\"Good quality but a bit pricey. Would recommend waiting for a sale.\"\n\"Doesn't fit as expected, had to return. Customer service was helpful though.\"\n\"Five stars! Been using it daily for 3 months, no issues whatsoever.\"\n\"Decent product but the instructions were confusing. Took a while to set up.\"\n\"Best purchase I've made this year. Worth every penny!\"\n\"Average quality for the price. Nothing special but does the job.\"\n\"Had some issues initially but after contacting support, everything works great now.\"`",
+        "description": "Default reviews text"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Paste product reviews (one per line)...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.5",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "400",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/ScreenReaderPrepDemo": {
+    "componentName": "ScreenReaderPrepDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultContent",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`🚀 Check out our NEW product launch!!!\n\nClick HERE ➡️ to learn more about our amazing features:\n• Fast ⚡\n• Secure 🔒\n• Easy to use 👍\n\nDon't miss out!!! Limited time offer - 50% OFF!!!\n\nimg_2847.jpg\nbtn_submit`",
+        "description": "Default content to optimize"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Paste content with emojis, vague links, etc.",
+        "description": "Placeholder for input textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.5",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "400",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/SearchFiltersDemo": {
+    "componentName": "SearchFiltersDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "products",
+        "type": "FilterProduct[]",
+        "required": false,
+        "defaultValue": "[\n  { id: 1, name: \"Cozy Wool Sweater\", price: 89, category: \"Clothing\", color: \"blue\", size: \"M\", rating: 4.5 },\n  { id: 2, name: \"Silk Scarf\", price: 45, category: \"Accessories\", color: \"red\", size: \"OS\", rating: 4.8 },\n  { id: 3, name: \"Leather Wallet\", price: 65, category: \"Accessories\", color: \"brown\", size: \"OS\", rating: 4.2 },\n  { id: 4, name: \"Cotton T-Shirt\", price: 25, category: \"Clothing\", color: \"white\", size: \"L\", rating: 4.0 },\n  { id: 5, name: \"Winter Jacket\", price: 199, category: \"Clothing\", color: \"black\", size: \"M\", rating: 4.7 },\n  { id: 6, name: \"Cashmere Beanie\", price: 55, category: \"Accessories\", color: \"gray\", size: \"OS\", rating: 4.6 },\n  { id: 7, name: \"Linen Pants\", price: 79, category: \"Clothing\", color: \"beige\", size: \"S\", rating: 4.3 },\n  { id: 8, name: \"Running Shoes\", price: 129, category: \"Footwear\", color: \"white\", size: \"10\", rating: 4.9 },\n]",
+        "description": "Product catalog"
+      },
+      {
+        "name": "suggestedQueries",
+        "type": "string[]",
+        "required": false,
+        "defaultValue": "[\"blue under $100\", \"accessories 4+ stars\", \"warm winter gear\"]",
+        "description": "Suggested search queries"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Try: cozy gift for mom under $60",
+        "description": "Placeholder for input"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.3",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "100",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/SearchSummaryDemo": {
+    "componentName": "SearchSummaryDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "searchResults",
+        "type": "SearchResultsMap",
+        "required": false,
+        "defaultValue": "{\n  \"best laptop 2024\": [\n    { title: \"MacBook Pro M3 Review\", snippet: \"The M3 chip delivers exceptional performance. Battery life improved to 22 hours. Starting at $1,599.\" },\n    { title: \"Dell XPS 15 Analysis\", snippet: \"OLED display option, Intel Core Ultra. Great for professionals. Priced from $1,299.\" },\n    { title: \"ThinkPad X1 Carbon Gen 12\", snippet: \"Business-focused, excellent keyboard. 14-inch display, lightweight at 2.48 lbs. From $1,449.\" },\n    { title: \"Framework Laptop 16\", snippet: \"Modular design, user-upgradeable. AMD Ryzen option. Unique approach to sustainability.\" },\n  ],\n  \"healthy breakfast ideas\": [\n    { title: \"10 Quick Breakfast Recipes\", snippet: \"Overnight oats, Greek yogurt parfaits, smoothie bowls. Prep time under 10 minutes.\" },\n    { title: \"High-Protein Morning Meals\", snippet: \"Eggs, cottage cheese, protein pancakes. Great for muscle building and satiety.\" },\n    { title: \"Mediterranean Breakfast Guide\", snippet: \"Whole grains, olive oil, fresh vegetables. Heart-healthy and delicious.\" },\n    { title: \"Vegan Breakfast Options\", snippet: \"Tofu scramble, chia pudding, avocado toast. Plant-based nutrition to start your day.\" },\n  ],\n  \"learn guitar\": [\n    { title: \"Guitar Basics for Beginners\", snippet: \"Start with open chords: G, C, D, Em. Practice 15-30 minutes daily.\" },\n    { title: \"Best Online Guitar Courses\", snippet: \"JustinGuitar (free), Fender Play ($10/mo), Guitar Tricks. Structured learning paths.\" },\n    { title: \"Essential Guitar Gear\", snippet: \"Acoustic vs electric for beginners. Picks, tuner, capo. Budget options available.\" },\n    { title: \"Common Beginner Mistakes\", snippet: \"Poor posture, pressing too hard, skipping basics. Tips to avoid frustration.\" },\n  ]\n}",
+        "description": "Search results data"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Search anything...",
+        "description": "Placeholder for input"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.5",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "100",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/SemanticSearchDemo": {
+    "componentName": "SemanticSearchDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "products",
+        "type": "SemanticProduct[]",
+        "required": false,
+        "defaultValue": "[\n  { id: 1, name: \"Cozy Wool Sweater\", price: 79, category: \"Clothing\", description: \"Soft merino wool, perfect for cold days\" },\n  { id: 2, name: \"Running Shoes Pro\", price: 129, category: \"Footwear\", description: \"Lightweight with advanced cushioning\" },\n  { id: 3, name: \"Leather Laptop Bag\", price: 149, category: \"Accessories\", description: \"Premium leather, fits 15-inch laptops\" },\n  { id: 4, name: \"Ceramic Coffee Mug\", price: 24, category: \"Kitchen\", description: \"Handmade, keeps drinks warm longer\" },\n  { id: 5, name: \"Yoga Mat Premium\", price: 45, category: \"Fitness\", description: \"Extra thick, non-slip surface\" },\n  { id: 6, name: \"Wireless Earbuds\", price: 89, category: \"Electronics\", description: \"Noise cancelling, 24hr battery\" },\n  { id: 7, name: \"Organic Cotton T-Shirt\", price: 35, category: \"Clothing\", description: \"Sustainable, breathable fabric\" },\n  { id: 8, name: \"Stainless Steel Water Bottle\", price: 32, category: \"Kitchen\", description: \"Insulated, keeps cold 24hrs\" },\n]",
+        "description": "Product catalog"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Try: 'gift for mom who loves coffee' or 'something for running in winter'",
+        "description": "Placeholder for input"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.5",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "400",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/SentimentAnalysisDemo": {
+    "componentName": "SentimentAnalysisDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultText",
+        "type": "string",
+        "required": false,
+        "defaultValue": "I absolutely love this product! It's amazing and works perfectly.",
+        "description": "Initial text to analyze"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Enter text to analyze...",
+        "description": "Placeholder text for the textarea"
+      },
+      {
+        "name": "sentimentColors",
+        "type": "Record<string, string>",
+        "required": false,
+        "defaultValue": "{\n  positive: \"text-green-600 bg-green-100\",\n  negative: \"text-red-600 bg-red-100\",\n  neutral: \"text-yellow-600 bg-yellow-100\",\n}",
+        "description": "Custom colors for sentiment badges"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.3",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "200",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/SimilarItemsDemo": {
+    "componentName": "SimilarItemsDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "products",
+        "type": "SimilarProduct[]",
+        "required": false,
+        "defaultValue": "[\n  { id: 1, name: \"Classic White Sneakers\", price: 89, category: \"Footwear\", style: \"casual\", material: \"leather\" },\n  { id: 2, name: \"Running Performance Shoes\", price: 129, category: \"Footwear\", style: \"athletic\", material: \"mesh\" },\n  { id: 3, name: \"Leather Loafers\", price: 159, category: \"Footwear\", style: \"formal\", material: \"leather\" },\n  { id: 4, name: \"Canvas Slip-Ons\", price: 49, category: \"Footwear\", style: \"casual\", material: \"canvas\" },\n  { id: 5, name: \"High-Top Basketball Shoes\", price: 149, category: \"Footwear\", style: \"athletic\", material: \"synthetic\" },\n  { id: 6, name: \"Suede Desert Boots\", price: 119, category: \"Footwear\", style: \"casual\", material: \"suede\" },\n  { id: 7, name: \"Minimalist Trainers\", price: 99, category: \"Footwear\", style: \"casual\", material: \"knit\" },\n  { id: 8, name: \"Oxford Dress Shoes\", price: 189, category: \"Footwear\", style: \"formal\", material: \"leather\" },\n]",
+        "description": "Product catalog"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.5",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "200",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/SimpleChatDemo": {
+    "componentName": "SimpleChatDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "initialMessages",
+        "type": "Message[]",
+        "required": false,
+        "defaultValue": "[]",
+        "description": "Initial messages to display"
+      },
+      {
+        "name": "systemPrompt",
+        "type": "string",
+        "required": false,
+        "defaultValue": "You are a helpful assistant. Keep responses concise.",
+        "description": "System prompt for the assistant"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Type a message...",
+        "description": "Placeholder text for input"
+      },
+      {
+        "name": "emptyMessage",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Start a conversation...",
+        "description": "Empty state message"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "200",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/SimplifyTextDemo": {
+    "componentName": "SimplifyTextDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultText",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`The implementation of quantum cryptographic protocols necessitates the utilization of entangled photon pairs to facilitate secure key distribution mechanisms. The fundamental principle underlying this methodology relies on the Heisenberg uncertainty principle, which precludes the possibility of eavesdropping without introducing detectable perturbations to the quantum state.`",
+        "description": "Initial text to simplify"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Paste complex text to simplify...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.5",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "300",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/SizeAdvisorDemo": {
+    "componentName": "SizeAdvisorDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "fitPreferences",
+        "type": "FitPreference[]",
+        "required": false,
+        "defaultValue": "[\n  { id: \"tight\", label: \"Tight/Fitted\" },\n  { id: \"regular\", label: \"Regular\" },\n  { id: \"relaxed\", label: \"Relaxed\" },\n  { id: \"oversized\", label: \"Oversized\" },\n]",
+        "description": "Available fit preferences"
+      },
+      {
+        "name": "defaultHeight",
+        "type": "string",
+        "required": false,
+        "defaultValue": "5'10\"",
+        "description": "Default height value"
+      },
+      {
+        "name": "defaultWeight",
+        "type": "string",
+        "required": false,
+        "defaultValue": "170 lbs",
+        "description": "Default weight value"
+      },
+      {
+        "name": "defaultFitId",
+        "type": "string",
+        "required": false,
+        "defaultValue": "regular",
+        "description": "Default fit preference ID"
+      },
+      {
+        "name": "defaultProductInfo",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Cotton t-shirt, unisex sizing, US sizes S/M/L/XL/XXL",
+        "description": "Default product info"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.5",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "300",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/SmartTextareaDemo": {
+    "componentName": "SmartTextareaDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Start typing... AI will suggest completions after you pause.",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "minChars",
+        "type": "number",
+        "required": false,
+        "defaultValue": "20",
+        "description": "Minimum characters before suggesting"
+      },
+      {
+        "name": "debounceMs",
+        "type": "number",
+        "required": false,
+        "defaultValue": "1000",
+        "description": "Debounce time in ms"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "40",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/SocraticTutorDemo": {
+    "componentName": "SocraticTutorDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultTopic",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Why does ice float on water?",
+        "description": "Initial topic to explore"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "What do you want to understand?",
+        "description": "Placeholder for topic input"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.8",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "150",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/StoryHelperDemo": {
+    "componentName": "StoryHelperDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "prompts",
+        "type": "StoryPrompt[]",
+        "required": false,
+        "defaultValue": "[\n  { id: \"continue\", label: \"Continue Story\", icon: \"➡️\" },\n  { id: \"twist\", label: \"Add Plot Twist\", icon: \"🔄\" },\n  { id: \"dialogue\", label: \"Add Dialogue\", icon: \"💬\" },\n  { id: \"describe\", label: \"Describe Setting\", icon: \"🏞️\" },\n]",
+        "description": "Available story prompts"
+      },
+      {
+        "name": "defaultStory",
+        "type": "string",
+        "required": false,
+        "defaultValue": "The old lighthouse keeper climbed the spiral stairs one last time. After forty years, tonight would be different.",
+        "description": "Initial story text"
+      },
+      {
+        "name": "defaultPromptId",
+        "type": "string",
+        "required": false,
+        "defaultValue": "continue",
+        "description": "Default selected prompt ID"
+      },
+      {
+        "name": "promptInstructions",
+        "type": "Record<string, string>",
+        "required": false,
+        "defaultValue": "{\n  continue: \"Continue this story naturally with 2-3 sentences. Maintain the tone and style.\",\n  twist: \"Add an unexpected plot twist to this story. Make it surprising but believable. 2-3 sentences.\",\n  dialogue: \"Add a dialogue exchange between characters. Show their personalities. 3-4 lines of dialogue.\",\n  describe: \"Describe the setting or atmosphere in vivid detail. Use sensory language. 2-3 sentences.\",\n}",
+        "description": "Prompt instructions mapping"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Start your story here...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.9",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "200",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/StreamingTextDemo": {
+    "componentName": "StreamingTextDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultPrompt",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Write a haiku about artificial intelligence",
+        "description": "Initial prompt value"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Enter your prompt...",
+        "description": "Placeholder for input"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.8",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "200",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/TLDRGeneratorDemo": {
+    "componentName": "TLDRGeneratorDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultArticle",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`Artificial intelligence has transformed how we interact with technology in ways that seemed impossible just a decade ago. From virtual assistants that understand natural language to recommendation systems that predict our preferences, AI has become an invisible force shaping our daily digital experiences.\n\nThe recent advances in large language models have particularly accelerated this transformation. These models, trained on vast amounts of text data, can now generate human-like responses, translate languages, summarize documents, and even write code. Companies across industries are racing to integrate these capabilities into their products and services.\n\nHowever, this rapid advancement also raises important questions about privacy, bias, and the future of work. As AI systems become more capable, society must grapple with how to harness their benefits while mitigating potential risks. The conversation about AI ethics and governance has never been more critical.`",
+        "description": "Initial article text to summarize"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Paste an article or long text to summarize...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.5",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "300",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/TextExpanderDemo": {
+    "componentName": "TextExpanderDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultBriefText",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Meeting went well. Client liked proposal. Need to follow up on pricing. Schedule next call for Tuesday.",
+        "description": "Initial brief text to expand"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Enter brief notes, bullet points, or short text...",
+        "description": "Placeholder for the textarea"
+      },
+      {
+        "name": "defaultExpansionLevel",
+        "type": "number",
+        "required": false,
+        "defaultValue": "2",
+        "description": "Default expansion level (1-3)"
+      },
+      {
+        "name": "levelDescriptions",
+        "type": "Record<number, string>",
+        "required": false,
+        "defaultValue": "{\n  1: \"slightly expand with minimal additions, keep it concise\",\n  2: \"moderately expand into a well-structured paragraph with context\",\n  3: \"fully expand into detailed, professional prose with complete context and transitions\"\n}",
+        "description": "Level descriptions"
+      },
+      {
+        "name": "levelLabels",
+        "type": "string[]",
+        "required": false,
+        "defaultValue": "[\"Brief\", \"Moderate\", \"Detailed\"]",
+        "description": "Level labels for the slider"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "400",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/TextGenerationDemo": {
+    "componentName": "TextGenerationDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "defaultPrompt",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Tell me a short joke about programming",
+        "description": "Initial prompt value"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Enter your prompt...",
+        "description": "Placeholder for input"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "150",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/TextRewriterDemo": {
+    "componentName": "TextRewriterDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "tones",
+        "type": "Tone[]",
+        "required": false,
+        "defaultValue": "[\n  { id: \"professional\", label: \"Professional\", icon: \"👔\" },\n  { id: \"casual\", label: \"Casual\", icon: \"😊\" },\n  { id: \"formal\", label: \"Formal\", icon: \"📜\" },\n  { id: \"friendly\", label: \"Friendly\", icon: \"🤝\" },\n  { id: \"concise\", label: \"Concise\", icon: \"✂️\" },\n  { id: \"elaborate\", label: \"Elaborate\", icon: \"📝\" },\n]",
+        "description": "List of tones to choose from"
+      },
+      {
+        "name": "defaultText",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Hey! Just wanted to check if you got my email about the project. Let me know when you can chat!",
+        "description": "Initial text to rewrite"
+      },
+      {
+        "name": "defaultToneId",
+        "type": "string",
+        "required": false,
+        "defaultValue": "professional",
+        "description": "Initial selected tone ID"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Enter text to rewrite...",
+        "description": "Placeholder text for the textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "300",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/TranslateOnDemandDemo": {
+    "componentName": "TranslateOnDemandDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "languages",
+        "type": "Language[]",
+        "required": false,
+        "defaultValue": "[\n  { code: \"es\", name: \"Spanish\", flag: \"🇪🇸\" },\n  { code: \"fr\", name: \"French\", flag: \"🇫🇷\" },\n  { code: \"de\", name: \"German\", flag: \"🇩🇪\" },\n  { code: \"it\", name: \"Italian\", flag: \"🇮🇹\" },\n  { code: \"pt\", name: \"Portuguese\", flag: \"🇧🇷\" },\n  { code: \"zh\", name: \"Chinese\", flag: \"🇨🇳\" },\n  { code: \"ja\", name: \"Japanese\", flag: \"🇯🇵\" },\n  { code: \"ko\", name: \"Korean\", flag: \"🇰🇷\" },\n  { code: \"ar\", name: \"Arabic\", flag: \"🇸🇦\" },\n  { code: \"hi\", name: \"Hindi\", flag: \"🇮🇳\" },\n]",
+        "description": "Available languages for translation"
+      },
+      {
+        "name": "defaultText",
+        "type": "string",
+        "required": false,
+        "defaultValue": "`Welcome to our website! We're excited to share our latest collection of handcrafted jewelry. Each piece is made with love and attention to detail. Browse our catalog and find something special for yourself or a loved one.`",
+        "description": "Initial text to translate"
+      },
+      {
+        "name": "defaultTargetLang",
+        "type": "string",
+        "required": false,
+        "defaultValue": "es",
+        "description": "Initial target language code"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "defaultValue": "Enter text to translate...",
+        "description": "Placeholder for textarea"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.3",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "500",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
+  "demos/VoiceChatDemo": {
+    "componentName": "VoiceChatDemo",
+    "description": "",
+    "props": [
+      {
+        "name": "systemPrompt",
+        "type": "string",
+        "required": false,
+        "defaultValue": "You are a voice assistant. Brief responses.",
+        "description": "System prompt for the assistant"
+      },
+      {
+        "name": "defaultTtsEnabled",
+        "type": "boolean",
+        "required": false,
+        "defaultValue": "true",
+        "description": "Whether TTS is enabled by default"
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "required": false,
+        "defaultValue": "0.7",
+        "description": "Temperature for generation (0-1)"
+      },
+      {
+        "name": "maxTokens",
+        "type": "number",
+        "required": false,
+        "defaultValue": "100",
+        "description": "Max tokens for generation"
+      }
+    ]
+  },
   "blocks/prompt-form": {
     "componentName": "PromptForm",
     "description": "",

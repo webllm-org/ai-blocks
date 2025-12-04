@@ -95,13 +95,11 @@ function extractProps() {
     for (const file of blockFiles) {
       const relativePath = path.relative(REGISTRY_DIR, file);
       const filename = path.basename(file, '.tsx');
-
-      // Skip demo files for prop extraction (they don't have props)
-      if (filename.endsWith('Demo')) {
-        continue;
-      }
-
       const componentId = path.basename(path.dirname(file));
+
+      // For demo files, use demos/ComponentName as the key
+      const isDemo = filename.endsWith('Demo');
+      const key = isDemo ? `demos/${filename}` : `blocks/${componentId}`;
 
       try {
         const docs = parse(file, parserOptions);
@@ -116,7 +114,6 @@ function extractProps() {
           }));
 
           if (props.length > 0) {
-            const key = `blocks/${componentId}`;
             allProps[key] = {
               componentName: component.displayName,
               description: component.description || '',
