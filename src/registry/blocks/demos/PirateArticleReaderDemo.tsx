@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { generateSpeech } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -35,12 +35,7 @@ export function PirateArticleReaderDemo({
   const [isPlaying, setIsPlaying] = useState(false)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const clientRef = useRef<WebLLMClient | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
-
-  if (!clientRef.current) {
-    clientRef.current = new WebLLMClient()
-  }
 
   const pirateInstructions = `You are a salty old sea captain narrating tales. Speak with a hearty pirate accent - add "arr", "matey", "ye", "be", and nautical expressions naturally. Roll your R's, be dramatic and theatrical. Sound like you've spent years on the high seas.`
 
@@ -52,7 +47,7 @@ export function PirateArticleReaderDemo({
     setAudioUrl(null)
 
     try {
-      const result = await clientRef.current!.generateSpeech({
+      const result = await generateSpeech({
         text: text,
         voice: voice,
         speed: speed,

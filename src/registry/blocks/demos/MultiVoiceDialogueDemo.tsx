@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { generateSpeech } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -85,13 +85,8 @@ export function MultiVoiceDialogueDemo({
   const [error, setError] = useState<string | null>(null)
   const [audioQueue, setAudioQueue] = useState<string[]>([])
   const [parsedLines, setParsedLines] = useState<DialogueLine[]>([])
-  const clientRef = useRef<WebLLMClient | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const playingRef = useRef(false)
-
-  if (!clientRef.current) {
-    clientRef.current = new WebLLMClient()
-  }
 
   const generateDialogueAudio = async () => {
     const lines = parseDialogue(dialogue)
@@ -113,7 +108,7 @@ export function MultiVoiceDialogueDemo({
         const line = lines[i]
         const voiceConfig = VOICE_MAPPING[line.speaker] || VOICE_MAPPING.DEFAULT
 
-        const result = await clientRef.current!.generateSpeech({
+        const result = await generateSpeech({
           text: line.text,
           voice: voiceConfig.voice,
           speed: 1.0,

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { WebLLMClient, generateText } from "@webllm/client"
+import { generateText, generateSpeech } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -31,12 +31,7 @@ export function AudioSummaryDemo({
   const [isGeneratingAudio, setIsGeneratingAudio] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const clientRef = useRef<WebLLMClient | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
-
-  if (!clientRef.current) {
-    clientRef.current = new WebLLMClient()
-  }
 
   const generateSummaryAndAudio = async () => {
     if (!text.trim()) return
@@ -59,7 +54,7 @@ export function AudioSummaryDemo({
 
       // Step 2: Generate audio from summary
       setIsGeneratingAudio(true)
-      const audioResult = await clientRef.current!.generateSpeech({
+      const audioResult = await generateSpeech({
         text: summaryText,
         voice: voice,
         speed: 1.0,

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { generateSpeech } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -89,12 +89,7 @@ export function CharacterVoicesDemo({
   const [isGenerating, setIsGenerating] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const clientRef = useRef<WebLLMClient | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
-
-  if (!clientRef.current) {
-    clientRef.current = new WebLLMClient()
-  }
 
   const currentCharacter = CHARACTER_VOICES.find(v => v.id === selectedVoice) || CHARACTER_VOICES[0]
 
@@ -105,7 +100,7 @@ export function CharacterVoicesDemo({
     setError(null)
 
     try {
-      const result = await clientRef.current!.generateSpeech({
+      const result = await generateSpeech({
         text: text,
         voice: currentCharacter.voice,
         speed: 1.0,

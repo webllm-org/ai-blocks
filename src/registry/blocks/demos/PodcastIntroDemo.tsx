@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { WebLLMClient, generateText } from "@webllm/client"
+import { generateText, generateSpeech } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -33,12 +33,7 @@ export function PodcastIntroDemo({
   const [isGeneratingAudio, setIsGeneratingAudio] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const clientRef = useRef<WebLLMClient | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
-
-  if (!clientRef.current) {
-    clientRef.current = new WebLLMClient()
-  }
 
   const generatePodcast = async () => {
     if (!topic.trim()) return
@@ -71,7 +66,7 @@ Write the full script as if ${hostName} is speaking directly to listeners. Be co
 
       // Step 2: Generate audio
       setIsGeneratingAudio(true)
-      const audioResult = await clientRef.current!.generateSpeech({
+      const audioResult = await generateSpeech({
         text: scriptText,
         voice: "ash",
         speed: 1.0,

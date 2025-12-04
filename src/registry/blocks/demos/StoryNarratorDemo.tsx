@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { WebLLMClient, generateText } from "@webllm/client"
+import { generateText, generateSpeech } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -60,12 +60,7 @@ export function StoryNarratorDemo({
   const [isGeneratingAudio, setIsGeneratingAudio] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const clientRef = useRef<WebLLMClient | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
-
-  if (!clientRef.current) {
-    clientRef.current = new WebLLMClient()
-  }
 
   const currentTheme = STORY_THEMES.find(t => t.id === theme) || STORY_THEMES[0]
 
@@ -90,7 +85,7 @@ export function StoryNarratorDemo({
 
       // Step 2: Generate soothing audio narration
       setIsGeneratingAudio(true)
-      const audioResult = await clientRef.current!.generateSpeech({
+      const audioResult = await generateSpeech({
         text: storyText,
         voice: "nova",
         speed: 0.9,
