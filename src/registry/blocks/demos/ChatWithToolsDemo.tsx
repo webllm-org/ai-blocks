@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -47,12 +47,7 @@ export function ChatWithToolsDemo() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -73,7 +68,7 @@ export function ChatWithToolsDemo() {
   }
 
   const sendMessage = async () => {
-    if (!clientRef.current || !input.trim() || isLoading) return
+    if (!input.trim() || isLoading) return
 
     const userMessage = input.trim()
     setInput("")
@@ -81,7 +76,7 @@ export function ChatWithToolsDemo() {
     setIsLoading(true)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `You are an assistant with access to tools. Use these tools when helpful:
 - [TOOL: calculate(expression)] - Do math, e.g., [TOOL: calculate(15*3)]
 - [TIME] - Get current time
@@ -120,7 +115,7 @@ Assistant:`,
         ])
 
         // Get final response with tool result
-        const finalResult = await clientRef.current.generateText({
+        const finalResult = await generateText({
           prompt: `Tool result: ${toolResult}
 
 Provide a brief, natural response to the user incorporating this result.`,
