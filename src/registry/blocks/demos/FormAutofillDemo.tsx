@@ -20,8 +20,29 @@ interface FormData {
 
 const EMPTY_FORM: FormData = { firstName: "", lastName: "", email: "", phone: "", company: "", role: "" }
 
-export function FormAutofillDemo() {
-  const [naturalInput, setNaturalInput] = useState("I'm John Smith, software engineer at Acme Corp. My email is john.smith@acme.com and phone is 555-123-4567")
+const DEFAULT_INPUT = "I'm John Smith, software engineer at Acme Corp. My email is john.smith@acme.com and phone is 555-123-4567"
+
+export interface FormAutofillDemoProps {
+  /** Initial natural language input */
+  defaultInput?: string
+  /** Placeholder for the natural input textarea */
+  placeholder?: string
+  /** Label text for the natural input */
+  inputLabel?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function FormAutofillDemo({
+  defaultInput = DEFAULT_INPUT,
+  placeholder = "e.g., I'm Jane Doe, marketing manager at TechCo...",
+  inputLabel = "Describe yourself naturally:",
+  temperature = 0.3,
+  maxTokens = 200,
+}: FormAutofillDemoProps = {}) {
+  const [naturalInput, setNaturalInput] = useState(defaultInput)
   const [formData, setFormData] = useState<FormData>(EMPTY_FORM)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -37,8 +58,8 @@ Text: "${naturalInput}"
 
 Return JSON with these fields (use empty string if not found):
 {"firstName": "", "lastName": "", "email": "", "phone": "", "company": "", "role": ""}`,
-        temperature: 0.3,
-        maxTokens: 200,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = result.text.match(/\{[\s\S]*\}/)
@@ -65,11 +86,11 @@ Return JSON with these fields (use empty string if not found):
   return (
     <div className="space-y-4 w-full max-w-xl mx-auto">
       <div>
-        <Label className="text-sm text-muted-foreground">Describe yourself naturally:</Label>
+        <Label className="text-sm text-muted-foreground">{inputLabel}</Label>
         <Textarea
           value={naturalInput}
           onChange={(e) => setNaturalInput(e.target.value)}
-          placeholder="e.g., I'm Jane Doe, marketing manager at TechCo..."
+          placeholder={placeholder}
           rows={2}
           className="mt-1"
         />

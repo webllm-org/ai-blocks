@@ -7,8 +7,26 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, Sparkles } from "lucide-react"
 
-export function TextGenerationDemo() {
-  const [prompt, setPrompt] = useState("Tell me a short joke about programming")
+const DEFAULT_PROMPT = "Tell me a short joke about programming"
+
+export interface TextGenerationDemoProps {
+  /** Initial prompt value */
+  defaultPrompt?: string
+  /** Placeholder for input */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function TextGenerationDemo({
+  defaultPrompt = DEFAULT_PROMPT,
+  placeholder = "Enter your prompt...",
+  temperature = 0.7,
+  maxTokens = 150,
+}: TextGenerationDemoProps = {}) {
+  const [prompt, setPrompt] = useState(defaultPrompt)
   const [response, setResponse] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -19,8 +37,8 @@ export function TextGenerationDemo() {
     try {
       const result = await generateText({
         prompt: prompt.trim(),
-        temperature: 0.7,
-        maxTokens: 150,
+        temperature,
+        maxTokens,
       })
       setResponse(result.text)
     } catch (error) {
@@ -36,7 +54,7 @@ export function TextGenerationDemo() {
         <Input
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Enter your prompt..."
+          placeholder={placeholder}
           onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
         />
         <Button onClick={handleGenerate} disabled={isLoading || !prompt.trim()}>

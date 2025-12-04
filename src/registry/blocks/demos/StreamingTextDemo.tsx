@@ -7,8 +7,26 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, Zap } from "lucide-react"
 
-export function StreamingTextDemo() {
-  const [prompt, setPrompt] = useState("Write a haiku about artificial intelligence")
+const DEFAULT_PROMPT = "Write a haiku about artificial intelligence"
+
+export interface StreamingTextDemoProps {
+  /** Initial prompt value */
+  defaultPrompt?: string
+  /** Placeholder for input */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function StreamingTextDemo({
+  defaultPrompt = DEFAULT_PROMPT,
+  placeholder = "Enter your prompt...",
+  temperature = 0.8,
+  maxTokens = 200,
+}: StreamingTextDemoProps = {}) {
+  const [prompt, setPrompt] = useState(defaultPrompt)
   const [response, setResponse] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -19,8 +37,8 @@ export function StreamingTextDemo() {
     try {
       await streamText({
         prompt: prompt.trim(),
-        temperature: 0.8,
-        maxTokens: 200,
+        temperature,
+        maxTokens,
         onChunk: (chunk: string) => {
           setResponse((prev) => prev + chunk)
         },
@@ -38,7 +56,7 @@ export function StreamingTextDemo() {
         <Input
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Enter your prompt..."
+          placeholder={placeholder}
           onKeyDown={(e) => e.key === "Enter" && handleStream()}
         />
         <Button onClick={handleStream} disabled={isLoading || !prompt.trim()}>

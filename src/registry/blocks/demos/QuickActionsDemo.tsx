@@ -6,17 +6,37 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2 } from "lucide-react"
 
-export function QuickActionsDemo() {
+export interface QuickAction {
+  id: string
+  label: string
+  prompt: string
+  icon: string
+}
+
+const DEFAULT_ACTIONS: QuickAction[] = [
+  { id: "joke", label: "Tell a Joke", prompt: "Tell me a short, clean joke.", icon: "😄" },
+  { id: "fact", label: "Fun Fact", prompt: "Tell me an interesting and surprising fact.", icon: "💡" },
+  { id: "quote", label: "Inspirational Quote", prompt: "Give me an inspirational quote with the author.", icon: "✨" },
+  { id: "riddle", label: "Riddle", prompt: "Give me a short riddle with its answer.", icon: "🧩" },
+]
+
+export interface QuickActionsDemoProps {
+  /** List of quick actions */
+  actions?: QuickAction[]
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function QuickActionsDemo({
+  actions = DEFAULT_ACTIONS,
+  temperature = 0.9,
+  maxTokens = 150,
+}: QuickActionsDemoProps = {}) {
   const [output, setOutput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [activeAction, setActiveAction] = useState<string | null>(null)
-
-  const actions = [
-    { id: "joke", label: "Tell a Joke", prompt: "Tell me a short, clean joke.", icon: "😄" },
-    { id: "fact", label: "Fun Fact", prompt: "Tell me an interesting and surprising fact.", icon: "💡" },
-    { id: "quote", label: "Inspirational Quote", prompt: "Give me an inspirational quote with the author.", icon: "✨" },
-    { id: "riddle", label: "Riddle", prompt: "Give me a short riddle with its answer.", icon: "🧩" },
-  ]
 
   const handleAction = async (action: typeof actions[0]) => {
     setIsLoading(true)
@@ -26,8 +46,8 @@ export function QuickActionsDemo() {
     try {
       await streamText({
         prompt: action.prompt,
-        temperature: 0.9,
-        maxTokens: 150,
+        temperature,
+        maxTokens,
         onChunk: (chunk: string) => {
           setOutput((prev) => prev + chunk)
         },

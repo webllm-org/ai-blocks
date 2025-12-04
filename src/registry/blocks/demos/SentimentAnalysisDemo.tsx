@@ -14,8 +14,35 @@ interface SentimentResult {
   keywords: string[]
 }
 
-export function SentimentAnalysisDemo() {
-  const [text, setText] = useState("I absolutely love this product! It's amazing and works perfectly.")
+const DEFAULT_TEXT = "I absolutely love this product! It's amazing and works perfectly."
+
+const DEFAULT_SENTIMENT_COLORS: Record<string, string> = {
+  positive: "text-green-600 bg-green-100",
+  negative: "text-red-600 bg-red-100",
+  neutral: "text-yellow-600 bg-yellow-100",
+}
+
+export interface SentimentAnalysisDemoProps {
+  /** Initial text to analyze */
+  defaultText?: string
+  /** Placeholder text for the textarea */
+  placeholder?: string
+  /** Custom colors for sentiment badges */
+  sentimentColors?: Record<string, string>
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function SentimentAnalysisDemo({
+  defaultText = DEFAULT_TEXT,
+  placeholder = "Enter text to analyze...",
+  sentimentColors = DEFAULT_SENTIMENT_COLORS,
+  temperature = 0.3,
+  maxTokens = 200,
+}: SentimentAnalysisDemoProps = {}) {
+  const [text, setText] = useState(defaultText)
   const [result, setResult] = useState<SentimentResult | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -29,8 +56,8 @@ export function SentimentAnalysisDemo() {
         prompt: `Analyze the sentiment of this text and respond with JSON only: "${text}"
 
 Format: {"sentiment": "positive|negative|neutral", "confidence": 0.0-1.0, "keywords": ["word1", "word2"]}`,
-        temperature: 0.3,
-        maxTokens: 200,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = response.text.match(/\{[\s\S]*\}/)
@@ -45,11 +72,7 @@ Format: {"sentiment": "positive|negative|neutral", "confidence": 0.0-1.0, "keywo
   }
 
   const getSentimentColor = (sentiment: string) => {
-    switch (sentiment) {
-      case "positive": return "text-green-600 bg-green-100"
-      case "negative": return "text-red-600 bg-red-100"
-      default: return "text-yellow-600 bg-yellow-100"
-    }
+    return sentimentColors[sentiment] || sentimentColors.neutral
   }
 
   return (
@@ -57,7 +80,7 @@ Format: {"sentiment": "positive|negative|neutral", "confidence": 0.0-1.0, "keywo
       <Textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Enter text to analyze..."
+        placeholder={placeholder}
         rows={3}
       />
       <Button onClick={handleAnalyze} disabled={isLoading || !text.trim()} className="w-full">

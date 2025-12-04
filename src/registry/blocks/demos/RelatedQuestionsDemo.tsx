@@ -7,7 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, HelpCircle, ChevronDown, ChevronUp, RefreshCw } from "lucide-react"
 
-const sampleArticle = {
+export interface Article {
+  title: string
+  content: string
+}
+
+const DEFAULT_ARTICLE: Article = {
   title: "Understanding Machine Learning",
   content: `Machine learning is a subset of artificial intelligence that enables computers to learn from data without explicit programming. The three main types are supervised learning (learning from labeled examples), unsupervised learning (finding patterns in unlabeled data), and reinforcement learning (learning through trial and error).
 
@@ -22,7 +27,26 @@ type Question = {
   isExpanded: boolean
 }
 
-export function RelatedQuestionsDemo() {
+export interface RelatedQuestionsDemoProps {
+  /** Article to generate questions from */
+  article?: Article
+  /** Temperature for question generation (0-1) */
+  questionTemperature?: number
+  /** Temperature for answer generation (0-1) */
+  answerTemperature?: number
+  /** Max tokens for question generation */
+  questionMaxTokens?: number
+  /** Max tokens for answer generation */
+  answerMaxTokens?: number
+}
+
+export function RelatedQuestionsDemo({
+  article = DEFAULT_ARTICLE,
+  questionTemperature = 0.8,
+  answerTemperature = 0.7,
+  questionMaxTokens = 200,
+  answerMaxTokens = 100,
+}: RelatedQuestionsDemoProps = {}) {
   const [questions, setQuestions] = useState<Question[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null)
@@ -34,13 +58,13 @@ export function RelatedQuestionsDemo() {
 
     try {
       const result = await generateText({
-        prompt: `Based on this article about "${sampleArticle.title}":
+        prompt: `Based on this article about "${article.title}":
 
-${sampleArticle.content}
+${article.content}
 
 Generate 5 questions a curious reader might wonder about. Format: one question per line, no numbers or bullets.`,
-        temperature: 0.8,
-        maxTokens: 200,
+        temperature: questionTemperature,
+        maxTokens: questionMaxTokens,
       })
 
       const qs = result.text.split('\n')
@@ -72,12 +96,12 @@ Generate 5 questions a curious reader might wonder about. Format: one question p
       const result = await generateText({
         prompt: `Based on this article:
 
-${sampleArticle.content}
+${article.content}
 
 Answer this question concisely (2-3 sentences):
 ${questions[index].text}`,
-        temperature: 0.7,
-        maxTokens: 100,
+        temperature: answerTemperature,
+        maxTokens: answerMaxTokens,
       })
 
       setQuestions(prev => prev.map((q, i) =>
@@ -95,11 +119,11 @@ ${questions[index].text}`,
     <div className="space-y-4 w-full max-w-xl mx-auto">
       <Card className="bg-muted/30">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm">{sampleArticle.title}</CardTitle>
+          <CardTitle className="text-sm">{article.title}</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-xs text-muted-foreground line-clamp-3">
-            {sampleArticle.content.slice(0, 200)}...
+            {article.content.slice(0, 200)}...
           </p>
         </CardContent>
       </Card>

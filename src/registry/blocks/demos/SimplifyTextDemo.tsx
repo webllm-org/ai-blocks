@@ -7,10 +7,26 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, Accessibility, ArrowRight } from "lucide-react"
 
-const SAMPLE_TEXT = `The implementation of quantum cryptographic protocols necessitates the utilization of entangled photon pairs to facilitate secure key distribution mechanisms. The fundamental principle underlying this methodology relies on the Heisenberg uncertainty principle, which precludes the possibility of eavesdropping without introducing detectable perturbations to the quantum state.`
+const DEFAULT_SAMPLE_TEXT = `The implementation of quantum cryptographic protocols necessitates the utilization of entangled photon pairs to facilitate secure key distribution mechanisms. The fundamental principle underlying this methodology relies on the Heisenberg uncertainty principle, which precludes the possibility of eavesdropping without introducing detectable perturbations to the quantum state.`
 
-export function SimplifyTextDemo() {
-  const [originalText, setOriginalText] = useState(SAMPLE_TEXT)
+export interface SimplifyTextDemoProps {
+  /** Initial text to simplify */
+  defaultText?: string
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function SimplifyTextDemo({
+  defaultText = DEFAULT_SAMPLE_TEXT,
+  placeholder = "Paste complex text to simplify...",
+  temperature = 0.5,
+  maxTokens = 300,
+}: SimplifyTextDemoProps = {}) {
+  const [originalText, setOriginalText] = useState(defaultText)
   const [simplifiedText, setSimplifiedText] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -32,8 +48,8 @@ Original text:
 ${originalText}
 
 Simplified version:`,
-        temperature: 0.5,
-        maxTokens: 300,
+        temperature,
+        maxTokens,
       })
       setSimplifiedText(result.text.trim())
     } catch (error) {
@@ -63,7 +79,7 @@ Simplified version:`,
         <Textarea
           value={originalText}
           onChange={(e) => setOriginalText(e.target.value)}
-          placeholder="Paste complex text to simplify..."
+          placeholder={placeholder}
           rows={4}
         />
         <div className="absolute bottom-2 right-2 text-xs">

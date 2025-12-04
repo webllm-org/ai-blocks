@@ -7,7 +7,13 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, Languages, ArrowRight } from "lucide-react"
 
-const LANGUAGES = [
+export interface Language {
+  code: string
+  name: string
+  flag: string
+}
+
+const DEFAULT_LANGUAGES: Language[] = [
   { code: "es", name: "Spanish", flag: "🇪🇸" },
   { code: "fr", name: "French", flag: "🇫🇷" },
   { code: "de", name: "German", flag: "🇩🇪" },
@@ -18,13 +24,35 @@ const LANGUAGES = [
   { code: "ko", name: "Korean", flag: "🇰🇷" },
   { code: "ar", name: "Arabic", flag: "🇸🇦" },
   { code: "hi", name: "Hindi", flag: "🇮🇳" },
-] as const
+]
 
-const SAMPLE_TEXT = `Welcome to our website! We're excited to share our latest collection of handcrafted jewelry. Each piece is made with love and attention to detail. Browse our catalog and find something special for yourself or a loved one.`
+const DEFAULT_TEXT = `Welcome to our website! We're excited to share our latest collection of handcrafted jewelry. Each piece is made with love and attention to detail. Browse our catalog and find something special for yourself or a loved one.`
 
-export function TranslateOnDemandDemo() {
-  const [text, setText] = useState(SAMPLE_TEXT)
-  const [targetLang, setTargetLang] = useState<string>("es")
+export interface TranslateOnDemandDemoProps {
+  /** Available languages for translation */
+  languages?: Language[]
+  /** Initial text to translate */
+  defaultText?: string
+  /** Initial target language code */
+  defaultTargetLang?: string
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function TranslateOnDemandDemo({
+  languages = DEFAULT_LANGUAGES,
+  defaultText = DEFAULT_TEXT,
+  defaultTargetLang = "es",
+  placeholder = "Enter text to translate...",
+  temperature = 0.3,
+  maxTokens = 500,
+}: TranslateOnDemandDemoProps = {}) {
+  const [text, setText] = useState(defaultText)
+  const [targetLang, setTargetLang] = useState<string>(defaultTargetLang)
   const [translated, setTranslated] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -33,7 +61,7 @@ export function TranslateOnDemandDemo() {
     setIsLoading(true)
     setTranslated("")
 
-    const lang = LANGUAGES.find(l => l.code === targetLang)
+    const lang = languages.find(l => l.code === targetLang)
 
     try {
       const result = await generateText({
@@ -43,8 +71,8 @@ Text to translate:
 ${text}
 
 ${lang?.name} translation:`,
-        temperature: 0.3,
-        maxTokens: 500,
+        temperature,
+        maxTokens,
       })
       setTranslated(result.text.trim())
     } catch (error) {
@@ -54,21 +82,21 @@ ${lang?.name} translation:`,
     }
   }
 
-  const selectedLang = LANGUAGES.find(l => l.code === targetLang)
+  const selectedLang = languages.find(l => l.code === targetLang)
 
   return (
     <div className="space-y-4 w-full max-w-xl mx-auto">
       <Textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Enter text to translate..."
+        placeholder={placeholder}
         rows={4}
       />
 
       <div className="space-y-2">
         <p className="text-sm text-muted-foreground">Translate to:</p>
         <div className="flex flex-wrap gap-2">
-          {LANGUAGES.map((lang) => (
+          {languages.map((lang) => (
             <Button
               key={lang.code}
               variant={targetLang === lang.code ? "default" : "outline"}

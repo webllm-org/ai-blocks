@@ -8,10 +8,45 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
 import { Loader2, Expand, Copy, Check } from "lucide-react"
 
-export function TextExpanderDemo() {
-  const [briefText, setBriefText] = useState("Meeting went well. Client liked proposal. Need to follow up on pricing. Schedule next call for Tuesday.")
+const DEFAULT_BRIEF_TEXT = "Meeting went well. Client liked proposal. Need to follow up on pricing. Schedule next call for Tuesday."
+
+const DEFAULT_LEVEL_DESCRIPTIONS: Record<number, string> = {
+  1: "slightly expand with minimal additions, keep it concise",
+  2: "moderately expand into a well-structured paragraph with context",
+  3: "fully expand into detailed, professional prose with complete context and transitions"
+}
+
+const DEFAULT_LEVEL_LABELS = ["Brief", "Moderate", "Detailed"]
+
+export interface TextExpanderDemoProps {
+  /** Initial brief text to expand */
+  defaultBriefText?: string
+  /** Placeholder for the textarea */
+  placeholder?: string
+  /** Default expansion level (1-3) */
+  defaultExpansionLevel?: number
+  /** Level descriptions */
+  levelDescriptions?: Record<number, string>
+  /** Level labels for the slider */
+  levelLabels?: string[]
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function TextExpanderDemo({
+  defaultBriefText = DEFAULT_BRIEF_TEXT,
+  placeholder = "Enter brief notes, bullet points, or short text...",
+  defaultExpansionLevel = 2,
+  levelDescriptions = DEFAULT_LEVEL_DESCRIPTIONS,
+  levelLabels = DEFAULT_LEVEL_LABELS,
+  temperature = 0.7,
+  maxTokens = 400,
+}: TextExpanderDemoProps = {}) {
+  const [briefText, setBriefText] = useState(defaultBriefText)
   const [expandedText, setExpandedText] = useState("")
-  const [expansionLevel, setExpansionLevel] = useState([2]) // 1=brief, 2=moderate, 3=detailed
+  const [expansionLevel, setExpansionLevel] = useState([defaultExpansionLevel]) // 1=brief, 2=moderate, 3=detailed
   const [isLoading, setIsLoading] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -19,12 +54,6 @@ export function TextExpanderDemo() {
     if (!briefText.trim()) return
     setIsLoading(true)
     setExpandedText("")
-
-    const levelDescriptions = {
-      1: "slightly expand with minimal additions, keep it concise",
-      2: "moderately expand into a well-structured paragraph with context",
-      3: "fully expand into detailed, professional prose with complete context and transitions"
-    }
 
     try {
       const result = await generateText({
@@ -34,8 +63,8 @@ Brief notes:
 ${briefText}
 
 Expanded text:`,
-        temperature: 0.7,
-        maxTokens: 400,
+        temperature,
+        maxTokens,
       })
       setExpandedText(result.text.trim())
     } catch (error) {
@@ -51,14 +80,12 @@ Expanded text:`,
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const levelLabels = ["Brief", "Moderate", "Detailed"]
-
   return (
     <div className="space-y-4 w-full max-w-xl mx-auto">
       <Textarea
         value={briefText}
         onChange={(e) => setBriefText(e.target.value)}
-        placeholder="Enter brief notes, bullet points, or short text..."
+        placeholder={placeholder}
         rows={3}
       />
 

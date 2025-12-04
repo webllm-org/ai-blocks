@@ -7,9 +7,34 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, ImageIcon, Copy, Check } from "lucide-react"
 
-export function AltTextGeneratorDemo() {
-  const [imageUrl, setImageUrl] = useState("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400")
-  const [context, setContext] = useState("travel blog about mountain hiking")
+const DEFAULT_IMAGE_URL = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400"
+const DEFAULT_CONTEXT = "travel blog about mountain hiking"
+
+export interface AltTextGeneratorDemoProps {
+  /** Initial image URL for preview */
+  defaultImageUrl?: string
+  /** Initial context describing the image */
+  defaultContext?: string
+  /** Placeholder for image URL input */
+  imageUrlPlaceholder?: string
+  /** Placeholder for context input */
+  contextPlaceholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function AltTextGeneratorDemo({
+  defaultImageUrl = DEFAULT_IMAGE_URL,
+  defaultContext = DEFAULT_CONTEXT,
+  imageUrlPlaceholder = "Image URL (optional preview)",
+  contextPlaceholder = "Describe the image or page context...",
+  temperature = 0.7,
+  maxTokens = 100,
+}: AltTextGeneratorDemoProps = {}) {
+  const [imageUrl, setImageUrl] = useState(defaultImageUrl)
+  const [context, setContext] = useState(defaultContext)
   const [altText, setAltText] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -32,8 +57,8 @@ The alt text should:
 - Not start with "Image of" or "Picture of"
 
 Generate a realistic alt text:`,
-        temperature: 0.7,
-        maxTokens: 100,
+        temperature,
+        maxTokens,
       })
       setAltText(result.text.trim().replace(/^["']|["']$/g, ''))
     } catch (error) {
@@ -58,12 +83,12 @@ Generate a realistic alt text:`,
             setImageUrl(e.target.value)
             setImageError(false)
           }}
-          placeholder="Image URL (optional preview)"
+          placeholder={imageUrlPlaceholder}
         />
         <Input
           value={context}
           onChange={(e) => setContext(e.target.value)}
-          placeholder="Describe the image or page context..."
+          placeholder={contextPlaceholder}
         />
       </div>
 

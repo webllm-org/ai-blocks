@@ -6,9 +6,25 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, HelpCircle, X } from "lucide-react"
 
-const SAMPLE_TEXT = `The implementation of quantum cryptographic protocols necessitates the utilization of entangled photon pairs to facilitate secure key distribution mechanisms. The fundamental principle underlying this methodology relies on the Heisenberg uncertainty principle, which precludes the possibility of eavesdropping without introducing detectable perturbations to the quantum state. Furthermore, the no-cloning theorem ensures that quantum information cannot be perfectly copied, providing an additional layer of security against potential adversaries.`
+const DEFAULT_SAMPLE_TEXT = `The implementation of quantum cryptographic protocols necessitates the utilization of entangled photon pairs to facilitate secure key distribution mechanisms. The fundamental principle underlying this methodology relies on the Heisenberg uncertainty principle, which precludes the possibility of eavesdropping without introducing detectable perturbations to the quantum state. Furthermore, the no-cloning theorem ensures that quantum information cannot be perfectly copied, providing an additional layer of security against potential adversaries.`
 
-export function ExplainThisDemo() {
+export interface ExplainThisDemoProps {
+  /** Sample text to display for explanation */
+  sampleText?: string
+  /** Tip text shown below the component */
+  tipText?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function ExplainThisDemo({
+  sampleText = DEFAULT_SAMPLE_TEXT,
+  tipText = 'Tip: Highlight complex terms like "quantum cryptographic protocols" or "Heisenberg uncertainty principle"',
+  temperature = 0.7,
+  maxTokens = 200,
+}: ExplainThisDemoProps = {}) {
   const [selectedText, setSelectedText] = useState("")
   const [explanation, setExplanation] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -46,8 +62,8 @@ export function ExplainThisDemo() {
 Text to explain: "${selectedText}"
 
 Simple explanation:`,
-        temperature: 0.7,
-        maxTokens: 200,
+        temperature,
+        maxTokens,
       })
       setExplanation(result.text.trim())
     } catch (error) {
@@ -80,7 +96,7 @@ Simple explanation:`,
               className="text-sm leading-relaxed select-text cursor-text"
               onMouseUp={handleTextSelect}
             >
-              {SAMPLE_TEXT}
+              {sampleText}
             </p>
           </CardContent>
         </Card>
@@ -130,7 +146,7 @@ Simple explanation:`,
       </div>
 
       <p className="text-xs text-muted-foreground text-center">
-        Tip: Highlight complex terms like "quantum cryptographic protocols" or "Heisenberg uncertainty principle"
+        {tipText}
       </p>
     </div>
   )

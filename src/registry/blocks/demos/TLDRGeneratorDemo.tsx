@@ -7,14 +7,30 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, FileText, Sparkles } from "lucide-react"
 
-const SAMPLE_ARTICLE = `Artificial intelligence has transformed how we interact with technology in ways that seemed impossible just a decade ago. From virtual assistants that understand natural language to recommendation systems that predict our preferences, AI has become an invisible force shaping our daily digital experiences.
+const DEFAULT_SAMPLE_ARTICLE = `Artificial intelligence has transformed how we interact with technology in ways that seemed impossible just a decade ago. From virtual assistants that understand natural language to recommendation systems that predict our preferences, AI has become an invisible force shaping our daily digital experiences.
 
 The recent advances in large language models have particularly accelerated this transformation. These models, trained on vast amounts of text data, can now generate human-like responses, translate languages, summarize documents, and even write code. Companies across industries are racing to integrate these capabilities into their products and services.
 
 However, this rapid advancement also raises important questions about privacy, bias, and the future of work. As AI systems become more capable, society must grapple with how to harness their benefits while mitigating potential risks. The conversation about AI ethics and governance has never been more critical.`
 
-export function TLDRGeneratorDemo() {
-  const [article, setArticle] = useState(SAMPLE_ARTICLE)
+export interface TLDRGeneratorDemoProps {
+  /** Initial article text to summarize */
+  defaultArticle?: string
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function TLDRGeneratorDemo({
+  defaultArticle = DEFAULT_SAMPLE_ARTICLE,
+  placeholder = "Paste an article or long text to summarize...",
+  temperature = 0.5,
+  maxTokens = 300,
+}: TLDRGeneratorDemoProps = {}) {
+  const [article, setArticle] = useState(defaultArticle)
   const [summary, setSummary] = useState("")
   const [bulletPoints, setBulletPoints] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -33,8 +49,8 @@ Article:
 ${article}
 
 Respond with JSON: {"summary": "one sentence TLDR", "bullets": ["point 1", "point 2", "point 3"]}`,
-        temperature: 0.5,
-        maxTokens: 300,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = result.text.match(/\{[\s\S]*\}/)
@@ -58,7 +74,7 @@ Respond with JSON: {"summary": "one sentence TLDR", "bullets": ["point 1", "poin
         <Textarea
           value={article}
           onChange={(e) => setArticle(e.target.value)}
-          placeholder="Paste an article or long text to summarize..."
+          placeholder={placeholder}
           rows={6}
           className="pr-16"
         />

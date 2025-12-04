@@ -13,8 +13,30 @@ interface Message {
   content: string
 }
 
-export function SimpleChatDemo() {
-  const [messages, setMessages] = useState<Message[]>([])
+export interface SimpleChatDemoProps {
+  /** Initial messages to display */
+  initialMessages?: Message[]
+  /** System prompt for the assistant */
+  systemPrompt?: string
+  /** Placeholder text for input */
+  placeholder?: string
+  /** Empty state message */
+  emptyMessage?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function SimpleChatDemo({
+  initialMessages = [],
+  systemPrompt = "You are a helpful assistant. Keep responses concise.",
+  placeholder = "Type a message...",
+  emptyMessage = "Start a conversation...",
+  temperature = 0.7,
+  maxTokens = 200,
+}: SimpleChatDemoProps = {}) {
+  const [messages, setMessages] = useState<Message[]>(initialMessages)
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -29,9 +51,9 @@ export function SimpleChatDemo() {
     try {
       const result = await generateText({
         prompt: input.trim(),
-        systemPrompt: "You are a helpful assistant. Keep responses concise.",
-        temperature: 0.7,
-        maxTokens: 200,
+        systemPrompt,
+        temperature,
+        maxTokens,
       })
       const assistantMessage: Message = { role: "assistant", content: result.text }
       setMessages((prev) => [...prev, assistantMessage])
@@ -53,7 +75,7 @@ export function SimpleChatDemo() {
           <div className="flex-1 overflow-y-auto space-y-3">
             {messages.length === 0 && (
               <p className="text-sm text-muted-foreground text-center py-8">
-                Start a conversation...
+                {emptyMessage}
               </p>
             )}
             {messages.map((msg, i) => (
@@ -90,7 +112,7 @@ export function SimpleChatDemo() {
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Type a message..."
+          placeholder={placeholder}
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
         />
         <Button onClick={handleSend} disabled={isLoading || !input.trim()}>

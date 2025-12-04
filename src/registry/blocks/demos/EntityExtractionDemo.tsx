@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { Loader2, Search, User, MapPin, Calendar, Building, DollarSign } from "lucide-react"
+import { Loader2, Search, User, MapPin, Calendar, Building, DollarSign, LucideIcon } from "lucide-react"
 
 interface ExtractedEntities {
   people: string[]
@@ -16,10 +16,44 @@ interface ExtractedEntities {
   money: string[]
 }
 
-const SAMPLE_TEXT = `On March 15, 2024, Apple CEO Tim Cook announced a $500 million investment in a new research facility in Austin, Texas. The project, developed in partnership with Microsoft and Google, is expected to create 3,000 jobs by December 2025. Dr. Sarah Chen from Stanford University will lead the AI research division.`
+export interface EntityTypeConfig {
+  key: keyof ExtractedEntities
+  label: string
+  icon: LucideIcon
+  color: string
+}
 
-export function EntityExtractionDemo() {
-  const [text, setText] = useState(SAMPLE_TEXT)
+const DEFAULT_SAMPLE_TEXT = `On March 15, 2024, Apple CEO Tim Cook announced a $500 million investment in a new research facility in Austin, Texas. The project, developed in partnership with Microsoft and Google, is expected to create 3,000 jobs by December 2025. Dr. Sarah Chen from Stanford University will lead the AI research division.`
+
+const DEFAULT_ENTITY_TYPES: EntityTypeConfig[] = [
+  { key: "people", label: "People", icon: User, color: "bg-blue-100 text-blue-800" },
+  { key: "locations", label: "Locations", icon: MapPin, color: "bg-green-100 text-green-800" },
+  { key: "dates", label: "Dates", icon: Calendar, color: "bg-purple-100 text-purple-800" },
+  { key: "organizations", label: "Organizations", icon: Building, color: "bg-orange-100 text-orange-800" },
+  { key: "money", label: "Money", icon: DollarSign, color: "bg-emerald-100 text-emerald-800" },
+]
+
+export interface EntityExtractionDemoProps {
+  /** Initial text to extract entities from */
+  defaultText?: string
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Entity types configuration */
+  entityTypes?: EntityTypeConfig[]
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function EntityExtractionDemo({
+  defaultText = DEFAULT_SAMPLE_TEXT,
+  placeholder = "Enter text to extract entities from...",
+  entityTypes = DEFAULT_ENTITY_TYPES,
+  temperature = 0.3,
+  maxTokens = 400,
+}: EntityExtractionDemoProps = {}) {
+  const [text, setText] = useState(defaultText)
   const [entities, setEntities] = useState<ExtractedEntities | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -36,8 +70,8 @@ Text: "${text}"
 
 Respond with JSON only:
 {"people": [], "locations": [], "dates": [], "organizations": [], "money": []}`,
-        temperature: 0.3,
-        maxTokens: 400,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = result.text.match(/\{[\s\S]*\}/)
@@ -51,20 +85,12 @@ Respond with JSON only:
     }
   }
 
-  const entityTypes = [
-    { key: "people" as const, label: "People", icon: User, color: "bg-blue-100 text-blue-800" },
-    { key: "locations" as const, label: "Locations", icon: MapPin, color: "bg-green-100 text-green-800" },
-    { key: "dates" as const, label: "Dates", icon: Calendar, color: "bg-purple-100 text-purple-800" },
-    { key: "organizations" as const, label: "Organizations", icon: Building, color: "bg-orange-100 text-orange-800" },
-    { key: "money" as const, label: "Money", icon: DollarSign, color: "bg-emerald-100 text-emerald-800" },
-  ]
-
   return (
     <div className="space-y-4 w-full max-w-xl mx-auto">
       <Textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Enter text to extract entities from..."
+        placeholder={placeholder}
         rows={4}
       />
 

@@ -8,30 +8,63 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Wand2, RefreshCw, Sparkles } from "lucide-react"
 
-const PROMPTS = [
+export interface StoryPrompt {
+  id: string
+  label: string
+  icon: string
+}
+
+const DEFAULT_PROMPTS: StoryPrompt[] = [
   { id: "continue", label: "Continue Story", icon: "➡️" },
   { id: "twist", label: "Add Plot Twist", icon: "🔄" },
   { id: "dialogue", label: "Add Dialogue", icon: "💬" },
   { id: "describe", label: "Describe Setting", icon: "🏞️" },
 ]
 
-export function StoryHelperDemo() {
-  const [story, setStory] = useState("The old lighthouse keeper climbed the spiral stairs one last time. After forty years, tonight would be different.")
+const DEFAULT_STORY = "The old lighthouse keeper climbed the spiral stairs one last time. After forty years, tonight would be different."
+
+const DEFAULT_PROMPT_INSTRUCTIONS: Record<string, string> = {
+  continue: "Continue this story naturally with 2-3 sentences. Maintain the tone and style.",
+  twist: "Add an unexpected plot twist to this story. Make it surprising but believable. 2-3 sentences.",
+  dialogue: "Add a dialogue exchange between characters. Show their personalities. 3-4 lines of dialogue.",
+  describe: "Describe the setting or atmosphere in vivid detail. Use sensory language. 2-3 sentences.",
+}
+
+export interface StoryHelperDemoProps {
+  /** Available story prompts */
+  prompts?: StoryPrompt[]
+  /** Initial story text */
+  defaultStory?: string
+  /** Default selected prompt ID */
+  defaultPromptId?: string
+  /** Prompt instructions mapping */
+  promptInstructions?: Record<string, string>
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function StoryHelperDemo({
+  prompts = DEFAULT_PROMPTS,
+  defaultStory = DEFAULT_STORY,
+  defaultPromptId = "continue",
+  promptInstructions = DEFAULT_PROMPT_INSTRUCTIONS,
+  placeholder = "Start your story here...",
+  temperature = 0.9,
+  maxTokens = 200,
+}: StoryHelperDemoProps = {}) {
+  const [story, setStory] = useState(defaultStory)
   const [continuation, setContinuation] = useState("")
-  const [selectedPrompt, setSelectedPrompt] = useState("continue")
+  const [selectedPrompt, setSelectedPrompt] = useState(defaultPromptId)
   const [isLoading, setIsLoading] = useState(false)
 
   const handleGenerate = async () => {
     if (!story.trim()) return
     setIsLoading(true)
     setContinuation("")
-
-    const promptInstructions: Record<string, string> = {
-      continue: "Continue this story naturally with 2-3 sentences. Maintain the tone and style.",
-      twist: "Add an unexpected plot twist to this story. Make it surprising but believable. 2-3 sentences.",
-      dialogue: "Add a dialogue exchange between characters. Show their personalities. 3-4 lines of dialogue.",
-      describe: "Describe the setting or atmosphere in vivid detail. Use sensory language. 2-3 sentences.",
-    }
 
     try {
       const result = await generateText({
@@ -41,8 +74,8 @@ Story so far:
 ${story}
 
 ${selectedPrompt === "dialogue" ? "Dialogue:" : "Continuation:"}`,
-        temperature: 0.9,
-        maxTokens: 200,
+        temperature,
+        maxTokens,
       })
       setContinuation(result.text.trim())
     } catch (error) {
@@ -62,13 +95,13 @@ ${selectedPrompt === "dialogue" ? "Dialogue:" : "Continuation:"}`,
       <Textarea
         value={story}
         onChange={(e) => setStory(e.target.value)}
-        placeholder="Start your story here..."
+        placeholder={placeholder}
         rows={5}
         className="font-serif"
       />
 
       <div className="flex flex-wrap gap-2">
-        {PROMPTS.map((p) => (
+        {prompts.map((p) => (
           <Button
             key={p.id}
             variant={selectedPrompt === p.id ? "default" : "outline"}
@@ -94,7 +127,7 @@ ${selectedPrompt === "dialogue" ? "Dialogue:" : "Continuation:"}`,
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Sparkles className="h-4 w-4 text-primary" />
-              <Badge variant="secondary">{PROMPTS.find(p => p.id === selectedPrompt)?.label}</Badge>
+              <Badge variant="secondary">{prompts.find(p => p.id === selectedPrompt)?.label}</Badge>
             </div>
             <p className="text-sm font-serif italic">{continuation}</p>
             <div className="flex gap-2 mt-3">

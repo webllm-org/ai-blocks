@@ -17,10 +17,49 @@ interface Classification {
   flags: string[]
 }
 
-const SAMPLE_TEXT = `Just bought the new iPhone 15 Pro and I'm blown away! The camera quality is insane - took some amazing shots at sunset yesterday. Battery life is decent, though not as good as my old Android. The titanium frame feels premium but it's definitely pricey. Would recommend if you're already in the Apple ecosystem, otherwise maybe wait for a sale.`
+const DEFAULT_SAMPLE_TEXT = `Just bought the new iPhone 15 Pro and I'm blown away! The camera quality is insane - took some amazing shots at sunset yesterday. Battery life is decent, though not as good as my old Android. The titanium frame feels premium but it's definitely pricey. Would recommend if you're already in the Apple ecosystem, otherwise maybe wait for a sale.`
 
-export function ContentClassifierDemo() {
-  const [text, setText] = useState(SAMPLE_TEXT)
+const DEFAULT_TONE_COLORS: Record<string, string> = {
+  positive: "bg-green-100 text-green-800",
+  negative: "bg-red-100 text-red-800",
+  neutral: "bg-gray-100 text-gray-800",
+  mixed: "bg-yellow-100 text-yellow-800",
+}
+
+const DEFAULT_TYPE_ICONS: Record<string, string> = {
+  review: "📝",
+  news: "📰",
+  opinion: "💭",
+  tutorial: "📚",
+  question: "❓",
+  promotion: "📢",
+  other: "📄",
+}
+
+export interface ContentClassifierDemoProps {
+  /** Initial text to classify */
+  defaultText?: string
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Tone color mappings */
+  toneColors?: Record<string, string>
+  /** Content type icon mappings */
+  typeIcons?: Record<string, string>
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function ContentClassifierDemo({
+  defaultText = DEFAULT_SAMPLE_TEXT,
+  placeholder = "Enter content to classify...",
+  toneColors = DEFAULT_TONE_COLORS,
+  typeIcons = DEFAULT_TYPE_ICONS,
+  temperature = 0.3,
+  maxTokens = 300,
+}: ContentClassifierDemoProps = {}) {
+  const [text, setText] = useState(defaultText)
   const [result, setResult] = useState<Classification | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -44,8 +83,8 @@ Respond with JSON:
   "tone": "positive|negative|neutral|mixed",
   "flags": ["contains_opinion", "product_mention", etc]
 }`,
-        temperature: 0.3,
-        maxTokens: 300,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = response.text.match(/\{[\s\S]*\}/)
@@ -59,29 +98,12 @@ Respond with JSON:
     }
   }
 
-  const toneColors: Record<string, string> = {
-    positive: "bg-green-100 text-green-800",
-    negative: "bg-red-100 text-red-800",
-    neutral: "bg-gray-100 text-gray-800",
-    mixed: "bg-yellow-100 text-yellow-800",
-  }
-
-  const typeIcons: Record<string, string> = {
-    review: "📝",
-    news: "📰",
-    opinion: "💭",
-    tutorial: "📚",
-    question: "❓",
-    promotion: "📢",
-    other: "📄",
-  }
-
   return (
     <div className="space-y-4 w-full max-w-xl mx-auto">
       <Textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Enter content to classify..."
+        placeholder={placeholder}
         rows={4}
       />
 

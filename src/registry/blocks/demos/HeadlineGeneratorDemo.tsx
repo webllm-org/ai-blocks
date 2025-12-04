@@ -13,10 +13,37 @@ interface Headline {
   style: string
 }
 
-const SAMPLE_CONTENT = `A new study from Stanford University reveals that taking short walks after meals can significantly reduce blood sugar spikes. Researchers found that just 10 minutes of light walking after eating reduced post-meal glucose levels by up to 22%. The study, which followed 500 participants over 6 months, suggests this simple habit could help prevent type 2 diabetes.`
+const DEFAULT_SAMPLE_CONTENT = `A new study from Stanford University reveals that taking short walks after meals can significantly reduce blood sugar spikes. Researchers found that just 10 minutes of light walking after eating reduced post-meal glucose levels by up to 22%. The study, which followed 500 participants over 6 months, suggests this simple habit could help prevent type 2 diabetes.`
 
-export function HeadlineGeneratorDemo() {
-  const [content, setContent] = useState(SAMPLE_CONTENT)
+const DEFAULT_STYLE_COLORS: Record<string, string> = {
+  Informative: "bg-blue-100 text-blue-800",
+  Clickbait: "bg-orange-100 text-orange-800",
+  Question: "bg-purple-100 text-purple-800",
+  "How-to": "bg-green-100 text-green-800",
+  Listicle: "bg-pink-100 text-pink-800",
+}
+
+export interface HeadlineGeneratorDemoProps {
+  /** Initial content to generate headlines from */
+  defaultContent?: string
+  /** Placeholder text for the textarea */
+  placeholder?: string
+  /** Custom style colors for headline badges */
+  styleColors?: Record<string, string>
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function HeadlineGeneratorDemo({
+  defaultContent = DEFAULT_SAMPLE_CONTENT,
+  placeholder = "Paste your article or blog post content...",
+  styleColors = DEFAULT_STYLE_COLORS,
+  temperature = 0.8,
+  maxTokens = 400,
+}: HeadlineGeneratorDemoProps = {}) {
+  const [content, setContent] = useState(defaultContent)
   const [headlines, setHeadlines] = useState<Headline[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
@@ -41,8 +68,8 @@ Respond with JSON array:
   {"text": "headline 4", "style": "How-to"},
   {"text": "headline 5", "style": "Listicle"}
 ]`,
-        temperature: 0.8,
-        maxTokens: 400,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = result.text.match(/\[[\s\S]*\]/)
@@ -62,20 +89,12 @@ Respond with JSON array:
     setTimeout(() => setCopiedIndex(null), 2000)
   }
 
-  const styleColors: Record<string, string> = {
-    Informative: "bg-blue-100 text-blue-800",
-    Clickbait: "bg-orange-100 text-orange-800",
-    Question: "bg-purple-100 text-purple-800",
-    "How-to": "bg-green-100 text-green-800",
-    Listicle: "bg-pink-100 text-pink-800",
-  }
-
   return (
     <div className="space-y-4 w-full max-w-xl mx-auto">
       <Textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="Paste your article or blog post content..."
+        placeholder={placeholder}
         rows={4}
       />
 

@@ -8,23 +8,50 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Loader2, Send, User } from "lucide-react"
 
-const PERSONAS = [
+export interface Persona {
+  id: string
+  name: string
+  icon: string
+  system: string
+}
+
+const DEFAULT_PERSONAS: Persona[] = [
   { id: "helpful", name: "Helpful Assistant", icon: "🤖", system: "You are a helpful, friendly assistant. Be concise and clear." },
   { id: "pirate", name: "Pirate Captain", icon: "🏴‍☠️", system: "You are a pirate captain. Respond in pirate speak with 'arr', 'matey', nautical terms, and pirate slang. Be enthusiastic!" },
   { id: "shakespeare", name: "Shakespeare", icon: "🎭", system: "You are William Shakespeare. Respond in Elizabethan English with thee, thou, hath, doth. Be poetic and dramatic." },
   { id: "chef", name: "French Chef", icon: "👨‍🍳", system: "You are a passionate French chef. Sprinkle in French words, be dramatic about food, and express strong culinary opinions." },
   { id: "detective", name: "Noir Detective", icon: "🕵️", system: "You are a 1940s noir detective. Be cynical, use metaphors, speak in short punchy sentences. The world is a dark place." },
-] as const
+]
 
 interface Message {
   role: "user" | "assistant"
   content: string
 }
 
-export function ChatPersonasDemo() {
-  const [messages, setMessages] = useState<Message[]>([])
+export interface ChatPersonasDemoProps {
+  /** List of personas to choose from */
+  personas?: Persona[]
+  /** Initial persona ID to select */
+  defaultPersonaId?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+  /** Initial messages to display */
+  initialMessages?: Message[]
+}
+
+export function ChatPersonasDemo({
+  personas = DEFAULT_PERSONAS,
+  defaultPersonaId,
+  temperature = 0.8,
+  maxTokens = 200,
+  initialMessages = [],
+}: ChatPersonasDemoProps = {}) {
+  const defaultPersona = personas.find(p => p.id === defaultPersonaId) || personas[0]
+  const [messages, setMessages] = useState<Message[]>(initialMessages)
   const [input, setInput] = useState("")
-  const [persona, setPersona] = useState(PERSONAS[0])
+  const [persona, setPersona] = useState<Persona>(defaultPersona)
   const [isLoading, setIsLoading] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -45,8 +72,8 @@ export function ChatPersonasDemo() {
     try {
       const result = await generateText({
         prompt: `${persona.system}\n\nUser: ${input.trim()}\n\nAssistant:`,
-        temperature: 0.8,
-        maxTokens: 200,
+        temperature,
+        maxTokens,
       })
 
       const assistantMessage: Message = { role: "assistant", content: result.text.trim() }
@@ -62,7 +89,7 @@ export function ChatPersonasDemo() {
     }
   }
 
-  const handlePersonaChange = (newPersona: typeof PERSONAS[number]) => {
+  const handlePersonaChange = (newPersona: Persona) => {
     setPersona(newPersona)
     setMessages([])
   }
@@ -70,7 +97,7 @@ export function ChatPersonasDemo() {
   return (
     <div className="space-y-4 w-full max-w-xl mx-auto">
       <div className="flex flex-wrap gap-2">
-        {PERSONAS.map((p) => (
+        {personas.map((p) => (
           <Button
             key={p.id}
             variant={persona.id === p.id ? "default" : "outline"}

@@ -9,24 +9,73 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, User, Copy, Check, RefreshCw } from "lucide-react"
 
-const TONES = [
+export interface BioTone {
+  id: string
+  label: string
+  icon: string
+}
+
+export interface BioLength {
+  id: string
+  label: string
+  chars: string
+}
+
+const DEFAULT_TONES: BioTone[] = [
   { id: "professional", label: "Professional", icon: "💼" },
   { id: "casual", label: "Casual", icon: "😊" },
   { id: "creative", label: "Creative", icon: "🎨" },
   { id: "minimal", label: "Minimal", icon: "✨" },
-] as const
+]
 
-const LENGTHS = [
+const DEFAULT_LENGTHS: BioLength[] = [
   { id: "short", label: "Short", chars: "~50 chars" },
   { id: "medium", label: "Medium", chars: "~150 chars" },
   { id: "long", label: "Long", chars: "~300 chars" },
-] as const
+]
 
-export function BioWriterDemo() {
-  const [name, setName] = useState("Alex Chen")
-  const [details, setDetails] = useState("Software engineer, 5 years experience, loves hiking and photography, works at a startup, based in San Francisco")
-  const [tone, setTone] = useState<string>("professional")
-  const [length, setLength] = useState<string>("medium")
+const DEFAULT_NAME = "Alex Chen"
+const DEFAULT_DETAILS = "Software engineer, 5 years experience, loves hiking and photography, works at a startup, based in San Francisco"
+
+export interface BioWriterDemoProps {
+  /** List of tones to choose from */
+  tones?: BioTone[]
+  /** List of length options */
+  lengths?: BioLength[]
+  /** Initial name */
+  defaultName?: string
+  /** Initial details */
+  defaultDetails?: string
+  /** Initial tone ID */
+  defaultToneId?: string
+  /** Initial length ID */
+  defaultLengthId?: string
+  /** Placeholder for name input */
+  namePlaceholder?: string
+  /** Placeholder for details textarea */
+  detailsPlaceholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function BioWriterDemo({
+  tones = DEFAULT_TONES,
+  lengths = DEFAULT_LENGTHS,
+  defaultName = DEFAULT_NAME,
+  defaultDetails = DEFAULT_DETAILS,
+  defaultToneId = "professional",
+  defaultLengthId = "medium",
+  namePlaceholder = "Name (optional)",
+  detailsPlaceholder = "Key details: job, experience, interests, location...",
+  temperature = 0.8,
+  maxTokens = 200,
+}: BioWriterDemoProps = {}) {
+  const [name, setName] = useState(defaultName)
+  const [details, setDetails] = useState(defaultDetails)
+  const [tone, setTone] = useState<string>(defaultToneId)
+  const [length, setLength] = useState<string>(defaultLengthId)
   const [bio, setBio] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -51,8 +100,8 @@ The bio should be ${lengthInstructions[length as keyof typeof lengthInstructions
 Write in third person. Don't use hashtags or emojis unless the tone is casual/creative.
 
 Bio:`,
-        temperature: 0.8,
-        maxTokens: 200,
+        temperature,
+        maxTokens,
       })
       setBio(result.text.trim())
     } catch (error) {
@@ -73,13 +122,13 @@ Bio:`,
       <Input
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Name (optional)"
+        placeholder={namePlaceholder}
       />
 
       <Textarea
         value={details}
         onChange={(e) => setDetails(e.target.value)}
-        placeholder="Key details: job, experience, interests, location..."
+        placeholder={detailsPlaceholder}
         rows={3}
       />
 
@@ -87,7 +136,7 @@ Bio:`,
         <div>
           <p className="text-sm text-muted-foreground mb-2">Tone</p>
           <div className="flex flex-wrap gap-2">
-            {TONES.map((t) => (
+            {tones.map((t) => (
               <Button
                 key={t.id}
                 variant={tone === t.id ? "default" : "outline"}
@@ -104,7 +153,7 @@ Bio:`,
         <div>
           <p className="text-sm text-muted-foreground mb-2">Length</p>
           <div className="flex flex-wrap gap-2">
-            {LENGTHS.map((l) => (
+            {lengths.map((l) => (
               <Button
                 key={l.id}
                 variant={length === l.id ? "default" : "outline"}

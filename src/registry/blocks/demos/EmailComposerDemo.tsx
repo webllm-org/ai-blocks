@@ -8,19 +8,56 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, Mail, Copy, Check } from "lucide-react"
 
-const EMAIL_TYPES = [
+export interface EmailType {
+  id: string
+  label: string
+  icon: string
+}
+
+const DEFAULT_EMAIL_TYPES: EmailType[] = [
   { id: "follow-up", label: "Follow-up", icon: "📬" },
   { id: "request", label: "Request", icon: "🙏" },
   { id: "thank-you", label: "Thank You", icon: "🙏" },
   { id: "introduction", label: "Introduction", icon: "👋" },
   { id: "apology", label: "Apology", icon: "😔" },
   { id: "announcement", label: "Announcement", icon: "📢" },
-] as const
+]
 
-export function EmailComposerDemo() {
-  const [recipient, setRecipient] = useState("Sarah")
-  const [context, setContext] = useState("Met at tech conference last week, discussed potential partnership, wants to schedule follow-up call")
-  const [emailType, setEmailType] = useState<string>("follow-up")
+const DEFAULT_RECIPIENT = "Sarah"
+const DEFAULT_CONTEXT = "Met at tech conference last week, discussed potential partnership, wants to schedule follow-up call"
+
+export interface EmailComposerDemoProps {
+  /** List of email types to choose from */
+  emailTypes?: EmailType[]
+  /** Initial recipient name */
+  defaultRecipient?: string
+  /** Initial context */
+  defaultContext?: string
+  /** Initial email type ID */
+  defaultEmailTypeId?: string
+  /** Placeholder for recipient input */
+  recipientPlaceholder?: string
+  /** Placeholder for context textarea */
+  contextPlaceholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function EmailComposerDemo({
+  emailTypes = DEFAULT_EMAIL_TYPES,
+  defaultRecipient = DEFAULT_RECIPIENT,
+  defaultContext = DEFAULT_CONTEXT,
+  defaultEmailTypeId = "follow-up",
+  recipientPlaceholder = "Recipient name (optional)",
+  contextPlaceholder = "Key points: who, what, why, any specific details to include...",
+  temperature = 0.7,
+  maxTokens = 400,
+}: EmailComposerDemoProps = {}) {
+  const [recipient, setRecipient] = useState(defaultRecipient)
+  const [context, setContext] = useState(defaultContext)
+  const [emailType, setEmailType] = useState<string>(defaultEmailTypeId)
   const [email, setEmail] = useState<{ subject: string; body: string } | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -40,8 +77,8 @@ Create a concise, professional email with a clear subject line.
 
 Respond in JSON format:
 {"subject": "Email subject line", "body": "Email body text"}`,
-        temperature: 0.7,
-        maxTokens: 400,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = result.text.match(/\{[\s\S]*\}/)
@@ -68,20 +105,20 @@ Respond in JSON format:
       <Input
         value={recipient}
         onChange={(e) => setRecipient(e.target.value)}
-        placeholder="Recipient name (optional)"
+        placeholder={recipientPlaceholder}
       />
 
       <Textarea
         value={context}
         onChange={(e) => setContext(e.target.value)}
-        placeholder="Key points: who, what, why, any specific details to include..."
+        placeholder={contextPlaceholder}
         rows={3}
       />
 
       <div>
         <p className="text-sm text-muted-foreground mb-2">Email Type</p>
         <div className="flex flex-wrap gap-2">
-          {EMAIL_TYPES.map((type) => (
+          {emailTypes.map((type) => (
             <Button
               key={type.id}
               variant={emailType === type.id ? "default" : "outline"}

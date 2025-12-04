@@ -12,10 +12,26 @@ interface Flashcard {
   answer: string
 }
 
-const SAMPLE_CONTENT = `The water cycle, also known as the hydrological cycle, describes the continuous movement of water on, above, and below Earth's surface. Water evaporates from oceans and lakes, rises as water vapor, condenses into clouds, and falls back as precipitation. Transpiration from plants also contributes water vapor to the atmosphere. Groundwater flows through aquifers and eventually returns to the ocean, completing the cycle.`
+const DEFAULT_SAMPLE_CONTENT = `The water cycle, also known as the hydrological cycle, describes the continuous movement of water on, above, and below Earth's surface. Water evaporates from oceans and lakes, rises as water vapor, condenses into clouds, and falls back as precipitation. Transpiration from plants also contributes water vapor to the atmosphere. Groundwater flows through aquifers and eventually returns to the ocean, completing the cycle.`
 
-export function FlashcardGeneratorDemo() {
-  const [content, setContent] = useState(SAMPLE_CONTENT)
+export interface FlashcardGeneratorDemoProps {
+  /** Initial educational content */
+  defaultContent?: string
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function FlashcardGeneratorDemo({
+  defaultContent = DEFAULT_SAMPLE_CONTENT,
+  placeholder = "Paste educational content to generate flashcards...",
+  temperature = 0.7,
+  maxTokens = 600,
+}: FlashcardGeneratorDemoProps = {}) {
+  const [content, setContent] = useState(defaultContent)
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isFlipped, setIsFlipped] = useState(false)
@@ -36,8 +52,8 @@ Content:
 ${content}
 
 Respond with JSON array: [{"question": "Q1", "answer": "A1"}, {"question": "Q2", "answer": "A2"}, ...]`,
-        temperature: 0.7,
-        maxTokens: 600,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = result.text.match(/\[[\s\S]*\]/)
@@ -73,7 +89,7 @@ Respond with JSON array: [{"question": "Q1", "answer": "A1"}, {"question": "Q2",
       <Textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="Paste educational content to generate flashcards..."
+        placeholder={placeholder}
         rows={4}
       />
 
