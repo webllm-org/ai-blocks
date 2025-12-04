@@ -1,18 +1,38 @@
 {
-  "name": "@webllm/ai-blocks",
-  "version": "0.1.0",
+  "name": "ai-blocks",
+  "version": "0.0.1",
   "private": true,
-  "description": "AI-focused UI components for building LLM-powered interfaces",
+  "description": "AI-focused UI components for building LLM-powered interfaces with WebLLM",
+  "homepage": "https://webllm.org/blocks",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webllm-org/webllm",
+    "directory": "packages/ai-blocks"
+  },
+  "license": "MIT",
   "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./demos/*": {
+      "import": "./dist/demos/*.js"
+    },
     "./registry/*": "./src/registry/*",
     "./lib/*": "./src/lib/*"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
+    "build": "tsup",
     "generate:registry": "node scripts/generate-registry-from-blocks.js",
     "build:registry": "node scripts/generate-registry-from-blocks.js && node scripts/build-registry.js",
     "dev": "node scripts/build-registry.js --watch",
-    "clean": "rm -rf ../playground/public/r"
+    "clean": "rm -rf dist ../playground/public/r"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -21,10 +41,14 @@
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
-    "@webllm/client": "*"
+    "webllm": "*",
+    "lucide-react": ">=0.300.0"
   },
   "peerDependenciesMeta": {
-    "@webllm/client": {
+    "webllm": {
+      "optional": true
+    },
+    "lucide-react": {
       "optional": true
     }
   },
@@ -32,6 +56,7 @@
     "@types/node": "^20.19.25",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "tsup": "^8.0.0",
     "typescript": "^5.5.0"
   }
 }

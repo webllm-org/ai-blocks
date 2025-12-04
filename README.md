@@ -1,110 +1,54 @@
-# @webllm/ai-blocks
+# ai-blocks
 
-AI-focused UI components for building LLM-powered interfaces. This package provides reusable components and demos that can be installed via the shadcn CLI.
+AI-focused UI components for building LLM-powered interfaces with [WebLLM](https://webllm.org).
 
-## Registry Architecture
+## What is WebLLM?
 
-### How It Works
+WebLLM is a browser-native LLM integration protocol. It provides a unified API (`navigator.llm`) for accessing language models directly in the browser, enabling privacy-preserving AI features without server-side API calls.
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                         SOURCE OF TRUTH                                  │
-│                                                                          │
-│  packages/playground/data/blocks/*.ts                                   │
-│  - Block metadata (id, title, description, tags, etc.)                  │
-│  - Component references                                                  │
-│  - Source code via Vite ?raw imports                                    │
-└─────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                     generate-registry-from-blocks.js                     │
-│                                                                          │
-│  Reads TypeScript block files and extracts metadata                     │
-│  Output: packages/ai-blocks/registry.json                               │
-└─────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                         build-registry.js                                │
-│                                                                          │
-│  Reads registry.json + component source files                           │
-│  Transforms imports: @webllm/client → webllm                            │
-│  Auto-detects webllm dependency                                         │
-│  Output: packages/playground/public/r/*.json                            │
-└─────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                         SERVED AT RUNTIME                                │
-│                                                                          │
-│  https://webllm.org/r/{component-name}.json                             │
-│  - Individual component JSON files for shadcn CLI                       │
-│  - index.json with full component listing                               │
-└─────────────────────────────────────────────────────────────────────────┘
-```
+## What is ai-blocks?
 
-### Import Path Transformation
+This package provides 50+ ready-to-use AI components that work with WebLLM:
 
-Components use `@webllm/client` internally (for monorepo builds), but users need the public `webllm` package:
+- **Chat interfaces** - Simple chat, personas, voice chat, tool use
+- **Text generation** - Streaming, rewriting, expanding, autocomplete
+- **Structured output** - Sentiment analysis, entity extraction, JSON generation
+- **Content tools** - Summarization, translation, reading level adjustment
+- **Forms** - Smart validation, autofill, contact forms
+- **E-commerce** - Product search, reviews, size advisor
+- **Education** - Flashcards, quizzes, Socratic tutoring
+- **Accessibility** - Alt text, simplification, screen reader prep
 
-| Context | Import |
-|---------|--------|
-| Source files | `import { generateText } from "@webllm/client"` |
-| Playground runtime | `@webllm/client` (internal package) |
-| Registry JSON | `import { generateText } from "webllm"` |
-| Code display on site | `webllm` (via `displayCode` getter) |
-| Copy to clipboard | `webllm` |
-| Download .tsx | `webllm` |
+All components can be installed via the shadcn CLI and work with the `webllm` npm package.
 
-This is handled by:
-1. **Build script** (`build-registry.js`): Transforms imports in generated JSON files
-2. **displayCode getter** (`BlockDef.displayCode`): Transforms code for site display
+## Installation
 
-### BlockDef and displayCode
+### Option 1: shadcn CLI (recommended)
 
-Block definitions use `defineBlocks()` helper which adds a `displayCode` getter:
-
-```typescript
-// packages/playground/data/blocks/chat.ts
-import { defineBlocks } from "./types"
-import SimpleChatDemoCode from "@ai-blocks/registry/blocks/demos/SimpleChatDemo.tsx?raw"
-
-export const chatBlocks = defineBlocks([
-  {
-    id: "simple-chat",
-    title: "Simple Chat",
-    code: SimpleChatDemoCode,  // Raw code with @webllm/client
-    // ...
-  },
-])
-
-// Usage in components:
-block.code        // Raw: @webllm/client (for internal use)
-block.displayCode // Transformed: webllm (for user-facing display)
-```
-
-## Build Commands
-
-```bash
-# Generate registry.json from blocks data
-npm run generate:registry
-
-# Full build (generate + build JSON files)
-npm run build:registry
-
-# Clean generated files
-npm run clean
-```
-
-## Usage
-
-Install components via shadcn CLI:
+Install individual components via shadcn CLI:
 
 ```bash
 npx shadcn@latest add https://webllm.org/r/simple-chat.json
 npx shadcn@latest add https://webllm.org/r/chat-with-tools.json
 ```
+
+### Option 2: npm package
+
+Install the package for direct imports:
+
+```bash
+npm install ai-blocks webllm
+```
+
+```tsx
+import { SimpleChatDemo } from "ai-blocks"
+// or individual imports
+import { SimpleChatDemo } from "ai-blocks/demos/SimpleChatDemo"
+```
+
+**Note:** Direct imports require a [shadcn/ui](https://ui.shadcn.com) setup with path aliases configured (`@/components/ui/*`, `@/lib/utils`).
+
+## Browse Components
 
 View all available components:
 
@@ -112,31 +56,17 @@ View all available components:
 curl https://webllm.org/r/index.json
 ```
 
-## Directory Structure
+Or browse visually at [webllm.org/blocks](https://webllm.org/blocks).
 
-```
-packages/ai-blocks/
-├── src/
-│   └── registry/
-│       ├── blocks/demos/     # Demo component source files
-│       ├── ui/               # Base UI components
-│       └── hooks/            # React hooks
-├── scripts/
-│   ├── generate-registry-from-blocks.js  # Generates registry.json
-│   └── build-registry.js                  # Builds JSON files
-├── registry.json             # Generated manifest (gitignored)
-└── README.md
+## Requirements
 
-packages/playground/
-├── data/blocks/              # Block definitions (source of truth)
-│   ├── types.ts              # BlockDef, defineBlocks()
-│   ├── chat.ts
-│   ├── image.ts
-│   └── ...
-├── lib/
-│   └── transform-code.ts     # transformCodeForDisplay()
-└── public/r/                 # Generated JSON files (gitignored)
-    ├── index.json
-    ├── simple-chat.json
-    └── ...
-```
+- React 18+
+- [webllm](https://www.npmjs.com/package/webllm) npm package
+- Tailwind CSS (components use Tailwind classes)
+- [lucide-react](https://lucide.dev) for icons
+
+## Links
+
+- [WebLLM Documentation](https://webllm.org/docs)
+- [Component Browser](https://webllm.org/blocks)
+- [GitHub Repository](https://github.com/anthropics/webllm)

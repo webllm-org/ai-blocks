@@ -1,0 +1,25 @@
+# Development files
+DEV.md
+scripts/
+registry.json
+tsup.config.ts
+
+# Build artifacts
+node_modules/
+*.log
+*.tgz
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Test files
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+coverage/
