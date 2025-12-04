@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect, useCallback } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState, useRef, useCallback } from "react"
+import { generateText } from "@webllm/client"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -11,22 +11,17 @@ export function SmartTextareaDemo() {
   const [text, setText] = useState("")
   const [suggestion, setSuggestion] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
-
   const getSuggestion = useCallback(async (currentText: string) => {
-    if (!clientRef.current || currentText.length < 20) {
+    if (currentText.length < 20) {
       setSuggestion("")
       return
     }
 
     setIsLoading(true)
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Continue this text naturally with 1 short sentence (10-20 words max):
 
 "${currentText}"

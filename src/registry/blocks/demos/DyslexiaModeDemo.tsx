@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
@@ -35,18 +35,12 @@ export function DyslexiaModeDemo() {
     lineHeight: 1.5
   })
   const [isSimplifying, setIsSimplifying] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const simplifyText = async () => {
-    if (!clientRef.current) return
 
     setIsSimplifying(true)
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Rewrite this text to be more dyslexia-friendly:
 - Use shorter, simpler sentences
 - Replace complex words with simpler alternatives

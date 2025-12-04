@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -17,14 +17,9 @@ export function SimpleChatDemo() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleSend = async () => {
-    if (!input.trim() || !clientRef.current || isLoading) return
+    if (!input.trim() || isLoading) return
 
     const userMessage: Message = { role: "user", content: input.trim() }
     setMessages((prev) => [...prev, userMessage])
@@ -32,7 +27,7 @@ export function SimpleChatDemo() {
     setIsLoading(true)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: input.trim(),
         systemPrompt: "You are a helpful assistant. Keep responses concise.",
         temperature: 0.7,

@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState, useRef } from "react"
+import { generateText } from "@webllm/client"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -18,15 +18,10 @@ export function InputValidationDemo() {
   const [email, setEmail] = useState<FieldState>({ value: "", status: "idle", message: "" })
   const [phone, setPhone] = useState<FieldState>({ value: "", status: "idle", message: "" })
   const [address, setAddress] = useState<FieldState>({ value: "", status: "idle", message: "" })
-  const clientRef = useRef<WebLLMClient | null>(null)
   const debounceRefs = useRef<Record<string, NodeJS.Timeout>>({})
 
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
-
   const validateField = async (field: string, value: string, setter: React.Dispatch<React.SetStateAction<FieldState>>) => {
-    if (!clientRef.current || !value.trim()) {
+    if (!value.trim()) {
       setter({ value, status: "idle", message: "" })
       return
     }
@@ -34,7 +29,7 @@ export function InputValidationDemo() {
     setter(prev => ({ ...prev, status: "validating" }))
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Validate this ${field} input: "${value}"
 
 Respond with JSON: {"status": "valid"|"invalid"|"warning", "message": "brief feedback"}

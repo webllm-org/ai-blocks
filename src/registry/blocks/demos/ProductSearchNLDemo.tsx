@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -29,14 +29,9 @@ export function ProductSearchNLDemo() {
   const [results, setResults] = useState<SearchResult[]>([])
   const [searchIntent, setSearchIntent] = useState("")
   const [isSearching, setIsSearching] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const search = async () => {
-    if (!clientRef.current || !query.trim()) return
+    if (!query.trim()) return
 
     setIsSearching(true)
     setResults([])
@@ -47,7 +42,7 @@ export function ProductSearchNLDemo() {
         `${p.id}: ${p.name} ($${p.price}, ${p.color}, ${p.warmth} warmth, ${p.style} style, ${p.rating}★)`
       ).join("\n")
 
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `You are a helpful shopping assistant. Given a natural language query, find the most relevant products.
 
 Products:

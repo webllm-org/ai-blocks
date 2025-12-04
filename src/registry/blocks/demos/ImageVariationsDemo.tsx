@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState, useEffect } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -38,20 +38,14 @@ export function ImageVariationsDemo() {
   const [selectedImage, setSelectedImage] = useState(sampleImages[0])
   const [variations, setVariations] = useState<Variation[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const generateVariations = async () => {
-    if (!clientRef.current) return
 
     setIsGenerating(true)
     setVariations([])
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Given this image description: "${selectedImage.description}"
 
 Generate 4 creative variations of this image in different styles. Return JSON array:

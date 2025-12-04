@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -37,14 +37,9 @@ export function SemanticSearchDemo() {
   const [query, setQuery] = useState("")
   const [results, setResults] = useState<SearchResult[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleSearch = async () => {
-    if (!query.trim() || !clientRef.current) return
+    if (!query.trim()) return
     setIsLoading(true)
     setResults([])
 
@@ -53,7 +48,7 @@ export function SemanticSearchDemo() {
     ).join("\n")
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `You are a smart product search engine. Given a natural language query, find the most relevant products.
 
 Products:

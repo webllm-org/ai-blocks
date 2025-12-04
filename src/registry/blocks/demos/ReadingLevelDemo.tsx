@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
@@ -21,14 +21,9 @@ export function ReadingLevelDemo() {
   const [adaptedText, setAdaptedText] = useState("")
   const [selectedLevel, setSelectedLevel] = useState<string>("teen")
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleAdapt = async () => {
-    if (!originalText.trim() || !clientRef.current) return
+    if (!originalText.trim()) return
     setIsLoading(true)
     setAdaptedText("")
 
@@ -41,7 +36,7 @@ export function ReadingLevelDemo() {
     }
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Rewrite this text ${levelInstructions[selectedLevel as keyof typeof levelInstructions]}
 
 Original text:

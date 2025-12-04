@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -36,11 +36,6 @@ export function SearchSummaryDemo() {
   const [summary, setSummary] = useState("")
   const [isSearching, setIsSearching] = useState(false)
   const [isSummarizing, setIsSummarizing] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const search = async () => {
     if (!query.trim()) return
@@ -67,12 +62,11 @@ export function SearchSummaryDemo() {
     setIsSearching(false)
 
     // Generate summary
-    if (clientRef.current) {
-      setIsSummarizing(true)
-      try {
-        const resultsText = matchedResults.map(r => `${r.title}: ${r.snippet}`).join("\n")
+    setIsSummarizing(true)
+    try {
+      const resultsText = matchedResults.map(r => `${r.title}: ${r.snippet}`).join("\n")
 
-        const result = await clientRef.current.generateText({
+      const result = await generateText({
           prompt: `Summarize these search results for "${query}" in 2-3 sentences. Be helpful and direct.
 
 Results:
@@ -83,12 +77,11 @@ Summary:`,
           maxTokens: 100,
         })
 
-        setSummary(result.text.trim())
-      } catch (error) {
-        console.error("Error:", error)
-      } finally {
-        setIsSummarizing(false)
-      }
+      setSummary(result.text.trim())
+    } catch (error) {
+      console.error("Error:", error)
+    } finally {
+      setIsSummarizing(false)
     }
   }
 

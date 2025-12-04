@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
@@ -20,19 +20,14 @@ export function HeadlineGeneratorDemo() {
   const [headlines, setHeadlines] = useState<Headline[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleGenerate = async () => {
-    if (!content.trim() || !clientRef.current) return
+    if (!content.trim()) return
     setIsLoading(true)
     setHeadlines([])
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Generate 5 different headline options for this article. Each should have a different style.
 
 Article:

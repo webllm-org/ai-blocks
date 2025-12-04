@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
@@ -22,19 +22,14 @@ export function EntityExtractionDemo() {
   const [text, setText] = useState(SAMPLE_TEXT)
   const [entities, setEntities] = useState<ExtractedEntities | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleExtract = async () => {
-    if (!text.trim() || !clientRef.current) return
+    if (!text.trim()) return
     setIsLoading(true)
     setEntities(null)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Extract named entities from this text. Identify people, locations, dates, organizations, and monetary amounts.
 
 Text: "${text}"

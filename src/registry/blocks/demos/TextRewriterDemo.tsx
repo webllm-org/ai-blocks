@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
@@ -21,20 +21,15 @@ export function TextRewriterDemo() {
   const [selectedTone, setSelectedTone] = useState<string>("professional")
   const [rewritten, setRewritten] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleRewrite = async () => {
-    if (!text.trim() || !clientRef.current) return
+    if (!text.trim()) return
     setIsLoading(true)
     setRewritten("")
 
     try {
       const tone = TONES.find(t => t.id === selectedTone)
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Rewrite the following text in a ${selectedTone} tone. Keep the same meaning but adjust the style and word choice.
 
 Original text: "${text}"

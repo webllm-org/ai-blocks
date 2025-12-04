@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState, useRef } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, HelpCircle, X } from "lucide-react"
@@ -13,12 +13,7 @@ export function ExplainThisDemo() {
   const [explanation, setExplanation] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [popupPosition, setPopupPosition] = useState<{ top: number; left: number } | null>(null)
-  const clientRef = useRef<WebLLMClient | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleTextSelect = () => {
     const selection = window.getSelection()
@@ -41,11 +36,11 @@ export function ExplainThisDemo() {
   }
 
   const handleExplain = async () => {
-    if (!selectedText || !clientRef.current) return
+    if (!selectedText) return
     setIsLoading(true)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Explain this text in simple terms that anyone can understand. Use plain language, avoid jargon, and give a brief analogy if helpful.
 
 Text to explain: "${selectedText}"

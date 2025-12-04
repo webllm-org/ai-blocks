@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -26,21 +26,16 @@ export function ScreenReaderPrepDemo() {
   const [improvements, setImprovements] = useState<string[]>([])
   const [isProcessing, setIsProcessing] = useState(false)
   const [copied, setCopied] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const optimizeContent = async () => {
-    if (!clientRef.current || !input.trim()) return
+    if (!input.trim()) return
 
     setIsProcessing(true)
     setOutput("")
     setImprovements([])
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Optimize this content for screen readers. Return JSON:
 
 Original content:

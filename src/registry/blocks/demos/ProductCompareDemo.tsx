@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
@@ -20,19 +20,14 @@ export function ProductCompareDemo() {
   const [product2, setProduct2] = useState("Samsung Galaxy S24 Ultra - $1199, Snapdragon 8 Gen 3, 200MP camera, S Pen, 6.8 inch display")
   const [comparison, setComparison] = useState<Comparison | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleCompare = async () => {
-    if (!product1.trim() || !product2.trim() || !clientRef.current) return
+    if (!product1.trim() || !product2.trim()) return
     setIsLoading(true)
     setComparison(null)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Compare these two products and create a detailed comparison:
 
 Product 1: ${product1}

@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
@@ -13,19 +13,14 @@ export function SimplifyTextDemo() {
   const [originalText, setOriginalText] = useState(SAMPLE_TEXT)
   const [simplifiedText, setSimplifiedText] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleSimplify = async () => {
-    if (!originalText.trim() || !clientRef.current) return
+    if (!originalText.trim()) return
     setIsLoading(true)
     setSimplifiedText("")
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Simplify this text for better accessibility. Use:
 - Simple, common words
 - Short sentences (under 15 words)

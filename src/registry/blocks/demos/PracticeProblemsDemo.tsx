@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
@@ -24,21 +24,16 @@ export function PracticeProblemsDemo() {
   const [showExplanation, setShowExplanation] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [score, setScore] = useState({ correct: 0, total: 0 })
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const generateProblem = async () => {
-    if (!content.trim() || !clientRef.current) return
+    if (!content.trim()) return
     setIsLoading(true)
     setProblem(null)
     setSelectedAnswer(null)
     setShowExplanation(false)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Create a multiple choice question based on this educational content:
 
 ${content}

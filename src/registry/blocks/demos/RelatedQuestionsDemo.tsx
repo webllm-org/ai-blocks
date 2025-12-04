@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState, useEffect } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -26,20 +26,14 @@ export function RelatedQuestionsDemo() {
   const [questions, setQuestions] = useState<Question[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const generateQuestions = async () => {
-    if (!clientRef.current) return
 
     setIsGenerating(true)
     setQuestions([])
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Based on this article about "${sampleArticle.title}":
 
 ${sampleArticle.content}
@@ -64,7 +58,7 @@ Generate 5 questions a curious reader might wonder about. Format: one question p
   }
 
   const getAnswer = async (index: number) => {
-    if (!clientRef.current || questions[index].answer) {
+    if (questions[index].answer) {
       // Toggle expand if answer exists
       setQuestions(prev => prev.map((q, i) =>
         i === index ? { ...q, isExpanded: !q.isExpanded } : q
@@ -75,7 +69,7 @@ Generate 5 questions a curious reader might wonder about. Format: one question p
     setLoadingIndex(index)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Based on this article:
 
 ${sampleArticle.content}

@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -32,18 +32,13 @@ export function SearchFiltersDemo() {
   const [filters, setFilters] = useState<ParsedFilters>({})
   const [filteredProducts, setFilteredProducts] = useState(sampleProducts)
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const parseQuery = async () => {
-    if (!clientRef.current || !query.trim()) return
+    if (!query.trim()) return
 
     setIsLoading(true)
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Parse this shopping query into filters. Return JSON only, no explanation.
 
 Query: "${query}"

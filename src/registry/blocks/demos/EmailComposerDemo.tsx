@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { useState } from "react"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -24,19 +24,14 @@ export function EmailComposerDemo() {
   const [email, setEmail] = useState<{ subject: string; body: string } | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [copied, setCopied] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   const handleCompose = async () => {
-    if (!context.trim() || !clientRef.current) return
+    if (!context.trim()) return
     setIsLoading(true)
     setEmail(null)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `Write a professional ${emailType} email based on these details:
 Recipient: ${recipient || "the recipient"}
 Context: ${context}

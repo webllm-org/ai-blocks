@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -26,12 +26,7 @@ export function ChatPersonasDemo() {
   const [input, setInput] = useState("")
   const [persona, setPersona] = useState(PERSONAS[0])
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -40,7 +35,7 @@ export function ChatPersonasDemo() {
   }, [messages])
 
   const handleSend = async () => {
-    if (!input.trim() || !clientRef.current || isLoading) return
+    if (!input.trim() || isLoading) return
 
     const userMessage: Message = { role: "user", content: input.trim() }
     setMessages(prev => [...prev, userMessage])
@@ -48,7 +43,7 @@ export function ChatPersonasDemo() {
     setIsLoading(true)
 
     try {
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `${persona.system}\n\nUser: ${input.trim()}\n\nAssistant:`,
         temperature: 0.8,
         maxTokens: 200,

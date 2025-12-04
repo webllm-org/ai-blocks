@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { WebLLMClient } from "@webllm/client"
+import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -29,19 +29,14 @@ export function ChatWithContextDemo() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const clientRef = useRef<WebLLMClient | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    clientRef.current = new WebLLMClient()
-  }, [])
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
   const sendMessage = async () => {
-    if (!clientRef.current || !input.trim() || isLoading) return
+    if (!input.trim() || isLoading) return
 
     const userMessage = input.trim()
     setInput("")
@@ -54,7 +49,7 @@ export function ChatWithContextDemo() {
         .map(m => `${m.role === "user" ? "User" : "Assistant"}: ${m.content}`)
         .join("\n")
 
-      const result = await clientRef.current.generateText({
+      const result = await generateText({
         prompt: `You are a helpful assistant. Answer questions based on this article:
 
 Title: ${sampleArticle.title}
