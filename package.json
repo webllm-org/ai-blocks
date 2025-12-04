@@ -1,7 +1,7 @@
 {
   "name": "ai-blocks",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "description": "AI-focused UI components for building LLM-powered interfaces with WebLLM",
   "homepage": "https://webllm.org/blocks",
   "repository": {
