@@ -74,5 +74,3 @@ Or browse visually at [webllm.org/blocks](https://webllm.org/blocks).
 - [Component Browser](https://webllm.org/blocks)
 - [Documentation](https://webllm.org/docs)
 - [GitHub](https://github.com/webllm-org/webllm)
-
-.
