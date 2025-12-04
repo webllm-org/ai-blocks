@@ -31,12 +31,15 @@ console.log(`Found ${registry.items.length} components\n`)
 
 // Process each item in the registry
 for (const item of registry.items) {
+  // Track dependencies discovered from file content
+  let usesWebllm = false
+
   const output = {
     name: item.name,
     type: item.type,
     title: item.title,
     description: item.description,
-    dependencies: item.dependencies || [],
+    dependencies: [...(item.dependencies || [])],
     devDependencies: item.devDependencies || [],
     registryDependencies: (item.registryDependencies || []).map(dep => {
       // Convert local: prefix to our registry URL
@@ -62,13 +65,20 @@ for (const item of registry.items) {
     const content = readFileSync(filePath, 'utf-8')
 
     // Transform import paths for registry compatibility
+    // Replace @webllm/client with the public package name "webllm"
     // Replace @/lib/utils with the standard shadcn path
     // Replace @/registry/* with @/components/* for installed components
     let transformedContent = content
+      .replace(/@webllm\/client/g, 'webllm')
       .replace(/@\/lib\/utils/g, '@/lib/utils')
       .replace(/@\/registry\/ui\/([^/]+)/g, '@/components/ui/$1')
       .replace(/@\/registry\/blocks\/([^/]+)/g, '@/components/blocks/$1')
       .replace(/@\/registry\/hooks\/([^/]+)/g, '@/hooks/$1')
+
+    // Track if this file uses webllm
+    if (content.includes('@webllm/client') || content.includes('from "webllm"')) {
+      usesWebllm = true
+    }
 
     // Derive the target path for installation based on actual file name
     const fileName = file.path.split('/').pop()
@@ -88,6 +98,11 @@ for (const item of registry.items) {
       content: transformedContent,
       type: file.type,
     })
+  }
+
+  // Add webllm dependency if any file uses it
+  if (usesWebllm && !output.dependencies.includes('webllm')) {
+    output.dependencies.push('webllm')
   }
 
   // Write the component JSON
