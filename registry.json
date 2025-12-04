@@ -225,6 +225,78 @@
       ]
     },
     {
+      "name": "pirate-article-reader",
+      "type": "registry:block",
+      "title": "Pirate Article Reader",
+      "description": "Listen to any article narrated by a salty sea captain - Arr!",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/PirateArticleReaderDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "character-voices",
+      "type": "registry:block",
+      "title": "Character Voices",
+      "description": "Hear content in different character voices - news anchor, storyteller, professor",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/CharacterVoicesDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "audio-summary",
+      "type": "registry:block",
+      "title": "Audio Summary",
+      "description": "Get a quick audio TLDR of any article - perfect for busy readers",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/AudioSummaryDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "bedtime-story",
+      "type": "registry:block",
+      "title": "Bedtime Story Generator",
+      "description": "Generate and narrate soothing bedtime stories for children",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/StoryNarratorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "multi-voice-dialogue",
+      "type": "registry:block",
+      "title": "Multi-Voice Dialogue",
+      "description": "Dialogues with different AI voices for each character",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/MultiVoiceDialogueDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "podcast-generator",
+      "type": "registry:block",
+      "title": "Podcast Generator",
+      "description": "Transform any topic into a podcast segment with AI host",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/PodcastIntroDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "availability-badge",
       "type": "registry:block",
       "title": "Availability Badge",
