@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -81,9 +81,6 @@ JSON:`,
     }
   }
 
-  useEffect(() => {
-    generateVariations()
-  }, [selectedImage])
 
   return (
     <div className="space-y-4 w-full max-w-2xl mx-auto">
@@ -147,6 +144,16 @@ JSON:`,
             </Card>
           ))}
         </div>
+      ) : variations.length === 0 ? (
+        <Card>
+          <CardContent className="py-8 text-center">
+            <p className="text-sm text-muted-foreground mb-3">Click to generate style variations</p>
+            <Button onClick={generateVariations} size="sm">
+              <Sparkles className="h-4 w-4 mr-2" />
+              Generate Variations
+            </Button>
+          </CardContent>
+        </Card>
       ) : (
         <div className="grid grid-cols-2 gap-4">
           {variations.map((variation, index) => (

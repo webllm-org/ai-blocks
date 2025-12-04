@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -90,9 +90,6 @@ ${questions[index].text}`,
     }
   }
 
-  useEffect(() => {
-    generateQuestions()
-  }, [])
 
   return (
     <div className="space-y-4 w-full max-w-xl mx-auto">
@@ -133,8 +130,12 @@ ${questions[index].text}`,
           </Card>
         ) : questions.length === 0 ? (
           <Card>
-            <CardContent className="py-8 text-center text-sm text-muted-foreground">
-              No questions generated yet
+            <CardContent className="py-8 text-center">
+              <p className="text-sm text-muted-foreground mb-3">Click to generate related questions</p>
+              <Button onClick={generateQuestions} size="sm">
+                <HelpCircle className="h-4 w-4 mr-2" />
+                Generate Questions
+              </Button>
             </CardContent>
           </Card>
         ) : (

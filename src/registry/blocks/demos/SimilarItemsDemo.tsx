@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { generateText } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -75,9 +75,6 @@ JSON:`,
     }
   }
 
-  useEffect(() => {
-    findSimilar(products[0])
-  }, [])
 
   const getSimilarProduct = (id: number) => products.find(p => p.id === id)
 
@@ -110,6 +107,16 @@ JSON:`,
           <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
           <span className="ml-2 text-sm text-muted-foreground">Finding similar items...</span>
         </div>
+      ) : similarItems.length === 0 ? (
+        <Card>
+          <CardContent className="py-8 text-center">
+            <p className="text-sm text-muted-foreground mb-3">Click to find similar products</p>
+            <Button onClick={() => findSimilar(selectedProduct)} size="sm">
+              <Sparkles className="h-4 w-4 mr-2" />
+              Find Similar
+            </Button>
+          </CardContent>
+        </Card>
       ) : (
         <div className="space-y-2">
           {similarItems.map((item, index) => {
