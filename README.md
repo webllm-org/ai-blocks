@@ -4,7 +4,7 @@ AI-focused UI components for building AI frontend interfaces with [WebLLM](https
 
 ## What is WebLLM?
 
-WebLLM is a browser-native LLM and AI integration protocol. It provides a unified API for accessing language models directly in the browser, enabling privacy-preserving AI features without server-side API calls.
+WebLLM is a browser AI integration protocol. It provides a unified API for accessing language models directly in the browser, enabling privacy-preserving AI features without server-side API calls.
 
 ## What is ai-blocks?
 
