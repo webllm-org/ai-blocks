@@ -1,10 +1,10 @@
 # ai-blocks
 
-AI-focused UI components for building LLM-powered interfaces with [WebLLM](https://webllm.org).
+AI-focused UI components for building AI frontend interfaces with [WebLLM](https://webllm.org).
 
 ## What is WebLLM?
 
-WebLLM is a browser-native LLM integration protocol. It provides a unified API (`navigator.llm`) for accessing language models directly in the browser, enabling privacy-preserving AI features without server-side API calls.
+WebLLM is a browser-native LLM and AI integration protocol. It provides a unified API for accessing language models directly in the browser, enabling privacy-preserving AI features without server-side API calls.
 
 ## What is ai-blocks?
 
@@ -41,9 +41,9 @@ npm install ai-blocks webllm
 ```
 
 ```tsx
-import { SimpleChatDemo } from "ai-blocks"
+import { SimpleChatDemo } from 'ai-blocks';
 // or individual imports
-import { SimpleChatDemo } from "ai-blocks/demos/SimpleChatDemo"
+import { SimpleChatDemo } from 'ai-blocks/demos/SimpleChatDemo';
 ```
 
 **Note:** Direct imports require a [shadcn/ui](https://ui.shadcn.com) setup with path aliases configured (`@/components/ui/*`, `@/lib/utils`).
@@ -62,11 +62,15 @@ Or browse visually at [webllm.org/blocks](https://webllm.org/blocks).
 
 - React 18+
 - [webllm](https://www.npmjs.com/package/webllm) npm package
-- Tailwind CSS (components use Tailwind classes)
+- [shadcn/ui](https://ui.shadcn.com) setup with path aliases (`@/components/ui/*`, `@/lib/utils`)
+- Tailwind CSS
 - [lucide-react](https://lucide.dev) for icons
+
+> **Note:** Currently only React with shadcn/ui is supported. Plain React and vanilla JS exports may be added in the future.
 
 ## Links
 
-- [WebLLM Documentation](https://webllm.org/docs)
+- [Website](https://webllm.org)
 - [Component Browser](https://webllm.org/blocks)
-- [GitHub Repository](https://github.com/anthropics/webllm)
+- [Documentation](https://webllm.org/docs)
+- [GitHub](https://github.com/webllm-org/webllm)

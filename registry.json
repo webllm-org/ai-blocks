@@ -225,6 +225,54 @@
       ]
     },
     {
+      "name": "availability-badge",
+      "type": "registry:block",
+      "title": "Availability Badge",
+      "description": "Simple status pills and badges showing WebLLM availability state",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/AvailabilityBadgeDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "availability-banner",
+      "type": "registry:block",
+      "title": "Availability Banner",
+      "description": "Contextual banners with setup guidance and action CTAs based on WebLLM status",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/AvailabilityBannerDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "capability-gate",
+      "type": "registry:block",
+      "title": "Capability Gate",
+      "description": "Feature cards showing available AI capabilities based on configured providers",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/CapabilityGateDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "availability-behavior",
+      "type": "registry:block",
+      "title": "Availability Behavior",
+      "description": "Interactive demo showing show/hide/fallback patterns for unavailable AI features",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/AvailabilityBehaviorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "simple-chat",
       "type": "registry:block",
       "title": "Simple Chat",
