@@ -20,13 +20,29 @@ type ParsedData = {
   notes?: string
 }
 
-const sampleInputs = [
+const DEFAULT_SAMPLE_INPUTS = [
   "Hey, this is Sarah Chen from Acme Corp. You can reach me at sarah.chen@acme.com or 415-555-0123. I'm the VP of Engineering.",
   "Invoice #1234 for $2,500.00 due March 15, 2024. Bill to: John Smith, 123 Main St, San Francisco CA 94102",
   "Meeting with Dr. James Wilson tomorrow at 3pm. His assistant's number is 212-555-9876. Topic: Partnership discussion"
 ]
 
-export function FormParserDemo() {
+export interface FormParserDemoProps {
+  /** Sample inputs to show as examples */
+  sampleInputs?: string[]
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function FormParserDemo({
+  sampleInputs = DEFAULT_SAMPLE_INPUTS,
+  placeholder = "Paste unstructured text like emails, messages, or notes...",
+  temperature = 0.3,
+  maxTokens = 200,
+}: FormParserDemoProps = {}) {
   const [input, setInput] = useState("")
   const [parsed, setParsed] = useState<ParsedData | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -55,8 +71,8 @@ Extract any of these fields if present:
 - notes (other important info, max 20 words)
 
 Return only fields that are clearly present. JSON:`,
-        temperature: 0.3,
-        maxTokens: 200,
+        temperature,
+        maxTokens,
       })
 
       try {
@@ -102,7 +118,7 @@ Return only fields that are clearly present. JSON:`,
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Paste unstructured text like emails, messages, or notes..."
+            placeholder={placeholder}
             rows={4}
             disabled={isProcessing}
           />

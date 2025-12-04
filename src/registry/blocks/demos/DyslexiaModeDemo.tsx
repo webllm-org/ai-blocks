@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Eye, Type, AlignLeft, RefreshCw } from "lucide-react"
 
-const sampleText = `The quick brown fox jumps over the lazy dog. This sentence contains every letter of the alphabet and is often used for typography demonstrations.
+const DEFAULT_TEXT = `The quick brown fox jumps over the lazy dog. This sentence contains every letter of the alphabet and is often used for typography demonstrations.
 
 Reading can be challenging when text is presented in formats that don't accommodate different learning needs. Research shows that certain fonts, spacing, and formatting choices can significantly impact reading comprehension and speed.
 
@@ -24,15 +24,34 @@ type DyslexiaSettings = {
   lineHeight: number
 }
 
-export function DyslexiaModeDemo() {
-  const [originalText] = useState(sampleText)
-  const [displayText, setDisplayText] = useState(sampleText)
+export interface DyslexiaModeDemoProps {
+  /** Text to display */
+  defaultText?: string
+  /** Default font size */
+  defaultFontSize?: number
+  /** Default line height */
+  defaultLineHeight?: number
+  /** Temperature for simplification (0-1) */
+  temperature?: number
+  /** Max tokens for simplification */
+  maxTokens?: number
+}
+
+export function DyslexiaModeDemo({
+  defaultText = DEFAULT_TEXT,
+  defaultFontSize = 16,
+  defaultLineHeight = 1.5,
+  temperature = 0.5,
+  maxTokens = 300,
+}: DyslexiaModeDemoProps = {}) {
+  const [originalText] = useState(defaultText)
+  const [displayText, setDisplayText] = useState(defaultText)
   const [settings, setSettings] = useState<DyslexiaSettings>({
     largerSpacing: false,
     shorterLines: false,
     simplifiedText: false,
-    fontSize: 16,
-    lineHeight: 1.5
+    fontSize: defaultFontSize,
+    lineHeight: defaultLineHeight
   })
   const [isSimplifying, setIsSimplifying] = useState(false)
 
@@ -51,8 +70,8 @@ Original text:
 "${originalText}"
 
 Simplified text:`,
-        temperature: 0.5,
-        maxTokens: 300,
+        temperature,
+        maxTokens,
       })
 
       setDisplayText(result.text.trim())
@@ -90,8 +109,8 @@ Simplified text:`,
       largerSpacing: false,
       shorterLines: false,
       simplifiedText: false,
-      fontSize: 16,
-      lineHeight: 1.5
+      fontSize: defaultFontSize,
+      lineHeight: defaultLineHeight
     })
     setDisplayText(originalText)
   }
@@ -210,8 +229,8 @@ Simplified text:`,
         {settings.largerSpacing && <Badge variant="outline">Larger Spacing</Badge>}
         {settings.shorterLines && <Badge variant="outline">Shorter Lines</Badge>}
         {settings.simplifiedText && <Badge variant="outline">Simplified</Badge>}
-        {settings.fontSize !== 16 && <Badge variant="outline">{settings.fontSize}px Font</Badge>}
-        {settings.lineHeight !== 1.5 && <Badge variant="outline">{settings.lineHeight} Line Height</Badge>}
+        {settings.fontSize !== defaultFontSize && <Badge variant="outline">{settings.fontSize}px Font</Badge>}
+        {settings.lineHeight !== defaultLineHeight && <Badge variant="outline">{settings.lineHeight} Line Height</Badge>}
       </div>
 
       <p className="text-xs text-muted-foreground text-center">

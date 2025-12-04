@@ -8,7 +8,18 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Search, Star, ShoppingCart } from "lucide-react"
 
-const products = [
+export interface NLProduct {
+  id: number
+  name: string
+  price: number
+  category: string
+  color: string
+  warmth: string
+  style: string
+  rating: number
+}
+
+const DEFAULT_PRODUCTS: NLProduct[] = [
   { id: 1, name: "Cozy Wool Cardigan", price: 89, category: "sweaters", color: "cream", warmth: "high", style: "casual", rating: 4.8 },
   { id: 2, name: "Lightweight Cotton Pullover", price: 45, category: "sweaters", color: "navy", warmth: "low", style: "casual", rating: 4.5 },
   { id: 3, name: "Cashmere V-Neck Sweater", price: 195, category: "sweaters", color: "gray", warmth: "medium", style: "elegant", rating: 4.9 },
@@ -19,12 +30,38 @@ const products = [
   { id: 8, name: "Cable Knit Fisherman", price: 95, category: "sweaters", color: "ivory", warmth: "high", style: "classic", rating: 4.7 },
 ]
 
+const DEFAULT_SUGGESTED_QUERIES = [
+  "warm sweater for winter under $100",
+  "something elegant for a dinner party",
+  "cozy gift for my mom",
+  "sporty but warm for hiking"
+]
+
 type SearchResult = {
   id: number
   relevance: string
 }
 
-export function ProductSearchNLDemo() {
+export interface ProductSearchNLDemoProps {
+  /** Product catalog */
+  products?: NLProduct[]
+  /** Suggested search queries */
+  suggestedQueries?: string[]
+  /** Placeholder for input */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function ProductSearchNLDemo({
+  products = DEFAULT_PRODUCTS,
+  suggestedQueries = DEFAULT_SUGGESTED_QUERIES,
+  placeholder = "Describe what you're looking for...",
+  temperature = 0.5,
+  maxTokens = 250,
+}: ProductSearchNLDemoProps = {}) {
   const [query, setQuery] = useState("")
   const [results, setResults] = useState<SearchResult[]>([])
   const [searchIntent, setSearchIntent] = useState("")
@@ -57,8 +94,8 @@ Return JSON:
 }
 
 Return top 3-4 most relevant matches. JSON:`,
-        temperature: 0.5,
-        maxTokens: 250,
+        temperature,
+        maxTokens,
       })
 
       try {
@@ -104,7 +141,7 @@ Return top 3-4 most relevant matches. JSON:`,
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Describe what you're looking for..."
+            placeholder={placeholder}
             className="pl-10"
           />
         </div>
@@ -115,12 +152,7 @@ Return top 3-4 most relevant matches. JSON:`,
 
       {/* Example Queries */}
       <div className="flex flex-wrap gap-2">
-        {[
-          "warm sweater for winter under $100",
-          "something elegant for a dinner party",
-          "cozy gift for my mom",
-          "sporty but warm for hiking"
-        ].map(q => (
+        {suggestedQueries.map(q => (
           <Badge
             key={q}
             variant="secondary"

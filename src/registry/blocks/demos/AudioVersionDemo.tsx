@@ -7,7 +7,12 @@ import { Slider } from "@/components/ui/slider"
 import { Badge } from "@/components/ui/badge"
 import { Play, Pause, Square, Volume2, FastForward, RotateCcw } from "lucide-react"
 
-const sampleArticle = {
+export interface AudioArticle {
+  title: string
+  content: string
+}
+
+const DEFAULT_ARTICLE: AudioArticle = {
   title: "The Rise of Remote Work",
   content: `Remote work has transformed from a rare perk to a global norm. Studies show that 70% of workers worldwide work remotely at least once a week. Companies like GitLab and Zapier have been fully remote since their founding, proving that distributed teams can build successful products.
 
@@ -18,16 +23,32 @@ However, challenges remain. Collaboration, company culture, and mentorship are h
 The future of work is clearly more flexible than ever before.`
 }
 
-export function AudioVersionDemo() {
+export interface AudioVersionDemoProps {
+  /** Article to read aloud */
+  article?: AudioArticle
+  /** Default speech rate */
+  defaultRate?: number
+  /** Minimum speech rate */
+  minRate?: number
+  /** Maximum speech rate */
+  maxRate?: number
+}
+
+export function AudioVersionDemo({
+  article = DEFAULT_ARTICLE,
+  defaultRate = 1,
+  minRate = 0.5,
+  maxRate = 2,
+}: AudioVersionDemoProps = {}) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [rate, setRate] = useState(1)
+  const [rate, setRate] = useState(defaultRate)
   const [progress, setProgress] = useState(0)
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null)
   const sentencesRef = useRef<string[]>([])
 
-  const sentences = sampleArticle.content
+  const sentences = article.content
     .split(/(?<=[.!?])\s+/)
     .filter(s => s.trim().length > 0)
 
@@ -103,14 +124,14 @@ export function AudioVersionDemo() {
     }
   }
 
-  const estimatedTime = Math.round((sampleArticle.content.split(' ').length / 150) * (1 / rate))
+  const estimatedTime = Math.round((article.content.split(' ').length / 150) * (1 / rate))
 
   return (
     <div className="space-y-4 w-full max-w-xl mx-auto">
       <Card>
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">{sampleArticle.title}</CardTitle>
+            <CardTitle className="text-lg">{article.title}</CardTitle>
             <Badge variant="outline">
               ~{estimatedTime} min read
             </Badge>
@@ -174,8 +195,8 @@ export function AudioVersionDemo() {
             <Slider
               value={[rate]}
               onValueChange={changeRate}
-              min={0.5}
-              max={2}
+              min={minRate}
+              max={maxRate}
               step={0.25}
               className="flex-1"
             />

@@ -7,8 +7,26 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, ImageIcon } from "lucide-react"
 
-export function ImageGenerationDemo() {
-  const [prompt, setPrompt] = useState("A serene mountain landscape at sunset with purple clouds")
+const DEFAULT_PROMPT = "A serene mountain landscape at sunset with purple clouds"
+
+export interface ImageGenerationDemoProps {
+  /** Initial prompt value */
+  defaultPrompt?: string
+  /** Placeholder for input */
+  placeholder?: string
+  /** Image size */
+  size?: "256x256" | "512x512" | "1024x1024"
+  /** Number of images to generate */
+  n?: number
+}
+
+export function ImageGenerationDemo({
+  defaultPrompt = DEFAULT_PROMPT,
+  placeholder = "Describe the image...",
+  size = "1024x1024",
+  n = 1,
+}: ImageGenerationDemoProps = {}) {
+  const [prompt, setPrompt] = useState(defaultPrompt)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -20,8 +38,8 @@ export function ImageGenerationDemo() {
     try {
       const result = await generateImage({
         prompt: prompt.trim(),
-        size: "1024x1024",
-        n: 1,
+        size,
+        n,
       })
       if (result.images && result.images.length > 0) {
         const img = result.images[0]
@@ -40,7 +58,7 @@ export function ImageGenerationDemo() {
         <Input
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Describe the image..."
+          placeholder={placeholder}
           onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
         />
         <Button onClick={handleGenerate} disabled={isLoading || !prompt.trim()}>

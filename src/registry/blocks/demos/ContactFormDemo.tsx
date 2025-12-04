@@ -15,7 +15,29 @@ type StructuredInquiry = {
   suggestedAction: string
 }
 
-export function ContactFormDemo() {
+const DEFAULT_SUGGESTED_MESSAGES = [
+  "I can't login to my account since yesterday",
+  "I'd like to upgrade to the pro plan",
+  "Your app is great but needs dark mode"
+]
+
+export interface ContactFormDemoProps {
+  /** Suggested messages to display */
+  suggestedMessages?: string[]
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function ContactFormDemo({
+  suggestedMessages = DEFAULT_SUGGESTED_MESSAGES,
+  placeholder = "Tell us about your inquiry, question, or feedback...",
+  temperature = 0.3,
+  maxTokens = 150,
+}: ContactFormDemoProps = {}) {
   const [message, setMessage] = useState("")
   const [structured, setStructured] = useState<StructuredInquiry | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -40,8 +62,8 @@ Return JSON with:
 - suggestedAction: recommended next step (max 10 words)
 
 JSON:`,
-        temperature: 0.3,
-        maxTokens: 150,
+        temperature,
+        maxTokens,
       })
 
       try {
@@ -101,7 +123,7 @@ JSON:`,
               <Textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Tell us about your inquiry, question, or feedback..."
+                placeholder={placeholder}
                 rows={5}
                 disabled={isProcessing}
               />
@@ -168,11 +190,7 @@ JSON:`,
 
           <div className="flex flex-wrap gap-2 justify-center">
             <span className="text-xs text-muted-foreground">Try:</span>
-            {[
-              "I can't login to my account since yesterday",
-              "I'd like to upgrade to the pro plan",
-              "Your app is great but needs dark mode"
-            ].map(q => (
+            {suggestedMessages.map(q => (
               <Badge
                 key={q}
                 variant="secondary"

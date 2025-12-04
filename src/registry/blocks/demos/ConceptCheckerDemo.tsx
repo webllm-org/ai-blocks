@@ -8,7 +8,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Brain, CheckCircle, XCircle, AlertCircle, RefreshCw } from "lucide-react"
 
-const concepts = [
+export interface Concept {
+  topic: string
+  description: string
+  keyPoints: string[]
+}
+
+const DEFAULT_CONCEPTS: Concept[] = [
   {
     topic: "Photosynthesis",
     description: "Plants use sunlight, water, and carbon dioxide to produce glucose and oxygen.",
@@ -34,7 +40,23 @@ type FeedbackType = {
   feedback: string
 }
 
-export function ConceptCheckerDemo() {
+export interface ConceptCheckerDemoProps {
+  /** Available concepts to test */
+  concepts?: Concept[]
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function ConceptCheckerDemo({
+  concepts = DEFAULT_CONCEPTS,
+  placeholder = "Type your explanation here... Try to cover the key concepts.",
+  temperature = 0.5,
+  maxTokens = 250,
+}: ConceptCheckerDemoProps = {}) {
   const [selectedConcept, setSelectedConcept] = useState(concepts[0])
   const [explanation, setExplanation] = useState("")
   const [feedback, setFeedback] = useState<FeedbackType | null>(null)
@@ -65,8 +87,8 @@ Return JSON:
 }
 
 JSON:`,
-        temperature: 0.5,
-        maxTokens: 250,
+        temperature,
+        maxTokens,
       })
 
       try {
@@ -146,7 +168,7 @@ JSON:`,
           <Textarea
             value={explanation}
             onChange={(e) => setExplanation(e.target.value)}
-            placeholder="Type your explanation here... Try to cover the key concepts."
+            placeholder={placeholder}
             rows={4}
             disabled={isChecking}
           />

@@ -7,14 +7,38 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Search, ArrowRight } from "lucide-react"
 
-const sampleContext = `
+const DEFAULT_CONTEXT = `
 Our store offers: Running shoes, Trail hiking boots, Casual sneakers,
 Formal dress shoes, Sandals, Flip-flops, Basketball shoes, Tennis shoes,
 Winter boots, Rain boots, Slippers, Athletic socks, Shoe care products,
 Insoles, Laces, Waterproofing spray
 `
 
-export function AutocompleteDemo() {
+const DEFAULT_SUGGESTED_TERMS = ["run", "winter", "comfy"]
+
+export interface AutocompleteDemoProps {
+  /** Context for autocomplete suggestions */
+  context?: string
+  /** Suggested search terms to display */
+  suggestedTerms?: string[]
+  /** Placeholder for input */
+  placeholder?: string
+  /** Debounce time in ms */
+  debounceMs?: number
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function AutocompleteDemo({
+  context = DEFAULT_CONTEXT,
+  suggestedTerms = DEFAULT_SUGGESTED_TERMS,
+  placeholder = "Search products...",
+  debounceMs = 400,
+  temperature = 0.3,
+  maxTokens = 80,
+}: AutocompleteDemoProps = {}) {
   const [query, setQuery] = useState("")
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -31,13 +55,13 @@ export function AutocompleteDemo() {
     try {
       const result = await generateText({
         prompt: `Given this product catalog:
-${sampleContext}
+${context}
 
 User is searching for: "${text}"
 
 Suggest 4 relevant search completions (one per line, no numbers/bullets):`,
-        temperature: 0.3,
-        maxTokens: 80,
+        temperature,
+        maxTokens,
       })
 
       const lines = result.text.split('\n')
@@ -60,7 +84,7 @@ Suggest 4 relevant search completions (one per line, no numbers/bullets):`,
     setSuggestions([])
 
     if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(() => getSuggestions(value), 400)
+    debounceRef.current = setTimeout(() => getSuggestions(value), debounceMs)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -95,7 +119,7 @@ Suggest 4 relevant search completions (one per line, no numbers/bullets):`,
             value={query}
             onChange={(e) => handleChange(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search products..."
+            placeholder={placeholder}
             className="pl-10 pr-10"
           />
           {isLoading && (
@@ -125,7 +149,7 @@ Suggest 4 relevant search completions (one per line, no numbers/bullets):`,
 
       <div className="flex flex-wrap gap-2">
         <span className="text-xs text-muted-foreground">Try:</span>
-        {["run", "winter", "comfy"].map(term => (
+        {suggestedTerms.map(term => (
           <Badge
             key={term}
             variant="secondary"

@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Search, Sparkles } from "lucide-react"
 
-interface Product {
+export interface SemanticProduct {
   id: number
   name: string
   price: number
@@ -16,7 +16,7 @@ interface Product {
   description: string
 }
 
-const SAMPLE_PRODUCTS: Product[] = [
+const DEFAULT_PRODUCTS: SemanticProduct[] = [
   { id: 1, name: "Cozy Wool Sweater", price: 79, category: "Clothing", description: "Soft merino wool, perfect for cold days" },
   { id: 2, name: "Running Shoes Pro", price: 129, category: "Footwear", description: "Lightweight with advanced cushioning" },
   { id: 3, name: "Leather Laptop Bag", price: 149, category: "Accessories", description: "Premium leather, fits 15-inch laptops" },
@@ -28,12 +28,28 @@ const SAMPLE_PRODUCTS: Product[] = [
 ]
 
 interface SearchResult {
-  product: Product
+  product: SemanticProduct
   relevance: number
   reason: string
 }
 
-export function SemanticSearchDemo() {
+export interface SemanticSearchDemoProps {
+  /** Product catalog */
+  products?: SemanticProduct[]
+  /** Placeholder for input */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function SemanticSearchDemo({
+  products = DEFAULT_PRODUCTS,
+  placeholder = "Try: 'gift for mom who loves coffee' or 'something for running in winter'",
+  temperature = 0.5,
+  maxTokens = 400,
+}: SemanticSearchDemoProps = {}) {
   const [query, setQuery] = useState("")
   const [results, setResults] = useState<SearchResult[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -43,7 +59,7 @@ export function SemanticSearchDemo() {
     setIsLoading(true)
     setResults([])
 
-    const productList = SAMPLE_PRODUCTS.map(p =>
+    const productList = products.map(p =>
       `${p.id}: ${p.name} ($${p.price}) - ${p.category} - ${p.description}`
     ).join("\n")
 
@@ -60,8 +76,8 @@ Return the top 3-4 most relevant products with relevance scores (0-100) and brie
 
 Respond in JSON format:
 [{"id": 1, "relevance": 95, "reason": "Why this matches"}, ...]`,
-        temperature: 0.5,
-        maxTokens: 400,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = result.text.match(/\[[\s\S]*\]/)
@@ -69,7 +85,7 @@ Respond in JSON format:
         const matches = JSON.parse(jsonMatch[0]) as { id: number; relevance: number; reason: string }[]
         const searchResults = matches
           .map(m => {
-            const product = SAMPLE_PRODUCTS.find(p => p.id === m.id)
+            const product = products.find(p => p.id === m.id)
             return product ? { product, relevance: m.relevance, reason: m.reason } : null
           })
           .filter((r): r is SearchResult => r !== null)
@@ -91,7 +107,7 @@ Respond in JSON format:
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Try: 'gift for mom who loves coffee' or 'something for running in winter'"
+            placeholder={placeholder}
             className="pl-9"
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
@@ -135,7 +151,7 @@ Respond in JSON format:
 
       {!results.length && !isLoading && (
         <div className="grid grid-cols-2 gap-2">
-          {SAMPLE_PRODUCTS.slice(0, 4).map((product) => (
+          {products.slice(0, 4).map((product) => (
             <Card key={product.id} className="opacity-60">
               <CardContent className="p-3">
                 <p className="text-sm font-medium truncate">{product.name}</p>

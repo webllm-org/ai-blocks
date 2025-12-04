@@ -13,20 +13,45 @@ type EditHistory = {
   description: string
 }
 
-const sampleImage = {
+export interface SampleImageConfig {
+  name: string
+  description: string
+  placeholder: string
+}
+
+const DEFAULT_IMAGE: SampleImageConfig = {
   name: "Product Photo",
   description: "A white coffee mug on a wooden table with natural lighting",
   placeholder: "☕"
 }
 
-const sampleEdits = [
+const DEFAULT_EDITS = [
   "Change the background to a beach sunset",
   "Make the mug blue instead of white",
   "Add steam rising from the coffee",
   "Remove the table, make it float"
 ]
 
-export function ImageEditorDemo() {
+export interface ImageEditorDemoProps {
+  /** Sample image configuration */
+  sampleImage?: SampleImageConfig
+  /** Quick edit suggestions */
+  quickEdits?: string[]
+  /** Placeholder for input */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function ImageEditorDemo({
+  sampleImage = DEFAULT_IMAGE,
+  quickEdits = DEFAULT_EDITS,
+  placeholder = "Describe your edit... (e.g., 'make the sky purple')",
+  temperature = 0.7,
+  maxTokens = 80,
+}: ImageEditorDemoProps = {}) {
   const [instruction, setInstruction] = useState("")
   const [currentDescription, setCurrentDescription] = useState(sampleImage.description)
   const [history, setHistory] = useState<EditHistory[]>([])
@@ -47,8 +72,8 @@ Current image: "${currentDescription}"
 Edit instruction: "${edit}"
 
 Describe the edited image in one detailed sentence (max 30 words):`,
-        temperature: 0.7,
-        maxTokens: 80,
+        temperature,
+        maxTokens,
       })
 
       const newDescription = result.text.trim()
@@ -126,7 +151,7 @@ Describe the edited image in one detailed sentence (max 30 words):`,
               value={instruction}
               onChange={(e) => setInstruction(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Describe your edit... (e.g., 'make the sky purple')"
+              placeholder={placeholder}
               disabled={isProcessing}
             />
             <Button
@@ -147,7 +172,7 @@ Describe the edited image in one detailed sentence (max 30 words):`,
       <div className="space-y-2">
         <span className="text-xs text-muted-foreground">Quick edits:</span>
         <div className="flex flex-wrap gap-2">
-          {sampleEdits.map((edit, index) => (
+          {quickEdits.map((edit, index) => (
             <Badge
               key={index}
               variant="outline"

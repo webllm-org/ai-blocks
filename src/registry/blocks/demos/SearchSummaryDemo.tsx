@@ -8,8 +8,15 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Search, Sparkles, ExternalLink } from "lucide-react"
 
+export interface SearchResult {
+  title: string
+  snippet: string
+}
+
+export type SearchResultsMap = Record<string, SearchResult[]>
+
 // Simulated search results
-const searchResults = {
+const DEFAULT_SEARCH_RESULTS: SearchResultsMap = {
   "best laptop 2024": [
     { title: "MacBook Pro M3 Review", snippet: "The M3 chip delivers exceptional performance. Battery life improved to 22 hours. Starting at $1,599." },
     { title: "Dell XPS 15 Analysis", snippet: "OLED display option, Intel Core Ultra. Great for professionals. Priced from $1,299." },
@@ -30,9 +37,25 @@ const searchResults = {
   ]
 }
 
-export function SearchSummaryDemo() {
+export interface SearchSummaryDemoProps {
+  /** Search results data */
+  searchResults?: SearchResultsMap
+  /** Placeholder for input */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function SearchSummaryDemo({
+  searchResults = DEFAULT_SEARCH_RESULTS,
+  placeholder = "Search anything...",
+  temperature = 0.5,
+  maxTokens = 100,
+}: SearchSummaryDemoProps = {}) {
   const [query, setQuery] = useState("")
-  const [results, setResults] = useState<typeof searchResults["best laptop 2024"]>([])
+  const [results, setResults] = useState<SearchResult[]>([])
   const [summary, setSummary] = useState("")
   const [isSearching, setIsSearching] = useState(false)
   const [isSummarizing, setIsSummarizing] = useState(false)
@@ -49,7 +72,8 @@ export function SearchSummaryDemo() {
 
     // Find matching results or use default
     const lowerQuery = query.toLowerCase()
-    let matchedResults = searchResults["best laptop 2024"]
+    const firstKey = Object.keys(searchResults)[0]
+    let matchedResults = searchResults[firstKey] || []
 
     for (const [key, value] of Object.entries(searchResults)) {
       if (lowerQuery.includes(key.split(" ")[0]) || key.includes(lowerQuery.split(" ")[0])) {
@@ -73,8 +97,8 @@ Results:
 ${resultsText}
 
 Summary:`,
-          temperature: 0.5,
-          maxTokens: 100,
+          temperature,
+          maxTokens,
         })
 
       setSummary(result.text.trim())
@@ -99,7 +123,7 @@ Summary:`,
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search anything..."
+            placeholder={placeholder}
             className="pl-10"
           />
         </div>

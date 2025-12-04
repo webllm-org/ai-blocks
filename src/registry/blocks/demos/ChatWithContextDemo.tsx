@@ -9,7 +9,12 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Send, FileText, RefreshCw } from "lucide-react"
 
-const sampleArticle = {
+export interface ContextArticle {
+  title: string
+  content: string
+}
+
+const DEFAULT_ARTICLE: ContextArticle = {
   title: "The Future of Renewable Energy",
   content: `Solar power capacity has grown 20x in the last decade, making it the fastest-growing energy source globally. In 2023, solar installations exceeded 1.2 terawatts worldwide.
 
@@ -20,12 +25,33 @@ Battery storage technology is the key enabler for renewable adoption. Lithium-io
 The International Energy Agency predicts renewables will account for 90% of new power capacity through 2025.`
 }
 
+const DEFAULT_SUGGESTED_QUESTIONS = ["How much has solar grown?", "What is Dogger Bank?", "Battery cost trends?"]
+
 type Message = {
   role: "user" | "assistant"
   content: string
 }
 
-export function ChatWithContextDemo() {
+export interface ChatWithContextDemoProps {
+  /** Article content to use as context */
+  article?: ContextArticle
+  /** Suggested questions to display */
+  suggestedQuestions?: string[]
+  /** Placeholder for input */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function ChatWithContextDemo({
+  article = DEFAULT_ARTICLE,
+  suggestedQuestions = DEFAULT_SUGGESTED_QUESTIONS,
+  placeholder = "Ask about the article...",
+  temperature = 0.7,
+  maxTokens = 200,
+}: ChatWithContextDemoProps = {}) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -52,16 +78,16 @@ export function ChatWithContextDemo() {
       const result = await generateText({
         prompt: `You are a helpful assistant. Answer questions based on this article:
 
-Title: ${sampleArticle.title}
-Content: ${sampleArticle.content}
+Title: ${article.title}
+Content: ${article.content}
 
 ${conversationContext ? `Previous conversation:\n${conversationContext}\n` : ""}
 User: ${userMessage}
 
 Answer concisely based on the article content. If the question isn't covered, say so.
 Assistant:`,
-        temperature: 0.7,
-        maxTokens: 200,
+        temperature,
+        maxTokens,
       })
 
       setMessages(prev => [...prev, { role: "assistant", content: result.text.trim() }])
@@ -89,15 +115,15 @@ Assistant:`,
         <CardHeader className="pb-2">
           <div className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
-            <CardTitle className="text-sm">{sampleArticle.title}</CardTitle>
+            <CardTitle className="text-sm">{article.title}</CardTitle>
           </div>
         </CardHeader>
         <CardContent>
           <p className="text-xs text-muted-foreground line-clamp-3">
-            {sampleArticle.content.slice(0, 200)}...
+            {article.content.slice(0, 200)}...
           </p>
           <Badge variant="outline" className="mt-2 text-xs">
-            Context loaded • {sampleArticle.content.split(" ").length} words
+            Context loaded • {article.content.split(" ").length} words
           </Badge>
         </CardContent>
       </Card>
@@ -145,7 +171,7 @@ Assistant:`,
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask about the article..."
+              placeholder={placeholder}
               disabled={isLoading}
             />
             <Button onClick={sendMessage} disabled={isLoading || !input.trim()} size="icon">
@@ -162,7 +188,7 @@ Assistant:`,
 
       <div className="flex flex-wrap gap-2 justify-center">
         <span className="text-xs text-muted-foreground">Try asking:</span>
-        {["How much has solar grown?", "What is Dogger Bank?", "Battery cost trends?"].map(q => (
+        {suggestedQuestions.map(q => (
           <Badge
             key={q}
             variant="secondary"

@@ -7,7 +7,16 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Sparkles, ArrowRight } from "lucide-react"
 
-const products = [
+export interface SimilarProduct {
+  id: number
+  name: string
+  price: number
+  category: string
+  style: string
+  material: string
+}
+
+const DEFAULT_PRODUCTS: SimilarProduct[] = [
   { id: 1, name: "Classic White Sneakers", price: 89, category: "Footwear", style: "casual", material: "leather" },
   { id: 2, name: "Running Performance Shoes", price: 129, category: "Footwear", style: "athletic", material: "mesh" },
   { id: 3, name: "Leather Loafers", price: 159, category: "Footwear", style: "formal", material: "leather" },
@@ -18,14 +27,27 @@ const products = [
   { id: 8, name: "Oxford Dress Shoes", price: 189, category: "Footwear", style: "formal", material: "leather" },
 ]
 
-type SimilarProduct = {
+type SimilarMatch = {
   id: number
   reason: string
 }
 
-export function SimilarItemsDemo() {
+export interface SimilarItemsDemoProps {
+  /** Product catalog */
+  products?: SimilarProduct[]
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function SimilarItemsDemo({
+  products = DEFAULT_PRODUCTS,
+  temperature = 0.5,
+  maxTokens = 200,
+}: SimilarItemsDemoProps = {}) {
   const [selectedProduct, setSelectedProduct] = useState(products[0])
-  const [similarItems, setSimilarItems] = useState<SimilarProduct[]>([])
+  const [similarItems, setSimilarItems] = useState<SimilarMatch[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
   const findSimilar = async (product: typeof products[0]) => {
@@ -50,8 +72,8 @@ Return JSON array with id and brief reason (10 words max). Example:
 [{"id": 1, "reason": "Same casual style and leather material"}]
 
 JSON:`,
-        temperature: 0.5,
-        maxTokens: 200,
+        temperature,
+        maxTokens,
       })
 
       try {

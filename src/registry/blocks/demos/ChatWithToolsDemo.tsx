@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Loader2, Send, Wrench, Calculator, Clock, CloudSun } from "lucide-react"
 
 // Simulated tool functions
-const tools = {
+const defaultTools = {
   calculate: (expr: string) => {
     try {
       // Simple safe evaluation for demo
@@ -37,13 +37,31 @@ const tools = {
   }
 }
 
+const DEFAULT_SUGGESTED_QUERIES = ["What's 145 × 23?", "What time is it?", "Weather in Tokyo?"]
+
 type Message = {
   role: "user" | "assistant" | "tool"
   content: string
   toolName?: string
 }
 
-export function ChatWithToolsDemo() {
+export interface ChatWithToolsDemoProps {
+  /** Suggested queries to display */
+  suggestedQueries?: string[]
+  /** Placeholder for input */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function ChatWithToolsDemo({
+  suggestedQueries = DEFAULT_SUGGESTED_QUERIES,
+  placeholder = "Ask something...",
+  temperature = 0.7,
+  maxTokens = 150,
+}: ChatWithToolsDemoProps = {}) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -86,8 +104,8 @@ Include the tool call in your response. After the tool result, provide a natural
 
 User: ${userMessage}
 Assistant:`,
-        temperature: 0.7,
-        maxTokens: 150,
+        temperature,
+        maxTokens,
       })
 
       const responseText = result.text.trim()
@@ -99,13 +117,13 @@ Assistant:`,
         let toolName = ""
 
         if (toolCall.tool === "calculate") {
-          toolResult = tools.calculate(toolCall.args)
+          toolResult = defaultTools.calculate(toolCall.args)
           toolName = "Calculator"
         } else if (toolCall.tool === "time") {
-          toolResult = tools.getTime()
+          toolResult = defaultTools.getTime()
           toolName = "Clock"
         } else if (toolCall.tool === "weather") {
-          toolResult = tools.getWeather(toolCall.args)
+          toolResult = defaultTools.getWeather(toolCall.args)
           toolName = "Weather"
         }
 
@@ -119,7 +137,7 @@ Assistant:`,
           prompt: `Tool result: ${toolResult}
 
 Provide a brief, natural response to the user incorporating this result.`,
-          temperature: 0.7,
+          temperature,
           maxTokens: 80,
         })
 
@@ -218,7 +236,7 @@ Provide a brief, natural response to the user incorporating this result.`,
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask something..."
+              placeholder={placeholder}
               disabled={isLoading}
             />
             <Button onClick={sendMessage} disabled={isLoading || !input.trim()} size="icon">
@@ -229,7 +247,7 @@ Provide a brief, natural response to the user incorporating this result.`,
       </Card>
 
       <div className="flex flex-wrap gap-2 justify-center">
-        {["What's 145 × 23?", "What time is it?", "Weather in Tokyo?"].map(q => (
+        {suggestedQueries.map(q => (
           <Badge
             key={q}
             variant="secondary"

@@ -14,7 +14,20 @@ type FieldState = {
   message: string
 }
 
-export function InputValidationDemo() {
+export interface InputValidationDemoProps {
+  /** Debounce time in ms */
+  debounceMs?: number
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function InputValidationDemo({
+  debounceMs = 800,
+  temperature = 0.3,
+  maxTokens = 80,
+}: InputValidationDemoProps = {}) {
   const [email, setEmail] = useState<FieldState>({ value: "", status: "idle", message: "" })
   const [phone, setPhone] = useState<FieldState>({ value: "", status: "idle", message: "" })
   const [address, setAddress] = useState<FieldState>({ value: "", status: "idle", message: "" })
@@ -39,8 +52,8 @@ For phone: check format, note if international
 For address: check completeness, suggest if missing city/zip
 
 JSON:`,
-        temperature: 0.3,
-        maxTokens: 80,
+        temperature,
+        maxTokens,
       })
 
       try {
@@ -71,7 +84,7 @@ JSON:`,
 
     debounceRefs.current[field] = setTimeout(() => {
       validateField(field, value, setter)
-    }, 800)
+    }, debounceMs)
   }
 
   const getStatusIcon = (status: FieldState["status"]) => {

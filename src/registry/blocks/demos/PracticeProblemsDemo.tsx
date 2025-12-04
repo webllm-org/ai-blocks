@@ -15,10 +15,26 @@ interface Problem {
   explanation: string
 }
 
-const SAMPLE_CONTENT = `Photosynthesis is the process by which plants convert light energy into chemical energy. During photosynthesis, plants absorb carbon dioxide from the air through tiny pores called stomata and water from the soil through their roots. Using sunlight captured by chlorophyll in their leaves, plants combine CO2 and H2O to produce glucose and oxygen. The glucose provides energy for the plant's growth and metabolism, while oxygen is released as a byproduct.`
+const DEFAULT_CONTENT = `Photosynthesis is the process by which plants convert light energy into chemical energy. During photosynthesis, plants absorb carbon dioxide from the air through tiny pores called stomata and water from the soil through their roots. Using sunlight captured by chlorophyll in their leaves, plants combine CO2 and H2O to produce glucose and oxygen. The glucose provides energy for the plant's growth and metabolism, while oxygen is released as a byproduct.`
 
-export function PracticeProblemsDemo() {
-  const [content, setContent] = useState(SAMPLE_CONTENT)
+export interface PracticeProblemsDemoProps {
+  /** Initial educational content */
+  defaultContent?: string
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function PracticeProblemsDemo({
+  defaultContent = DEFAULT_CONTENT,
+  placeholder = "Paste educational content to generate practice problems...",
+  temperature = 0.8,
+  maxTokens = 400,
+}: PracticeProblemsDemoProps = {}) {
+  const [content, setContent] = useState(defaultContent)
   const [problem, setProblem] = useState<Problem | null>(null)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [showExplanation, setShowExplanation] = useState(false)
@@ -42,8 +58,8 @@ Generate a challenging but fair question that tests understanding, not just memo
 
 Respond in JSON format:
 {"question": "The question text", "options": ["Option A", "Option B", "Option C", "Option D"], "correctIndex": 0, "explanation": "Why this is the correct answer"}`,
-        temperature: 0.8,
-        maxTokens: 400,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = result.text.match(/\{[\s\S]*\}/)
@@ -78,7 +94,7 @@ Respond in JSON format:
       <Textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="Paste educational content to generate practice problems..."
+        placeholder={placeholder}
         rows={4}
       />
 

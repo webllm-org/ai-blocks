@@ -7,8 +7,26 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, Braces, Copy, Check } from "lucide-react"
 
-export function JsonGeneratorDemo() {
-  const [description, setDescription] = useState("A user profile with name, email, age, and list of hobbies")
+const DEFAULT_DESCRIPTION = "A user profile with name, email, age, and list of hobbies"
+
+export interface JsonGeneratorDemoProps {
+  /** Initial description value */
+  defaultDescription?: string
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function JsonGeneratorDemo({
+  defaultDescription = DEFAULT_DESCRIPTION,
+  placeholder = "Describe the JSON structure you need...",
+  temperature = 0.7,
+  maxTokens = 500,
+}: JsonGeneratorDemoProps = {}) {
+  const [description, setDescription] = useState(defaultDescription)
   const [generatedJson, setGeneratedJson] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -26,8 +44,8 @@ export function JsonGeneratorDemo() {
 Description: ${description}
 
 Return ONLY valid JSON, no explanation:`,
-        temperature: 0.7,
-        maxTokens: 500,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = result.text.match(/\{[\s\S]*\}|\[[\s\S]*\]/)
@@ -63,7 +81,7 @@ Return ONLY valid JSON, no explanation:`,
       <Textarea
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        placeholder="Describe the JSON structure you need..."
+        placeholder={placeholder}
         rows={3}
       />
 

@@ -8,7 +8,17 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Search, Filter, X } from "lucide-react"
 
-const sampleProducts = [
+export interface FilterProduct {
+  id: number
+  name: string
+  price: number
+  category: string
+  color: string
+  size: string
+  rating: number
+}
+
+const DEFAULT_PRODUCTS: FilterProduct[] = [
   { id: 1, name: "Cozy Wool Sweater", price: 89, category: "Clothing", color: "blue", size: "M", rating: 4.5 },
   { id: 2, name: "Silk Scarf", price: 45, category: "Accessories", color: "red", size: "OS", rating: 4.8 },
   { id: 3, name: "Leather Wallet", price: 65, category: "Accessories", color: "brown", size: "OS", rating: 4.2 },
@@ -19,6 +29,8 @@ const sampleProducts = [
   { id: 8, name: "Running Shoes", price: 129, category: "Footwear", color: "white", size: "10", rating: 4.9 },
 ]
 
+const DEFAULT_SUGGESTED_QUERIES = ["blue under $100", "accessories 4+ stars", "warm winter gear"]
+
 type ParsedFilters = {
   maxPrice?: number
   minPrice?: number
@@ -27,10 +39,29 @@ type ParsedFilters = {
   minRating?: number
 }
 
-export function SearchFiltersDemo() {
+export interface SearchFiltersDemoProps {
+  /** Product catalog */
+  products?: FilterProduct[]
+  /** Suggested search queries */
+  suggestedQueries?: string[]
+  /** Placeholder for input */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function SearchFiltersDemo({
+  products = DEFAULT_PRODUCTS,
+  suggestedQueries = DEFAULT_SUGGESTED_QUERIES,
+  placeholder = "Try: cozy gift for mom under $60",
+  temperature = 0.3,
+  maxTokens = 100,
+}: SearchFiltersDemoProps = {}) {
   const [query, setQuery] = useState("")
   const [filters, setFilters] = useState<ParsedFilters>({})
-  const [filteredProducts, setFilteredProducts] = useState(sampleProducts)
+  const [filteredProducts, setFilteredProducts] = useState(products)
   const [isLoading, setIsLoading] = useState(false)
 
   const parseQuery = async () => {
@@ -49,8 +80,8 @@ Example: "cozy gift under $50" → {"maxPrice": 50, "category": "Accessories"}
 Example: "blue clothes rated 4+" → {"color": "blue", "category": "Clothing", "minRating": 4}
 
 JSON:`,
-        temperature: 0.3,
-        maxTokens: 100,
+        temperature,
+        maxTokens,
       })
 
       try {
@@ -71,7 +102,7 @@ JSON:`,
   }
 
   const applyFilters = (f: ParsedFilters) => {
-    let results = sampleProducts
+    let results = products
 
     if (f.maxPrice) {
       results = results.filter(p => p.price <= f.maxPrice!)
@@ -94,7 +125,7 @@ JSON:`,
 
   const clearFilters = () => {
     setFilters({})
-    setFilteredProducts(sampleProducts)
+    setFilteredProducts(products)
     setQuery("")
   }
 
@@ -120,7 +151,7 @@ JSON:`,
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Try: cozy gift for mom under $60"
+            placeholder={placeholder}
             className="pl-10"
           />
         </div>
@@ -157,7 +188,7 @@ JSON:`,
       {/* Results */}
       <div className="grid gap-2">
         <div className="text-sm text-muted-foreground">
-          {filteredProducts.length} of {sampleProducts.length} products
+          {filteredProducts.length} of {products.length} products
         </div>
         {filteredProducts.map(product => (
           <Card key={product.id}>
@@ -183,7 +214,7 @@ JSON:`,
 
       <div className="flex flex-wrap gap-2 justify-center">
         <span className="text-xs text-muted-foreground">Try:</span>
-        {["blue under $100", "accessories 4+ stars", "warm winter gear"].map(q => (
+        {suggestedQueries.map(q => (
           <Badge
             key={q}
             variant="secondary"

@@ -7,8 +7,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Image as ImageIcon, Shuffle, Sparkles } from "lucide-react"
 
-// Sample image prompts (in a real app, these would be based on the uploaded image)
-const sampleImages = [
+export interface SampleImage {
+  id: number
+  name: string
+  description: string
+  placeholder: string
+}
+
+const DEFAULT_SAMPLE_IMAGES: SampleImage[] = [
   {
     id: 1,
     name: "Mountain Landscape",
@@ -34,7 +40,20 @@ type Variation = {
   description: string
 }
 
-export function ImageVariationsDemo() {
+export interface ImageVariationsDemoProps {
+  /** Available sample images */
+  sampleImages?: SampleImage[]
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function ImageVariationsDemo({
+  sampleImages = DEFAULT_SAMPLE_IMAGES,
+  temperature = 0.8,
+  maxTokens = 300,
+}: ImageVariationsDemoProps = {}) {
   const [selectedImage, setSelectedImage] = useState(sampleImages[0])
   const [variations, setVariations] = useState<Variation[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
@@ -56,8 +75,8 @@ Generate 4 creative variations of this image in different styles. Return JSON ar
 Styles to try: oil painting, minimalist, cyberpunk, watercolor, vintage, anime, etc.
 
 JSON:`,
-        temperature: 0.8,
-        maxTokens: 300,
+        temperature,
+        maxTokens,
       })
 
       try {

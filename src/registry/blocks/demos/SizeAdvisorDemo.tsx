@@ -16,18 +16,48 @@ interface SizeRecommendation {
   alternativeSize?: string
 }
 
-const FIT_PREFERENCES = [
+export interface FitPreference {
+  id: string
+  label: string
+}
+
+const DEFAULT_FIT_PREFERENCES: FitPreference[] = [
   { id: "tight", label: "Tight/Fitted" },
   { id: "regular", label: "Regular" },
   { id: "relaxed", label: "Relaxed" },
   { id: "oversized", label: "Oversized" },
-] as const
+]
 
-export function SizeAdvisorDemo() {
-  const [height, setHeight] = useState("5'10\"")
-  const [weight, setWeight] = useState("170 lbs")
-  const [fit, setFit] = useState<string>("regular")
-  const [productInfo, setProductInfo] = useState("Cotton t-shirt, unisex sizing, US sizes S/M/L/XL/XXL")
+export interface SizeAdvisorDemoProps {
+  /** Available fit preferences */
+  fitPreferences?: FitPreference[]
+  /** Default height value */
+  defaultHeight?: string
+  /** Default weight value */
+  defaultWeight?: string
+  /** Default fit preference ID */
+  defaultFitId?: string
+  /** Default product info */
+  defaultProductInfo?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function SizeAdvisorDemo({
+  fitPreferences = DEFAULT_FIT_PREFERENCES,
+  defaultHeight = "5'10\"",
+  defaultWeight = "170 lbs",
+  defaultFitId = "regular",
+  defaultProductInfo = "Cotton t-shirt, unisex sizing, US sizes S/M/L/XL/XXL",
+  temperature = 0.5,
+  maxTokens = 300,
+}: SizeAdvisorDemoProps = {}) {
+  const [height, setHeight] = useState(defaultHeight)
+  const [weight, setWeight] = useState(defaultWeight)
+  const [fit, setFit] = useState<string>(defaultFitId)
+  const [productInfo, setProductInfo] = useState(defaultProductInfo)
   const [recommendation, setRecommendation] = useState<SizeRecommendation | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -55,8 +85,8 @@ Respond in JSON format:
   "tips": ["Tip 1", "Tip 2"],
   "alternativeSize": "L (if between sizes)"
 }`,
-        temperature: 0.5,
-        maxTokens: 300,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = result.text.match(/\{[\s\S]*\}/)
@@ -100,7 +130,7 @@ Respond in JSON format:
       <div>
         <p className="text-sm text-muted-foreground mb-2">Preferred Fit</p>
         <div className="flex flex-wrap gap-2">
-          {FIT_PREFERENCES.map((pref) => (
+          {fitPreferences.map((pref) => (
             <Button
               key={pref.id}
               variant={fit === pref.id ? "default" : "outline"}

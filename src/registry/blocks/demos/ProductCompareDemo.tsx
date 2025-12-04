@@ -15,9 +15,31 @@ interface Comparison {
   winner: 1 | 2
 }
 
-export function ProductCompareDemo() {
-  const [product1, setProduct1] = useState("iPhone 15 Pro - $999, A17 chip, 48MP camera, titanium frame, USB-C, 6.1 inch display")
-  const [product2, setProduct2] = useState("Samsung Galaxy S24 Ultra - $1199, Snapdragon 8 Gen 3, 200MP camera, S Pen, 6.8 inch display")
+const DEFAULT_PRODUCT1 = "iPhone 15 Pro - $999, A17 chip, 48MP camera, titanium frame, USB-C, 6.1 inch display"
+const DEFAULT_PRODUCT2 = "Samsung Galaxy S24 Ultra - $1199, Snapdragon 8 Gen 3, 200MP camera, S Pen, 6.8 inch display"
+
+export interface ProductCompareDemoProps {
+  /** Default first product description */
+  defaultProduct1?: string
+  /** Default second product description */
+  defaultProduct2?: string
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function ProductCompareDemo({
+  defaultProduct1 = DEFAULT_PRODUCT1,
+  defaultProduct2 = DEFAULT_PRODUCT2,
+  placeholder = "Enter product details...",
+  temperature = 0.6,
+  maxTokens = 600,
+}: ProductCompareDemoProps = {}) {
+  const [product1, setProduct1] = useState(defaultProduct1)
+  const [product2, setProduct2] = useState(defaultProduct2)
   const [comparison, setComparison] = useState<Comparison | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -45,8 +67,8 @@ Respond in JSON format:
   "recommendation": "Who should buy which",
   "winner": 1 or 2
 }`,
-        temperature: 0.6,
-        maxTokens: 600,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = result.text.match(/\{[\s\S]*\}/)
@@ -74,7 +96,7 @@ Respond in JSON format:
           <Textarea
             value={product1}
             onChange={(e) => setProduct1(e.target.value)}
-            placeholder="Enter product details..."
+            placeholder={placeholder}
             rows={3}
           />
         </div>
@@ -83,7 +105,7 @@ Respond in JSON format:
           <Textarea
             value={product2}
             onChange={(e) => setProduct2(e.target.value)}
-            placeholder="Enter product details..."
+            placeholder={placeholder}
             rows={3}
           />
         </div>

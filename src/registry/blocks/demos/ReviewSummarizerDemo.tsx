@@ -16,7 +16,7 @@ interface ReviewSummary {
   reviewCount: number
 }
 
-const SAMPLE_REVIEWS = `"Absolutely love this product! Works exactly as described and shipping was fast."
+const DEFAULT_REVIEWS = `"Absolutely love this product! Works exactly as described and shipping was fast."
 "Good quality but a bit pricey. Would recommend waiting for a sale."
 "Doesn't fit as expected, had to return. Customer service was helpful though."
 "Five stars! Been using it daily for 3 months, no issues whatsoever."
@@ -25,8 +25,24 @@ const SAMPLE_REVIEWS = `"Absolutely love this product! Works exactly as describe
 "Average quality for the price. Nothing special but does the job."
 "Had some issues initially but after contacting support, everything works great now."`
 
-export function ReviewSummarizerDemo() {
-  const [reviews, setReviews] = useState(SAMPLE_REVIEWS)
+export interface ReviewSummarizerDemoProps {
+  /** Default reviews text */
+  defaultReviews?: string
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function ReviewSummarizerDemo({
+  defaultReviews = DEFAULT_REVIEWS,
+  placeholder = "Paste product reviews (one per line)...",
+  temperature = 0.5,
+  maxTokens = 400,
+}: ReviewSummarizerDemoProps = {}) {
+  const [reviews, setReviews] = useState(defaultReviews)
   const [summary, setSummary] = useState<ReviewSummary | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -44,8 +60,8 @@ ${reviews}
 
 Respond with JSON only:
 {"overall": "1-2 sentence summary", "pros": ["pro1", "pro2", "pro3"], "cons": ["con1", "con2"], "rating": 4.2, "reviewCount": ${reviews.split('\n').filter(r => r.trim()).length}}`,
-        temperature: 0.5,
-        maxTokens: 400,
+        temperature,
+        maxTokens,
       })
 
       const jsonMatch = result.text.match(/\{[\s\S]*\}/)
@@ -73,7 +89,7 @@ Respond with JSON only:
       <Textarea
         value={reviews}
         onChange={(e) => setReviews(e.target.value)}
-        placeholder="Paste product reviews (one per line)..."
+        placeholder={placeholder}
         rows={6}
       />
 

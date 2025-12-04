@@ -8,13 +8,31 @@ import { Loader2, Mic, MicOff, Volume2, VolumeX } from "lucide-react"
 
 interface Message { role: "user" | "assistant"; content: string }
 
-export function VoiceChatDemo() {
+const DEFAULT_SYSTEM_PROMPT = "You are a voice assistant. Brief responses."
+
+export interface VoiceChatDemoProps {
+  /** System prompt for the assistant */
+  systemPrompt?: string
+  /** Whether TTS is enabled by default */
+  defaultTtsEnabled?: boolean
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function VoiceChatDemo({
+  systemPrompt = DEFAULT_SYSTEM_PROMPT,
+  defaultTtsEnabled = true,
+  temperature = 0.7,
+  maxTokens = 100,
+}: VoiceChatDemoProps = {}) {
   const [messages, setMessages] = useState<Message[]>([])
   const [isListening, setIsListening] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [transcript, setTranscript] = useState("")
-  const [ttsEnabled, setTtsEnabled] = useState(true)
+  const [ttsEnabled, setTtsEnabled] = useState(defaultTtsEnabled)
   const [supported, setSupported] = useState(true)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
 
@@ -42,8 +60,8 @@ export function VoiceChatDemo() {
     setIsLoading(true)
     try {
       const r = await generateText({
-        prompt: "You are a voice assistant. Brief responses.\n\nUser: " + text + "\n\nAssistant:",
-        temperature: 0.7, maxTokens: 100,
+        prompt: `${systemPrompt}\n\nUser: ${text}\n\nAssistant:`,
+        temperature, maxTokens,
       })
       const response = r.text.trim()
       setMessages(p => [...p, { role: "assistant", content: response }])

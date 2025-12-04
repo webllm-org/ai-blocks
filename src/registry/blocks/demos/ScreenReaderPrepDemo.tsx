@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Eye, Headphones, ArrowRight, Copy, Check } from "lucide-react"
 
-const sampleContent = `🚀 Check out our NEW product launch!!!
+const DEFAULT_CONTENT = `🚀 Check out our NEW product launch!!!
 
 Click HERE ➡️ to learn more about our amazing features:
 • Fast ⚡
@@ -20,8 +20,24 @@ Don't miss out!!! Limited time offer - 50% OFF!!!
 img_2847.jpg
 btn_submit`
 
-export function ScreenReaderPrepDemo() {
-  const [input, setInput] = useState(sampleContent)
+export interface ScreenReaderPrepDemoProps {
+  /** Default content to optimize */
+  defaultContent?: string
+  /** Placeholder for input textarea */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function ScreenReaderPrepDemo({
+  defaultContent = DEFAULT_CONTENT,
+  placeholder = "Paste content with emojis, vague links, etc.",
+  temperature = 0.5,
+  maxTokens = 400,
+}: ScreenReaderPrepDemoProps = {}) {
+  const [input, setInput] = useState(defaultContent)
   const [output, setOutput] = useState("")
   const [improvements, setImprovements] = useState<string[]>([])
   const [isProcessing, setIsProcessing] = useState(false)
@@ -56,8 +72,8 @@ Return:
 }
 
 JSON:`,
-        temperature: 0.5,
-        maxTokens: 400,
+        temperature,
+        maxTokens,
       })
 
       try {
@@ -100,7 +116,7 @@ JSON:`,
               onChange={(e) => setInput(e.target.value)}
               rows={10}
               className="text-sm font-mono"
-              placeholder="Paste content with emojis, vague links, etc."
+              placeholder={placeholder}
             />
           </CardContent>
         </Card>

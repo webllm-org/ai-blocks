@@ -9,8 +9,26 @@ import { Loader2, HelpCircle, Send, RotateCcw, Lightbulb } from "lucide-react"
 
 interface Message { role: "user" | "tutor"; content: string }
 
-export function SocraticTutorDemo() {
-  const [topic, setTopic] = useState("Why does ice float on water?")
+const DEFAULT_TOPIC = "Why does ice float on water?"
+
+export interface SocraticTutorDemoProps {
+  /** Initial topic to explore */
+  defaultTopic?: string
+  /** Placeholder for topic input */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function SocraticTutorDemo({
+  defaultTopic = DEFAULT_TOPIC,
+  placeholder = "What do you want to understand?",
+  temperature = 0.8,
+  maxTokens = 150,
+}: SocraticTutorDemoProps = {}) {
+  const [topic, setTopic] = useState(defaultTopic)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -29,8 +47,8 @@ export function SocraticTutorDemo() {
 Instead of explaining directly, ask ONE thought-provoking question that guides them to discover the answer themselves. Be encouraging but don't give away the answer.
 
 Your first guiding question:`,
-        temperature: 0.8,
-        maxTokens: 150,
+        temperature,
+        maxTokens,
       })
       setMessages([{ role: "tutor", content: result.text.trim() }])
     } catch (error) {
@@ -60,8 +78,8 @@ Student: ${userMsg}
 Continue guiding with questions. If they're on the right track, acknowledge it and dig deeper. If they're stuck, give a small hint then ask another question. NEVER give the full answer directly. Keep responses brief (1-2 sentences).
 
 Your response:`,
-        temperature: 0.8,
-        maxTokens: 150,
+        temperature,
+        maxTokens,
       })
       setMessages(prev => [...prev, { role: "tutor", content: result.text.trim() }])
     } catch {
@@ -85,7 +103,7 @@ Your response:`,
             <Lightbulb className="h-8 w-8 mx-auto mb-2 text-yellow-500" />
             <p className="text-sm text-muted-foreground">Learn through guided discovery</p>
           </div>
-          <Input value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="What do you want to understand?" />
+          <Input value={topic} onChange={(e) => setTopic(e.target.value)} placeholder={placeholder} />
           <Button onClick={startSession} disabled={isLoading || !topic.trim()} className="w-full">
             {isLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <HelpCircle className="h-4 w-4 mr-2" />}
             Start Learning

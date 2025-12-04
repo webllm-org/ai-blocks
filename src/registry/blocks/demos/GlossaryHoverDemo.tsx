@@ -5,11 +5,30 @@ import { generateText } from "@webllm/client"
 import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, BookOpen } from "lucide-react"
 
-const SAMPLE_TEXT = `Machine learning models use gradient descent to optimize their loss function during training. The backpropagation algorithm computes gradients efficiently by applying the chain rule. Modern architectures like transformers use attention mechanisms to process sequential data, enabling better performance on NLP tasks.`
+const DEFAULT_TEXT = `Machine learning models use gradient descent to optimize their loss function during training. The backpropagation algorithm computes gradients efficiently by applying the chain rule. Modern architectures like transformers use attention mechanisms to process sequential data, enabling better performance on NLP tasks.`
 
-const TECHNICAL_TERMS = ["gradient descent", "loss function", "backpropagation", "chain rule", "transformers", "attention mechanisms", "NLP"]
+const DEFAULT_TERMS = ["gradient descent", "loss function", "backpropagation", "chain rule", "transformers", "attention mechanisms", "NLP"]
 
-export function GlossaryHoverDemo() {
+export interface GlossaryHoverDemoProps {
+  /** Text content with technical terms */
+  text?: string
+  /** Technical terms to highlight */
+  technicalTerms?: string[]
+  /** Context for definitions */
+  definitionContext?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function GlossaryHoverDemo({
+  text = DEFAULT_TEXT,
+  technicalTerms = DEFAULT_TERMS,
+  definitionContext = "machine learning",
+  temperature = 0.5,
+  maxTokens = 100,
+}: GlossaryHoverDemoProps = {}) {
   const [hoveredTerm, setHoveredTerm] = useState<string | null>(null)
   const [definition, setDefinition] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -28,11 +47,11 @@ export function GlossaryHoverDemo() {
 
     try {
       const result = await generateText({
-        prompt: `Define "${term}" in simple terms for someone learning about machine learning. Keep it to 1-2 sentences, beginner-friendly.
+        prompt: `Define "${term}" in simple terms for someone learning about ${definitionContext}. Keep it to 1-2 sentences, beginner-friendly.
 
 Definition:`,
-        temperature: 0.5,
-        maxTokens: 100,
+        temperature,
+        maxTokens,
       })
       const def = result.text.trim() || "Definition not available"
       setDefinition(def)
@@ -64,11 +83,10 @@ Definition:`,
   }
 
   const renderTextWithTerms = () => {
-    let text = SAMPLE_TEXT
+    let processedText = text
     const elements: React.ReactNode[] = []
-    let lastIndex = 0
 
-    TECHNICAL_TERMS.forEach(term => {
+    technicalTerms.forEach(term => {
       const regex = new RegExp(`(${term})`, "gi")
       text = text.replace(regex, `|||TERM:$1|||`)
     })
@@ -128,7 +146,7 @@ Definition:`,
       </div>
 
       <p className="text-xs text-muted-foreground text-center">
-        Technical terms: {TECHNICAL_TERMS.length} highlighted
+        Technical terms: {technicalTerms.length} highlighted
       </p>
     </div>
   )

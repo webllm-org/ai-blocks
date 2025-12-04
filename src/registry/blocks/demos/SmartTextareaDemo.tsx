@@ -7,14 +7,33 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Sparkles } from "lucide-react"
 
-export function SmartTextareaDemo() {
+export interface SmartTextareaDemoProps {
+  /** Placeholder for textarea */
+  placeholder?: string
+  /** Minimum characters before suggesting */
+  minChars?: number
+  /** Debounce time in ms */
+  debounceMs?: number
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function SmartTextareaDemo({
+  placeholder = "Start typing... AI will suggest completions after you pause.",
+  minChars = 20,
+  debounceMs = 1000,
+  temperature = 0.7,
+  maxTokens = 40,
+}: SmartTextareaDemoProps = {}) {
   const [text, setText] = useState("")
   const [suggestion, setSuggestion] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
   const getSuggestion = useCallback(async (currentText: string) => {
-    if (currentText.length < 20) {
+    if (currentText.length < minChars) {
       setSuggestion("")
       return
     }
@@ -27,8 +46,8 @@ export function SmartTextareaDemo() {
 "${currentText}"
 
 Continuation:`,
-        temperature: 0.7,
-        maxTokens: 40,
+        temperature,
+        maxTokens,
       })
 
       const continuation = result.text.trim().replace(/^["']|["']$/g, '')
@@ -51,7 +70,7 @@ Continuation:`,
 
     debounceRef.current = setTimeout(() => {
       getSuggestion(value)
-    }, 1000)
+    }, debounceMs)
   }
 
   const acceptSuggestion = () => {
@@ -75,7 +94,7 @@ Continuation:`,
           value={text}
           onChange={(e) => handleChange(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Start typing... AI will suggest completions after you pause."
+          placeholder={placeholder}
           rows={6}
           className="pr-10"
         />
