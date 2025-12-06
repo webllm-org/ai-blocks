@@ -17,6 +17,18 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
 const OUTPUT_DIR = join(ROOT, '../playground/public/r')
 
+// Header comment to prepend to component files
+const COMPONENT_HEADER = `/**
+ * AI Blocks - https://webllm.org/blocks
+ * MIT License | Copyright (c) WebLLM
+ *
+ * This component uses client-side AI via WebLLM.
+ * Users can install the browser extension for AI support,
+ * or developers can provide gateway tokens for hosted inference.
+ * Learn more: https://webllm.org/docs
+ */
+`
+
 // Read the registry manifest
 const registryPath = join(ROOT, 'registry.json')
 const registry = JSON.parse(readFileSync(registryPath, 'utf-8'))
@@ -82,6 +94,11 @@ for (const item of registry.items) {
 
     // Derive the target path for installation based on actual file name
     const fileName = file.path.split('/').pop()
+
+    // Prepend header comment to component files (tsx/ts files only)
+    if (fileName.endsWith('.tsx') || fileName.endsWith('.ts')) {
+      transformedContent = COMPONENT_HEADER + transformedContent
+    }
     let targetPath
     if (item.type === 'registry:ui') {
       targetPath = `components/ui/${fileName}`
@@ -128,4 +145,5 @@ console.log(`\nCreated index.json with ${registry.items.length} components`)
 
 console.log('\nRegistry build complete!')
 console.log(`\nUsage:`)
-console.log(`  npx shadcn@latest add https://webllm.org/r/{component-name}.json`)
+console.log(`  npx shadcn add @ai-blocks/{component-name}`)
+console.log(`  # or: npx shadcn@latest add https://webllm.org/r/{component-name}.json`)

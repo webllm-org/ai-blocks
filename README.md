@@ -28,8 +28,11 @@ All components can be installed via the shadcn CLI and work with the `webllm` np
 Install individual components via shadcn CLI:
 
 ```bash
-npx shadcn@latest add https://webllm.org/r/simple-chat.json
-npx shadcn@latest add https://webllm.org/r/chat-with-tools.json
+npx shadcn add @ai-blocks/simple-chat
+npx shadcn add @ai-blocks/chat-with-tools
+
+# Alternative: use full URL (also works)
+# npx shadcn@latest add https://webllm.org/r/simple-chat.json
 ```
 
 ### Option 2: npm package
