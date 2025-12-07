@@ -7,3 +7,4 @@ export { AvailabilityBehaviorDemo } from "./AvailabilityBehaviorDemo"
 // Cloud auth blocks - Components for cloud authentication UI
 export { CloudAuthBannerDemo } from "./CloudAuthBannerDemo"
 export { CloudAuthButtonDemo } from "./CloudAuthButtonDemo"
+export { OAuthDomainAuthDemo } from "./OAuthDomainAuthDemo"
