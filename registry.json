@@ -345,6 +345,18 @@
       ]
     },
     {
+      "name": "oauth-domain-auth",
+      "type": "registry:block",
+      "title": "OAuth Domain Authorization",
+      "description": "Complete OAuth flow for connecting user cloud accounts with domain-based authorization",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/OAuthDomainAuthDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "simple-chat",
       "type": "registry:block",
       "title": "Simple Chat",
