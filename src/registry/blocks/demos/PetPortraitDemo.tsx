@@ -11,8 +11,28 @@ import { Loader2, ImageIcon, Upload, Sparkles, AlertCircle, Eye } from "lucide-r
 const DEFAULT_PET_IMAGE_URL =
   "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80"
 
-// Portrait styles with their prompts
-const PORTRAIT_STYLES = [
+// ============================================
+// Portrait Style Types & Presets
+// ============================================
+
+/**
+ * Definition for a portrait style
+ */
+export interface PortraitStyle {
+  /** Unique identifier for the style */
+  id: string
+  /** Display name */
+  name: string
+  /** Short description */
+  description: string
+  /** Function that generates the prompt given a pet description */
+  promptTemplate: (petDescription: string) => string
+}
+
+/**
+ * Default portrait styles - Classic art styles
+ */
+export const DEFAULT_PORTRAIT_STYLES: PortraitStyle[] = [
   {
     id: "renaissance",
     name: "Renaissance",
@@ -41,9 +61,113 @@ const PORTRAIT_STYLES = [
     promptTemplate: (petDescription: string) =>
       `A cyberpunk portrait of ${petDescription} as a futuristic cyber warrior, neon lights, holographic elements, chrome accents, rain-soaked city background, purple and cyan glow, high tech low life aesthetic, blade runner inspired`,
   },
-] as const
+]
 
-type StyleId = (typeof PORTRAIT_STYLES)[number]["id"]
+/**
+ * Victorian/Historical portrait styles
+ */
+export const VICTORIAN_PORTRAIT_STYLES: PortraitStyle[] = [
+  {
+    id: "victorian",
+    name: "Victorian",
+    description: "19th century formal",
+    promptTemplate: (petDescription: string) =>
+      `A formal Victorian era portrait of ${petDescription}, wearing elegant 19th century attire with lace collar, sepia tones, ornate picture frame, dignified pose, studio photography style, vintage aesthetic`,
+  },
+  {
+    id: "baroque",
+    name: "Baroque",
+    description: "Dramatic classical",
+    promptTemplate: (petDescription: string) =>
+      `A dramatic baroque portrait of ${petDescription} in the style of Rembrandt, rich dark background, golden light illuminating the subject, luxurious velvet fabric, dramatic chiaroscuro lighting, masterpiece quality`,
+  },
+  {
+    id: "rococo",
+    name: "Rococo",
+    description: "Ornate French style",
+    promptTemplate: (petDescription: string) =>
+      `An elegant rococo portrait of ${petDescription} in the style of Fragonard, pastel colors, ornate gilded frame, soft romantic lighting, flowers and ribbons, aristocratic French court style, delicate brushwork`,
+  },
+  {
+    id: "medieval",
+    name: "Medieval",
+    description: "Illuminated manuscript",
+    promptTemplate: (petDescription: string) =>
+      `A medieval illuminated manuscript portrait of ${petDescription}, gold leaf accents, ornate border decorations, rich jewel tones, Byzantine style, religious icon aesthetic, flat perspective, highly detailed`,
+  },
+]
+
+/**
+ * Modern/Contemporary portrait styles
+ */
+export const MODERN_PORTRAIT_STYLES: PortraitStyle[] = [
+  {
+    id: "anime",
+    name: "Anime",
+    description: "Japanese animation",
+    promptTemplate: (petDescription: string) =>
+      `An adorable anime style portrait of ${petDescription}, big expressive eyes, soft shading, colorful background with sparkles, Studio Ghibli inspired, kawaii aesthetic, cel shading, vibrant colors`,
+  },
+  {
+    id: "pixar",
+    name: "3D Cartoon",
+    description: "Pixar-style 3D",
+    promptTemplate: (petDescription: string) =>
+      `A Pixar-style 3D rendered portrait of ${petDescription}, charming expression, soft lighting, subsurface scattering on fur, big expressive eyes, heartwarming, family-friendly, professional 3D animation quality`,
+  },
+  {
+    id: "vaporwave",
+    name: "Vaporwave",
+    description: "Retro aesthetic",
+    promptTemplate: (petDescription: string) =>
+      `A vaporwave aesthetic portrait of ${petDescription}, pink and cyan gradient, geometric shapes, Roman bust elements, palm trees, sunset, 80s retro futurism, glitch effects, nostalgic`,
+  },
+  {
+    id: "minimalist",
+    name: "Minimalist",
+    description: "Clean modern art",
+    promptTemplate: (petDescription: string) =>
+      `A minimalist modern art portrait of ${petDescription}, clean lines, limited color palette, geometric shapes, negative space, Scandinavian design aesthetic, simple yet elegant, contemporary art style`,
+  },
+]
+
+/**
+ * Fantasy portrait styles
+ */
+export const FANTASY_PORTRAIT_STYLES: PortraitStyle[] = [
+  {
+    id: "steampunk",
+    name: "Steampunk",
+    description: "Victorian sci-fi",
+    promptTemplate: (petDescription: string) =>
+      `A steampunk portrait of ${petDescription} wearing brass goggles and Victorian gear, copper mechanical elements, cogs and gears, sepia and bronze tones, industrial revolution aesthetic, detailed machinery`,
+  },
+  {
+    id: "fairy-tale",
+    name: "Fairy Tale",
+    description: "Enchanted storybook",
+    promptTemplate: (petDescription: string) =>
+      `A magical fairy tale portrait of ${petDescription} as an enchanted creature, sparkling magical dust, forest background with glowing mushrooms, whimsical, Disney-inspired, dreamy atmosphere, storybook illustration`,
+  },
+  {
+    id: "superhero",
+    name: "Superhero",
+    description: "Comic book hero",
+    promptTemplate: (petDescription: string) =>
+      `A superhero comic book portrait of ${petDescription} wearing a cape and mask, dynamic pose, dramatic lighting, city skyline background, Marvel/DC comic style, bold colors, action-packed`,
+  },
+  {
+    id: "space",
+    name: "Space Explorer",
+    description: "Cosmic adventure",
+    promptTemplate: (petDescription: string) =>
+      `An epic space explorer portrait of ${petDescription} in a futuristic astronaut suit, nebula background, stars and galaxies, helmet reflection, sci-fi movie poster style, dramatic cosmic lighting`,
+  },
+]
+
+// ============================================
+// Component Types
+// ============================================
 
 export interface PetPortraitDemoProps {
   /** URL of the default pet image to display */
@@ -54,10 +178,12 @@ export interface PetPortraitDemoProps {
   size?: "256x256" | "512x512" | "1024x1024"
   /** Whether to use vision to analyze the pet image */
   useVision?: boolean
+  /** Portrait styles to generate (defaults to DEFAULT_PORTRAIT_STYLES) */
+  styles?: PortraitStyle[]
 }
 
 interface GeneratedPortrait {
-  styleId: StyleId
+  styleId: string
   styleName: string
   imageUrl: string | null
   isLoading: boolean
@@ -67,7 +193,9 @@ interface GeneratedPortrait {
 /**
  * Fetches an image from URL and converts it to base64
  */
-async function fetchImageAsBase64(url: string): Promise<{ base64: string; mimeType: string } | null> {
+async function fetchImageAsBase64(
+  url: string
+): Promise<{ base64: string; mimeType: string } | null> {
   try {
     const response = await fetch(url)
     if (!response.ok) return null
@@ -96,6 +224,7 @@ export function PetPortraitDemo({
   defaultPetDescription = "a golden retriever dog with fluffy fur and friendly eyes",
   size = "1024x1024",
   useVision = true,
+  styles = DEFAULT_PORTRAIT_STYLES,
 }: PetPortraitDemoProps = {}) {
   const [petImageUrl, setPetImageUrl] = useState<string>(defaultImageUrl)
   const [petImageBase64, setPetImageBase64] = useState<string | null>(null)
@@ -202,8 +331,8 @@ export function PetPortraitDemo({
     // Analyze the pet image if vision is available
     const enhancedDescription = await analyzePetImage()
 
-    // Initialize all 4 portraits as loading
-    const initialPortraits: GeneratedPortrait[] = PORTRAIT_STYLES.map((style) => ({
+    // Initialize all portraits as loading
+    const initialPortraits: GeneratedPortrait[] = styles.map((style) => ({
       styleId: style.id,
       styleName: style.name,
       imageUrl: null,
@@ -211,8 +340,8 @@ export function PetPortraitDemo({
     }))
     setPortraits(initialPortraits)
 
-    // Generate all 4 images in parallel using .then() for progressive display
-    PORTRAIT_STYLES.forEach((style) => {
+    // Generate all images in parallel using .then() for progressive display
+    styles.forEach((style) => {
       const prompt = style.promptTemplate(enhancedDescription)
 
       generateImage({
@@ -252,11 +381,19 @@ export function PetPortraitDemo({
         .finally(() => {
           // Track completion and turn off generating state when all done
           completedCount.current += 1
-          if (completedCount.current >= PORTRAIT_STYLES.length) {
+          if (completedCount.current >= styles.length) {
             setIsGenerating(false)
           }
         })
     })
+  }
+
+  // Determine grid columns based on number of styles
+  const getGridCols = () => {
+    const count = styles.length
+    if (count <= 2) return "grid-cols-2"
+    if (count <= 3) return "grid-cols-3"
+    return "grid-cols-2 md:grid-cols-4"
   }
 
   // Show unsupported message if no image capability
@@ -356,7 +493,7 @@ export function PetPortraitDemo({
               <div>
                 <p className="text-sm font-medium mb-2">Styles to generate:</p>
                 <div className="flex flex-wrap gap-2">
-                  {PORTRAIT_STYLES.map((style) => (
+                  {styles.map((style) => (
                     <Badge key={style.id} variant="secondary" className="text-xs">
                       {style.name}
                     </Badge>
@@ -382,7 +519,7 @@ export function PetPortraitDemo({
                 ) : (
                   <>
                     <Sparkles className="h-4 w-4 mr-2" />
-                    Generate 4 Portrait Styles
+                    Generate {styles.length} Portrait{styles.length !== 1 ? "s" : ""}
                   </>
                 )}
               </Button>
@@ -393,7 +530,7 @@ export function PetPortraitDemo({
 
       {/* Generated Portraits Grid */}
       {portraits.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className={`grid ${getGridCols()} gap-4`}>
           {portraits.map((portrait) => (
             <Card key={portrait.styleId} className="overflow-hidden">
               <CardContent className="p-0">
@@ -436,8 +573,8 @@ export function PetPortraitDemo({
             <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
             <p className="text-sm text-muted-foreground">
               {hasVisionCapability && useVision
-                ? "Upload your pet's photo and we'll analyze it automatically to create 4 unique AI portraits in different artistic styles."
-                : "Upload your pet's photo, describe them, and click generate to create 4 unique AI portraits in different artistic styles."}
+                ? `Upload your pet's photo and we'll analyze it automatically to create ${styles.length} unique AI portrait${styles.length !== 1 ? "s" : ""}.`
+                : `Upload your pet's photo, describe them, and click generate to create ${styles.length} unique AI portrait${styles.length !== 1 ? "s" : ""}.`}
             </p>
           </CardContent>
         </Card>
