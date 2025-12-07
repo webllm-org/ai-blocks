@@ -357,6 +357,30 @@
       ]
     },
     {
+      "name": "cloud-auth-button",
+      "type": "registry:block",
+      "title": "Cloud Auth Buttons",
+      "description": "Various button styles for cloud authentication - simple, icon-only, dropdown, and status badge",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/CloudAuthButtonDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "cloud-login-button",
+      "type": "registry:block",
+      "title": "Cloud Login Button",
+      "description": "Simple login button with green glowing status dot and disconnect dropdown",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/CloudLoginButton.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "simple-chat",
       "type": "registry:block",
       "title": "Simple Chat",
