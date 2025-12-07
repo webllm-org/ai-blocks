@@ -1,14 +1,15 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { generateImage, hasCapability } from "@webllm/client"
+import { generateImage, generateText, hasCapability } from "@webllm/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, ImageIcon, Upload, Sparkles, AlertCircle } from "lucide-react"
+import { Loader2, ImageIcon, Upload, Sparkles, AlertCircle, Eye } from "lucide-react"
 
-// Default sample pet image (a cute dog placeholder)
-const DEFAULT_PET_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect fill='%23f3f4f6' width='300' height='300'/%3E%3Ccircle cx='150' cy='130' r='80' fill='%23d1d5db'/%3E%3Ccircle cx='120' cy='110' r='12' fill='%23374151'/%3E%3Ccircle cx='180' cy='110' r='12' fill='%23374151'/%3E%3Cellipse cx='150' cy='145' rx='15' ry='10' fill='%23374151'/%3E%3Cellipse cx='90' cy='80' r='25' ry='35' fill='%23d1d5db'/%3E%3Cellipse cx='210' cy='80' r='25' ry='35' fill='%23d1d5db'/%3E%3Ctext x='150' y='250' text-anchor='middle' fill='%236b7280' font-family='system-ui' font-size='14'%3EUpload your pet photo%3C/text%3E%3C/svg%3E"
+// Default sample pet image URL
+const DEFAULT_PET_IMAGE_URL =
+  "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80"
 
 // Portrait styles with their prompts
 const PORTRAIT_STYLES = [
@@ -45,10 +46,14 @@ const PORTRAIT_STYLES = [
 type StyleId = (typeof PORTRAIT_STYLES)[number]["id"]
 
 export interface PetPortraitDemoProps {
-  /** Default pet description for the prompt */
+  /** URL of the default pet image to display */
+  defaultImageUrl?: string
+  /** Default pet description for the prompt (used if vision analysis fails) */
   defaultPetDescription?: string
   /** Image size for generation */
   size?: "256x256" | "512x512" | "1024x1024"
+  /** Whether to use vision to analyze the pet image */
+  useVision?: boolean
 }
 
 interface GeneratedPortrait {
@@ -59,30 +64,87 @@ interface GeneratedPortrait {
   error?: string
 }
 
+/**
+ * Fetches an image from URL and converts it to base64
+ */
+async function fetchImageAsBase64(url: string): Promise<{ base64: string; mimeType: string } | null> {
+  try {
+    const response = await fetch(url)
+    if (!response.ok) return null
+
+    const blob = await response.blob()
+    const mimeType = blob.type || "image/jpeg"
+
+    return new Promise((resolve) => {
+      const reader = new FileReader()
+      reader.onload = () => {
+        const dataUrl = reader.result as string
+        // Extract base64 part from data URL
+        const base64 = dataUrl.split(",")[1]
+        resolve({ base64, mimeType })
+      }
+      reader.onerror = () => resolve(null)
+      reader.readAsDataURL(blob)
+    })
+  } catch {
+    return null
+  }
+}
+
 export function PetPortraitDemo({
+  defaultImageUrl = DEFAULT_PET_IMAGE_URL,
   defaultPetDescription = "a golden retriever dog with fluffy fur and friendly eyes",
   size = "1024x1024",
+  useVision = true,
 }: PetPortraitDemoProps = {}) {
-  const [petImage, setPetImage] = useState<string>(DEFAULT_PET_IMAGE)
+  const [petImageUrl, setPetImageUrl] = useState<string>(defaultImageUrl)
+  const [petImageBase64, setPetImageBase64] = useState<string | null>(null)
+  const [petImageMimeType, setPetImageMimeType] = useState<string>("image/jpeg")
   const [petDescription, setPetDescription] = useState(defaultPetDescription)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [hasImageCapability, setHasImageCapability] = useState<boolean | null>(null)
+  const [hasVisionCapability, setHasVisionCapability] = useState<boolean | null>(null)
   const [portraits, setPortraits] = useState<GeneratedPortrait[]>([])
+  const [imageError, setImageError] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const completedCount = useRef(0)
 
-  // Check for image generation capability on mount
+  // Check for capabilities on mount
   useEffect(() => {
-    hasCapability("image").then(setHasImageCapability)
+    Promise.all([hasCapability("image"), hasCapability("vision")]).then(([image, vision]) => {
+      setHasImageCapability(image)
+      setHasVisionCapability(vision)
+    })
   }, [])
+
+  // Fetch and convert default image URL to base64 on mount or URL change
+  useEffect(() => {
+    if (petImageUrl && petImageUrl.startsWith("http")) {
+      fetchImageAsBase64(petImageUrl).then((result) => {
+        if (result) {
+          setPetImageBase64(result.base64)
+          setPetImageMimeType(result.mimeType)
+          setImageError(false)
+        } else {
+          setImageError(true)
+        }
+      })
+    }
+  }, [petImageUrl])
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
       const reader = new FileReader()
       reader.onload = (e) => {
-        const result = e.target?.result as string
-        setPetImage(result)
+        const dataUrl = e.target?.result as string
+        setPetImageUrl(dataUrl)
+        // Extract base64 from data URL
+        const base64 = dataUrl.split(",")[1]
+        setPetImageBase64(base64)
+        setPetImageMimeType(file.type || "image/jpeg")
+        setImageError(false)
       }
       reader.readAsDataURL(file)
     }
@@ -92,11 +154,53 @@ export function PetPortraitDemo({
     fileInputRef.current?.click()
   }
 
-  const generatePortraits = () => {
-    if (!petDescription.trim()) return
+  /**
+   * Analyze the pet image using vision to get a detailed description
+   */
+  const analyzePetImage = async (): Promise<string> => {
+    if (!useVision || !hasVisionCapability || !petImageBase64) {
+      return petDescription
+    }
+
+    setIsAnalyzing(true)
+    try {
+      const result = await generateText({
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: "Describe this pet in detail for an AI image generator. Include: species, breed (if identifiable), color/markings, fur texture, distinctive features, expression, and pose. Be specific and descriptive. Output only the description, no preamble.",
+              },
+              {
+                type: "image",
+                image: petImageBase64,
+                mimeType: petImageMimeType,
+              },
+            ],
+          },
+        ],
+        maxTokens: 200,
+        temperature: 0.7,
+      })
+      return result.text.trim() || petDescription
+    } catch (error) {
+      console.error("Vision analysis failed:", error)
+      return petDescription
+    } finally {
+      setIsAnalyzing(false)
+    }
+  }
+
+  const generatePortraits = async () => {
+    if (!petDescription.trim() && !petImageBase64) return
 
     setIsGenerating(true)
     completedCount.current = 0
+
+    // Analyze the pet image if vision is available
+    const enhancedDescription = await analyzePetImage()
 
     // Initialize all 4 portraits as loading
     const initialPortraits: GeneratedPortrait[] = PORTRAIT_STYLES.map((style) => ({
@@ -109,7 +213,7 @@ export function PetPortraitDemo({
 
     // Generate all 4 images in parallel using .then() for progressive display
     PORTRAIT_STYLES.forEach((style) => {
-      const prompt = style.promptTemplate(petDescription.trim())
+      const prompt = style.promptTemplate(enhancedDescription)
 
       generateImage({
         prompt,
@@ -193,11 +297,21 @@ export function PetPortraitDemo({
                 className="relative w-48 h-48 rounded-lg overflow-hidden border-2 border-dashed border-muted-foreground/25 cursor-pointer hover:border-primary/50 transition-colors"
                 onClick={triggerFileUpload}
               >
-                <img
-                  src={petImage}
-                  alt="Your pet"
-                  className="w-full h-full object-cover"
-                />
+                {imageError ? (
+                  <div className="absolute inset-0 flex items-center justify-center bg-muted">
+                    <div className="text-center text-muted-foreground">
+                      <ImageIcon className="h-8 w-8 mx-auto mb-2" />
+                      <p className="text-xs">Could not load image</p>
+                    </div>
+                  </div>
+                ) : (
+                  <img
+                    src={petImageUrl}
+                    alt="Your pet"
+                    className="w-full h-full object-cover"
+                    onError={() => setImageError(true)}
+                  />
+                )}
                 <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                   <Upload className="h-8 w-8 text-white" />
                 </div>
@@ -209,16 +323,20 @@ export function PetPortraitDemo({
                 onChange={handleImageUpload}
                 className="hidden"
               />
-              <p className="text-xs text-muted-foreground text-center mt-2">
-                Click to upload
-              </p>
+              <p className="text-xs text-muted-foreground text-center mt-2">Click to upload</p>
+              {hasVisionCapability && useVision && (
+                <div className="flex items-center justify-center gap-1 mt-1">
+                  <Eye className="h-3 w-3 text-muted-foreground" />
+                  <p className="text-xs text-muted-foreground">Vision enabled</p>
+                </div>
+              )}
             </div>
 
             {/* Description and Style Selection */}
             <div className="flex-1 space-y-4">
               <div>
                 <label htmlFor="pet-description" className="text-sm font-medium block mb-1.5">
-                  Describe your pet
+                  Describe your pet {hasVisionCapability && useVision && "(optional with vision)"}
                 </label>
                 <textarea
                   id="pet-description"
@@ -227,6 +345,12 @@ export function PetPortraitDemo({
                   placeholder="e.g., a fluffy orange tabby cat with green eyes"
                   className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background resize-none h-20"
                 />
+                {hasVisionCapability && useVision && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    With vision enabled, your pet's photo will be analyzed automatically for better
+                    results.
+                  </p>
+                )}
               </div>
 
               <div>
@@ -242,10 +366,15 @@ export function PetPortraitDemo({
 
               <Button
                 onClick={generatePortraits}
-                disabled={isGenerating || !petDescription.trim()}
+                disabled={isGenerating || isAnalyzing || (!petDescription.trim() && !petImageBase64)}
                 className="w-full"
               >
-                {isGenerating ? (
+                {isAnalyzing ? (
+                  <>
+                    <Eye className="h-4 w-4 animate-pulse mr-2" />
+                    Analyzing pet photo...
+                  </>
+                ) : isGenerating ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin mr-2" />
                     Generating portraits...
@@ -306,8 +435,9 @@ export function PetPortraitDemo({
           <CardContent className="p-8 text-center">
             <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
             <p className="text-sm text-muted-foreground">
-              Upload your pet's photo, describe them, and click generate to create 4 unique AI
-              portraits in different artistic styles.
+              {hasVisionCapability && useVision
+                ? "Upload your pet's photo and we'll analyze it automatically to create 4 unique AI portraits in different artistic styles."
+                : "Upload your pet's photo, describe them, and click generate to create 4 unique AI portraits in different artistic styles."}
             </p>
           </CardContent>
         </Card>
