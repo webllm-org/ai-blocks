@@ -681,6 +681,18 @@
       ]
     },
     {
+      "name": "pet-portrait",
+      "type": "registry:block",
+      "title": "Pet Portrait Generator",
+      "description": "Transform pet photos into artistic portraits - Renaissance, Pop Art, Watercolor, and more",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/PetPortraitDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "tldr-generator",
       "type": "registry:block",
       "title": "TLDR Generator",
