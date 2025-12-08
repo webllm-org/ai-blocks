@@ -221,7 +221,7 @@ async function fetchImageAsBase64(
 
 export function PetPortraitDemo({
   defaultImageUrl = DEFAULT_PET_IMAGE_URL,
-  defaultPetDescription = "a golden retriever dog with fluffy fur and friendly eyes",
+  defaultPetDescription = "alert expression, smiling, beautiful portrait, big expressive eyes",
   size = "1024x1024",
   useVision = true,
   styles = DEFAULT_PORTRAIT_STYLES,
