@@ -684,7 +684,7 @@
       "name": "pet-portrait",
       "type": "registry:block",
       "title": "Pet Portrait Generator",
-      "description": "Transform pet photos into artistic portraits - Renaissance, Pop Art, Watercolor, and more",
+      "description": "Transform pet photos into artistic portraits - Renaissance, Pop Art, Watercolor, Cyberpunk",
       "files": [
         {
           "path": "src/registry/blocks/demos/PetPortraitDemo.tsx",
