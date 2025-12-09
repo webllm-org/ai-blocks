@@ -6,6 +6,11 @@
  * This script reads the registry.json manifest and generates individual
  * JSON files for each component that can be consumed by `npx shadcn add`.
  *
+ * Features:
+ * - Auto-detects npm dependencies from imports (webllm, lucide-react, etc.)
+ * - Auto-detects registry dependencies from @/registry/* imports
+ * - Transforms import paths for shadcn compatibility
+ *
  * Output: ../../public/r/{component-name}.json
  */
 
@@ -16,6 +21,68 @@ import { fileURLToPath } from 'url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
 const OUTPUT_DIR = join(ROOT, '../playground/public/r')
+
+/**
+ * Known npm packages that should be added as dependencies when imported.
+ * Maps import source patterns to the npm package name to add.
+ */
+const NPM_PACKAGE_MAP = {
+  '@webllm/client': 'webllm',
+  'webllm': 'webllm',
+  'lucide-react': 'lucide-react',
+  'framer-motion': 'framer-motion',
+  'date-fns': 'date-fns',
+  'zod': 'zod',
+  'zustand': 'zustand',
+  'react-hook-form': 'react-hook-form',
+  '@hookform/resolvers': '@hookform/resolvers',
+  'class-variance-authority': 'class-variance-authority',
+  'clsx': 'clsx',
+  'tailwind-merge': 'tailwind-merge',
+  'cmdk': 'cmdk',
+  '@radix-ui': null, // Radix UI is typically included via shadcn, so we skip it
+}
+
+/**
+ * Extract imports from TypeScript/TSX content.
+ * Returns an object with npmPackages and registryDeps arrays.
+ */
+function extractImports(content) {
+  const npmPackages = new Set()
+  const registryDeps = new Set()
+
+  // Match import statements: import { x } from "source" or import x from "source"
+  // Also handles: import type { x } from "source"
+  const importRegex = /import\s+(?:type\s+)?(?:{[^}]*}|\*\s+as\s+\w+|\w+)?\s*,?\s*(?:{[^}]*})?\s*from\s*["']([^"']+)["']/g
+
+  let match
+  while ((match = importRegex.exec(content)) !== null) {
+    const importSource = match[1]
+
+    // Check for registry dependencies (@/registry/*)
+    const registryMatch = importSource.match(/@\/registry\/(ui|blocks|hooks)\/([^/]+)/)
+    if (registryMatch) {
+      const componentName = registryMatch[2]
+      registryDeps.add(componentName)
+      continue
+    }
+
+    // Check for npm package dependencies
+    for (const [pattern, packageName] of Object.entries(NPM_PACKAGE_MAP)) {
+      if (packageName === null) continue // Skip packages we don't want to add
+
+      if (importSource === pattern || importSource.startsWith(pattern + '/')) {
+        npmPackages.add(packageName)
+        break
+      }
+    }
+  }
+
+  return {
+    npmPackages: Array.from(npmPackages),
+    registryDeps: Array.from(registryDeps),
+  }
+}
 
 // Header comment to prepend to component files
 const COMPONENT_HEADER = `/**
@@ -44,22 +111,21 @@ console.log(`Found ${registry.items.length} components\n`)
 // Process each item in the registry
 for (const item of registry.items) {
   // Track dependencies discovered from file content
-  let usesWebllm = false
+  const allNpmDeps = new Set(item.dependencies || [])
+  const allRegistryDeps = new Set(
+    (item.registryDependencies || []).map(dep =>
+      dep.startsWith('local:') ? dep.replace('local:', '') : dep
+    )
+  )
 
   const output = {
     name: item.name,
     type: item.type,
     title: item.title,
     description: item.description,
-    dependencies: [...(item.dependencies || [])],
+    dependencies: [],  // Will be populated from allNpmDeps
     devDependencies: item.devDependencies || [],
-    registryDependencies: (item.registryDependencies || []).map(dep => {
-      // Convert local: prefix to our registry URL
-      if (dep.startsWith('local:')) {
-        return dep.replace('local:', '')
-      }
-      return dep
-    }),
+    registryDependencies: [],  // Will be populated from allRegistryDeps
     files: [],
     tailwind: item.tailwind || {},
     cssVars: item.cssVars || {},
@@ -76,6 +142,18 @@ for (const item of registry.items) {
 
     const content = readFileSync(filePath, 'utf-8')
 
+    // Extract dependencies from imports
+    const { npmPackages, registryDeps } = extractImports(content)
+
+    // Add auto-detected dependencies
+    npmPackages.forEach(pkg => allNpmDeps.add(pkg))
+    registryDeps.forEach(dep => {
+      // Don't add self-reference
+      if (dep !== item.name) {
+        allRegistryDeps.add(dep)
+      }
+    })
+
     // Transform import paths for registry compatibility
     // Replace @webllm/client with the public package name "webllm"
     // Replace @/lib/utils with the standard shadcn path
@@ -86,11 +164,6 @@ for (const item of registry.items) {
       .replace(/@\/registry\/ui\/([^/]+)/g, '@/components/ui/$1')
       .replace(/@\/registry\/blocks\/([^/]+)/g, '@/components/blocks/$1')
       .replace(/@\/registry\/hooks\/([^/]+)/g, '@/hooks/$1')
-
-    // Track if this file uses webllm
-    if (content.includes('@webllm/client') || content.includes('from "webllm"')) {
-      usesWebllm = true
-    }
 
     // Derive the target path for installation based on actual file name
     const fileName = file.path.split('/').pop()
@@ -117,10 +190,9 @@ for (const item of registry.items) {
     })
   }
 
-  // Add webllm dependency if any file uses it
-  if (usesWebllm && !output.dependencies.includes('webllm')) {
-    output.dependencies.push('webllm')
-  }
+  // Set final dependencies from accumulated sets
+  output.dependencies = Array.from(allNpmDeps).sort()
+  output.registryDependencies = Array.from(allRegistryDeps).sort()
 
   // Write the component JSON
   const outputPath = join(OUTPUT_DIR, `${item.name}.json`)
