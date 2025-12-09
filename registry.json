@@ -489,6 +489,186 @@
       ]
     },
     {
+      "name": "receipt-parser",
+      "type": "registry:block",
+      "title": "Receipt Parser",
+      "description": "Extract structured data from receipt text or images",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ReceiptParserDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "product-comparison",
+      "type": "registry:block",
+      "title": "Product Comparison Table",
+      "description": "AI-generated comparison tables for any products",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ProductComparisonDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "pricing-explainer",
+      "type": "registry:block",
+      "title": "Pricing Explainer",
+      "description": "Explain if a price is fair with market context",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/PricingExplainerDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "churn-detector",
+      "type": "registry:block",
+      "title": "Churn Signal Detector",
+      "description": "Identify customers at risk of churning",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ChurnDetectorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "size-recommender",
+      "type": "registry:block",
+      "title": "Size Recommender",
+      "description": "Personalized clothing size recommendations",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SizeRecommenderDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "gift-recommender",
+      "type": "registry:block",
+      "title": "Gift Recommender",
+      "description": "Personalized gift ideas based on recipient description",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/GiftRecommenderDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "inventory-narrator",
+      "type": "registry:block",
+      "title": "Inventory Status Narrator",
+      "description": "Generate friendly inventory status messages",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/InventoryNarratorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "regex-generator",
+      "type": "registry:block",
+      "title": "Regex Generator",
+      "description": "Generate regex patterns from natural language descriptions",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/RegexGeneratorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "error-explainer",
+      "type": "registry:block",
+      "title": "Error Explainer",
+      "description": "Get friendly explanations for cryptic error messages",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ErrorExplainerDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "json-type-converter",
+      "type": "registry:block",
+      "title": "JSON Type Converter",
+      "description": "Convert JSON to TypeScript, Zod, or other type definitions",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/JsonTypeConverterDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "cron-builder",
+      "type": "registry:block",
+      "title": "Cron Builder",
+      "description": "Generate and explain cron expressions in plain English",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/CronBuilderDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "api-response-designer",
+      "type": "registry:block",
+      "title": "API Response Designer",
+      "description": "Generate realistic API responses for testing and docs",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ApiResponseDesignerDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "git-helper",
+      "type": "registry:block",
+      "title": "Git Helper",
+      "description": "Get git commands from natural language descriptions",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/GitHelperDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "commit-message-writer",
+      "type": "registry:block",
+      "title": "Commit Message Writer",
+      "description": "Generate meaningful commit messages from your changes",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/CommitMessageWriterDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "code-converter",
+      "type": "registry:block",
+      "title": "Code Converter",
+      "description": "Convert code between programming languages",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/CodeConverterDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "review-summarizer",
       "type": "registry:block",
       "title": "Review Summarizer",
@@ -645,6 +825,114 @@
       ]
     },
     {
+      "name": "roast-my-idea",
+      "type": "registry:block",
+      "title": "Roast My Idea",
+      "description": "Get a brutally honest critique of your startup or project idea",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/RoastMyIdeaDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "name-generator",
+      "type": "registry:block",
+      "title": "Name Generator",
+      "description": "Generate creative names for products, companies, or characters",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/NameGeneratorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "excuse-generator",
+      "type": "registry:block",
+      "title": "Excuse Generator",
+      "description": "Generate creative excuses for various situations",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ExcuseGeneratorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "horoscope-generator",
+      "type": "registry:block",
+      "title": "Horoscope Generator",
+      "description": "Generate personalized daily horoscopes",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/HoroscopeGeneratorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "recipe-from-ingredients",
+      "type": "registry:block",
+      "title": "Recipe from Ingredients",
+      "description": "Generate recipes based on available ingredients",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/RecipeFromIngredientsDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "rhyme-helper",
+      "type": "registry:block",
+      "title": "Rhyme Helper",
+      "description": "Find rhymes and help write poetry or lyrics",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/RhymeHelperDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "shakespearean-insult",
+      "type": "registry:block",
+      "title": "Shakespearean Insult",
+      "description": "Generate creative insults in Shakespearean style",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ShakespeareanInsultDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "fortune-cookie",
+      "type": "registry:block",
+      "title": "Fortune Cookie",
+      "description": "Generate wisdom and fortunes in fortune cookie style",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/FortuneCookieDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "dating-profile-reviewer",
+      "type": "registry:block",
+      "title": "Dating Profile Reviewer",
+      "description": "Get AI feedback on your dating profile",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/DatingProfileReviewerDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "text-to-image",
       "type": "registry:block",
       "title": "Text to Image",
@@ -688,6 +976,222 @@
       "files": [
         {
           "path": "src/registry/blocks/demos/PetPortraitDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "decision-helper",
+      "type": "registry:block",
+      "title": "Decision Helper",
+      "description": "Structured decision-making with pros, cons, and recommendations",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/DecisionHelperDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "brainstorm-partner",
+      "type": "registry:block",
+      "title": "Brainstorm Partner",
+      "description": "Collaborative idea generation with AI building on your thoughts",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/BrainstormPartnerDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "rubber-duck",
+      "type": "registry:block",
+      "title": "Rubber Duck Debugger",
+      "description": "Talk through your code problems with an AI duck",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/RubberDuckDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "story-collaborator",
+      "type": "registry:block",
+      "title": "Story Collaborator",
+      "description": "Co-write stories with AI that builds on your narrative",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/StoryCollaboratorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "language-partner",
+      "type": "registry:block",
+      "title": "Language Partner",
+      "description": "Practice conversations in any language with corrections",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/LanguagePartnerDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "trivia-game",
+      "type": "registry:block",
+      "title": "Trivia Game",
+      "description": "Play customizable trivia with AI-generated questions",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/TriviaGameDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "would-you-rather",
+      "type": "registry:block",
+      "title": "Would You Rather",
+      "description": "AI-generated dilemmas with philosophical analysis",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/WouldYouRatherDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "two-truths-lie",
+      "type": "registry:block",
+      "title": "Two Truths and a Lie",
+      "description": "Play the classic game with AI fact-checking",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/TwoTruthsLieDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "explanation-level",
+      "type": "registry:block",
+      "title": "Explanation Level Slider",
+      "description": "Get explanations at any complexity level from ELI5 to PhD",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ExplanationLevelDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "code-roaster",
+      "type": "registry:block",
+      "title": "Code Roaster",
+      "description": "Get your code humorously critiqued with constructive feedback",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/CodeRoasterDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "writing-coach",
+      "type": "registry:block",
+      "title": "Writing Coach",
+      "description": "Personalized writing feedback and improvement suggestions",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/WritingCoachDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "product-feedback-panel",
+      "type": "registry:block",
+      "title": "Product Feedback Panel",
+      "description": "Simulate diverse user personas reviewing your product",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ProductFeedbackPanelDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "interview-simulator",
+      "type": "registry:block",
+      "title": "Interview Simulator",
+      "description": "Practice job interviews with AI interviewers",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/InterviewSimulatorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "sales-objection",
+      "type": "registry:block",
+      "title": "Sales Objection Handler",
+      "description": "Practice handling common sales objections",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SalesObjectionDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "negotiation-simulator",
+      "type": "registry:block",
+      "title": "Negotiation Simulator",
+      "description": "Practice negotiation skills with AI opponents",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/NegotiationSimulatorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "reflection-journal",
+      "type": "registry:block",
+      "title": "Reflection Journal",
+      "description": "Guided journaling with thoughtful AI prompts",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ReflectionJournalDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "debate-partner",
+      "type": "registry:block",
+      "title": "Debate Partner",
+      "description": "Engage in structured debates on any topic",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/DebatePartnerDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "character-voice",
+      "type": "registry:block",
+      "title": "Character Voice Writer",
+      "description": "Write in the voice of famous characters or personas",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/CharacterVoiceDemo.tsx",
           "type": "registry:component"
         }
       ]
@@ -940,6 +1444,138 @@
       "files": [
         {
           "path": "src/registry/blocks/demos/AutocompleteDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "smart-search-input",
+      "type": "registry:block",
+      "title": "Smart Search Input",
+      "description": "Search input with AI-powered query understanding and suggestions",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SmartSearchInputDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "intent-classifier",
+      "type": "registry:block",
+      "title": "Intent Classifier Input",
+      "description": "Detect user intent from natural language input",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/IntentClassifierDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "sentiment-indicator",
+      "type": "registry:block",
+      "title": "Sentiment Indicator",
+      "description": "Real-time sentiment analysis as users type",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SentimentIndicatorDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "smart-tags-input",
+      "type": "registry:block",
+      "title": "Smart Tags Input",
+      "description": "AI-suggested tags based on content",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SmartTagsInputDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "autocomplete-context",
+      "type": "registry:block",
+      "title": "Context-Aware Autocomplete",
+      "description": "Autocomplete that understands user context and history",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/AutocompleteContextDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "magic-fill-form",
+      "type": "registry:block",
+      "title": "Magic Fill Form",
+      "description": "Auto-fill forms from pasted text or documents",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/MagicFillFormDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "reply-suggestions",
+      "type": "registry:block",
+      "title": "Reply Suggestions",
+      "description": "Quick reply suggestions for messages",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ReplySuggestionsDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "content-warning",
+      "type": "registry:block",
+      "title": "Content Warning Generator",
+      "description": "Automatically detect and suggest content warnings",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ContentWarningDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "summarize-selection",
+      "type": "registry:block",
+      "title": "Summarize Selection Popup",
+      "description": "Select text to get instant AI summaries",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SummarizeSelectionDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "similar-items-finder",
+      "type": "registry:block",
+      "title": "Similar Items Finder",
+      "description": "Find similar items based on semantic understanding",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/SimilarItemsFinderDemo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "validation-explainer",
+      "type": "registry:block",
+      "title": "Validation Explainer",
+      "description": "Friendly explanations for form validation errors",
+      "files": [
+        {
+          "path": "src/registry/blocks/demos/ValidationExplainerDemo.tsx",
           "type": "registry:component"
         }
       ]
