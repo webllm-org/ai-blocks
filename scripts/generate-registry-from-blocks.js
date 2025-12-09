@@ -6,16 +6,20 @@
  * This script reads the TypeScript block definition files and extracts
  * the metadata needed for the shadcn registry format.
  *
+ * Includes hash-based caching to skip regeneration when blocks haven't changed.
+ *
  * Run: node scripts/generate-registry-from-blocks.js
  */
 
-import { readFileSync, writeFileSync, readdirSync } from 'fs'
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
+import { createHash } from 'crypto'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const BLOCKS_DIR = join(__dirname, '../../playground/data/blocks')
 const REGISTRY_PATH = join(__dirname, '../registry.json')
+const HASH_PATH = join(__dirname, '../.registry-hash')
 
 // Base registry items (UI components and hooks that aren't in blocks data)
 const baseItems = [
@@ -172,14 +176,59 @@ function parseBlockFile(filePath) {
 }
 
 /**
+ * Compute hash of all block files content
+ */
+function computeBlocksHash(blockFiles) {
+  const hash = createHash('sha1')
+
+  // Include base items in hash (in case they change)
+  hash.update(JSON.stringify(baseItems))
+
+  // Hash each block file content
+  for (const file of blockFiles.sort()) {
+    const filePath = join(BLOCKS_DIR, file)
+    const content = readFileSync(filePath, 'utf-8')
+    hash.update(file + ':' + content)
+  }
+
+  return hash.digest('hex')
+}
+
+/**
+ * Check if registry needs regeneration
+ */
+function needsRegeneration(blockFiles) {
+  // Always regenerate if registry.json doesn't exist
+  if (!existsSync(REGISTRY_PATH)) {
+    return true
+  }
+
+  // Check if hash file exists
+  if (!existsSync(HASH_PATH)) {
+    return true
+  }
+
+  const currentHash = computeBlocksHash(blockFiles)
+  const storedHash = readFileSync(HASH_PATH, 'utf-8').trim()
+
+  return currentHash !== storedHash
+}
+
+/**
  * Main function
  */
 function main() {
-  console.log('Generating registry.json from blocks data...\n')
-
   // Get all block files (exclude index.ts, types.ts, categories.ts, themes.ts, README.md)
   const blockFiles = readdirSync(BLOCKS_DIR)
     .filter(f => f.endsWith('.ts') && !['index.ts', 'types.ts', 'categories.ts', 'themes.ts'].includes(f))
+
+  // Check if regeneration is needed
+  if (!needsRegeneration(blockFiles)) {
+    console.log('Registry is up to date (hash unchanged), skipping generation.')
+    return
+  }
+
+  console.log('Generating registry.json from blocks data...\n')
 
   console.log(`Found ${blockFiles.length} block files:`)
   blockFiles.forEach(f => console.log(`  - ${f}`))
@@ -207,6 +256,10 @@ function main() {
 
   // Write registry.json
   writeFileSync(REGISTRY_PATH, JSON.stringify(registry, null, 2) + '\n')
+
+  // Write hash file for future comparisons
+  const newHash = computeBlocksHash(blockFiles)
+  writeFileSync(HASH_PATH, newHash + '\n')
 
   console.log(`\nGenerated registry.json with ${allItems.length} items:`)
   console.log(`  - ${baseItems.length} base components (UI, hooks)`)

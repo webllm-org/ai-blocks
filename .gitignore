@@ -4,3 +4,4 @@ DEV.md
 shadcn-registry-entry.json
 *.log
 .DS_Store
+.registry-hash
