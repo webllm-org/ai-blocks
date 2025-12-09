@@ -76,6 +76,7 @@ export { PronunciationGuideDemo } from "./PronunciationGuideDemo"
 export { VoiceMemoTranscriberDemo } from "./VoiceMemoTranscriberDemo"
 export { AudiobookPreviewDemo } from "./AudiobookPreviewDemo"
 export { AnnouncementGeneratorDemo } from "./AnnouncementGeneratorDemo"
+export { InstantSpeakDemo } from "./InstantSpeakDemo"
 
 // Persona-Driven
 export { CodeRoasterDemo } from "./CodeRoasterDemo"
